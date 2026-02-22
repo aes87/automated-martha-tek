@@ -4,7 +4,7 @@
 >
 > Original post: https://www.reddit.com/r/MushroomGrowers/comments/sbnlib/gourmet_marth_2_dot_o_is_up_and_running_much/
 
-**→ [Shopping List](martha-tent-shopping-list.html)** — interactive checklist with persistent notes, syncs to your GitHub account.
+**→ [Shopping List](https://aes87.github.io/automated-martha-tek/martha-tent-shopping-list.html)** — interactive checklist with persistent notes, syncs to your GitHub account.
 
 ---
 
