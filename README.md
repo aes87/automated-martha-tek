@@ -1,4 +1,4 @@
-# Automated Martha Tent Build Guide
+# u/dccrens' Automated Martha Tent Build Guide
 
 > **Credit:** This guide is a detailed writeup of the build shared by u/dccrens on r/MushroomGrowers in January 2022 (274 upvotes). All specs, tips, and hard-won lessons come directly from dccrens — this document exists to make that knowledge easier to find and follow.
 >
