@@ -41,14 +41,14 @@ Everything else (UVC, lights) runs on timers. All data streams to a web dashboar
                     ┌───────────────────────────────────────┐
     SENSORS         │         ESP32-S3 DevKitC-1             │    RELAY OUTPUTS
                     │                                         │
-  SCD30 (CO2) ─────┤ I2C (GPIO 21/22)       GPIO 32 ├──── Ch1: Fogger
-  SHT45 ×3 ────────┤ via TCA9548A mux        GPIO 33 ├──── Ch2: Tub fan
+  SCD30 (CO2) ─────┤ I2C (GPIO 21/9)        GPIO 38 ├──── Ch1: Fogger
+  SHT45 ×3 ────────┤ via TCA9548A mux        GPIO 39 ├──── Ch2: Tub fan
   AS7341 (light) ──┤                         GPIO 18 ├──── Ch3: Exhaust fan
                    │                         GPIO 19 ├──── Ch4: Intake fan
-  DS18B20 ×5 ──────┤ 1-Wire (GPIO 4)         GPIO 23 ├──── Ch5: UVC lights
-                   │                         GPIO 25 ├──── Ch6: Grow lights
-  Water level ─────┤ ADC (GPIO 7)            GPIO 26 ├──── Ch7: Pump (optional)
-                   │                         GPIO 27 ├──── Ch8: Spare
+  DS18B20 ×5 ──────┤ 1-Wire (GPIO 4)         GPIO 40 ├──── Ch5: UVC lights
+                   │                         GPIO 41 ├──── Ch6: Grow lights
+  Water level ─────┤ ADC (GPIO 7)            GPIO 42 ├──── Ch7: Pump (optional)
+                   │                         GPIO 47 ├──── Ch8: Spare
                     └───────────────────────────────────────┘
                                │
                       Failsafe panel switches
@@ -65,7 +65,7 @@ This guide is written for the **ESP32-S3 DevKitC-1**. Earlier drafts used the cl
 
 | Problem (V1) | How S3 resolves it |
 |---|---|
-| GPIO 16/17 are UART2 — TX briefly pulses LOW during boot and flashing, firing connected relays | GPIO 32/33 (used here for Ch1/Ch2) have safe boot states and no UART attachment |
+| GPIO 16/17 are UART2 — TX briefly pulses LOW during boot and flashing, firing connected relays | GPIO 38/39 (used here for Ch1/Ch2) have safe boot states and no peripheral conflicts |
 | CH340 USB bridge oxidizes in 80–95% RH enclosure — USB port degrades over months | S3 has native USB-C on the chip itself; no external UART bridge or micro-USB port |
 | GPIO 25/26 are DAC outputs — non-deterministic until firmware initialises them | Not used for DAC here; clean GPIO with defined boot state |
 | GPIO 34 is input-only — no ESD tolerance; easy to destroy with wiring faults | GPIO 7 used instead; bidirectional with better fault tolerance (protection circuit still recommended) |
@@ -282,14 +282,14 @@ These run through the **failsafe DPDT switch** in normal operation (see Step 4 b
 
 | Relay Channel | Load | ESP32-S3 GPIO | Notes |
 |---------------|------|----------------|-------|
-| IN1 | Fogger | GPIO 32 | Safe boot state; no UART conflict |
-| IN2 | Tub fan | GPIO 33 | Safe boot state; no UART conflict |
+| IN1 | Fogger | GPIO 38 | Safe boot state; no peripheral conflicts |
+| IN2 | Tub fan | GPIO 39 | Safe boot state; no peripheral conflicts |
 | IN3 | Exhaust fan | GPIO 18 | Safe default HIGH |
-| IN4 | Intake fan | GPIO 19 | Safe default HIGH |
-| IN5 | UVC lights | GPIO 23 | Safe default HIGH; firmware enforces 10s boot guard |
-| IN6 | Grow lights | GPIO 25 | Safe default HIGH |
-| IN7 | Top-off pump (optional) | GPIO 26 | Safe default HIGH |
-| IN8 | Spare | GPIO 27 | Safe default HIGH |
+| IN4 | Intake fan | GPIO 19 | Safe default HIGH; shares USB D− pin (inactive when UART programming is used) |
+| IN5 | UVC lights | GPIO 40 | Safe default HIGH; firmware enforces 10s boot guard |
+| IN6 | Grow lights | GPIO 41 | Safe default HIGH |
+| IN7 | Top-off pump (optional) | GPIO 42 | Safe default HIGH |
+| IN8 | Spare | GPIO 47 | Safe default HIGH |
 
 > **Active LOW:** Relay modules trigger when the IN pin is pulled LOW. Pull-up resistors hold all IN pins HIGH (relays OFF) until the ESP32-S3 actively drives them. The firmware adds a 5-second relay-arm delay in `setup()` as an additional safety margin — no relay can fire in the first 5 seconds after boot regardless of GPIO state.
 
@@ -301,7 +301,7 @@ These run through the **failsafe DPDT switch** in normal operation (see Step 4 b
 
 #### I2C bus
 
-All I2C sensors share two wires: SDA (GPIO 21) and SCL (GPIO 22), plus 3.3V and GND. Run a 4-wire bus from the ESP32-S3 to each breakout board.
+All I2C sensors share two wires: SDA (GPIO 21) and SCL (GPIO 9), plus 3.3V and GND. Run a 4-wire bus from the ESP32-S3 to each breakout board.
 
 **Power all I2C breakouts from the ESP32-S3's 3V3 pin, not from the 5V PSU rail.** All sensors in this build are 3.3V native. Adafruit breakouts accept 5V on VIN via an on-board regulator, but some of their I2C pull-up resistors reference VIN rather than the regulated 3.3V rail — if that is the case, SDA/SCL lines can float to 5V, which will damage the ESP32-S3's GPIO pins and the AS7341.
 
@@ -310,7 +310,7 @@ All I2C sensors share two wires: SDA (GPIO 21) and SCL (GPIO 22), plus 3.3V and 
 
 ```
 ESP32-S3 GPIO 21 (SDA) ───┬── TCA9548A SDA
-ESP32-S3 GPIO 22 (SCL) ───┼── TCA9548A SCL
+ESP32-S3 GPIO  9 (SCL) ───┼── TCA9548A SCL
                            ├── SCD30 SDA/SCL (direct on bus — I2C addr 0x61)
                            └── AS7341 SDA/SCL (direct on bus — I2C addr 0x39)
 ESP32-S3 3V3 ─────────────┬── TCA9548A VIN  (3.3V — do not connect to 5V rail)
@@ -520,31 +520,139 @@ Before first power-on:
 
 ---
 
-## GPIO Quick Reference
+## GPIO Full IO Reference
 
-| GPIO | Function | Notes |
-|------|----------|-------|
-| 4 | 1-Wire (DS18B20 ×5) | 2.2kΩ pull-up to 3.3V; 100nF decoupling cap at junction |
-| 7 | ADC — Water level (ADC1_CH6) | 1kΩ series + 3.3V Zener/TVS clamp; 100kΩ pull-down to GND |
-| 18 | Relay Ch3 — Exhaust fan | Active LOW; safe boot state |
-| 19 | Relay Ch4 — Intake fan | Active LOW; safe boot state |
-| 21 | I2C SDA | All I2C sensors |
-| 22 | I2C SCL | All I2C sensors |
-| 23 | Relay Ch5 — UVC lights | Active LOW; firmware enforces 10s boot guard (5s general + 5s additional) |
-| 25 | Relay Ch6 — Grow lights | Active LOW; safe boot state |
-| 26 | Relay Ch7 — Top-off pump (opt.) | Active LOW; safe boot state |
-| 27 | Relay Ch8 — Spare | Active LOW; safe boot state |
-| 32 | Relay Ch1 — Fogger | Active LOW; no UART/DAC conflict; safe boot state |
-| 33 | Relay Ch2 — Tub fan | Active LOW; no UART/DAC conflict; safe boot state |
+Complete pin-by-pin reference for the ESP32-S3 DevKitC-1 (38-pin variant, J1 + J3 headers).
 
-**I2C device addresses:**
+> **Why some GPIO numbers changed from earlier drafts:** GPIO 22, 23, 24, and 25 **do not exist** in the ESP32-S3 silicon — the chip skips those numbers entirely compared to the classic ESP32. GPIO 26–32 are internally wired to the QSPI flash inside the WROOM-1 module and cannot be used for user I/O. Original assignments that fell on these numbers have been corrected throughout this guide.
+>
+> **Firmware update required:** `firmware/include/config.h` must be updated to the GPIO numbers below before building. See the corrected/original comparison table.
 
-| Device | Address |
-|--------|---------|
-| TCA9548A (I2C mux) | 0x70 |
-| SHT45 ×3 (via mux ch 0/1/2) | 0x44 each |
-| SCD30 (CO2) | 0x61 |
-| AS7341 (light) | 0x39 |
+---
+
+### Corrected vs. Original Assignments
+
+| Function | Original GPIO | Why invalid on ESP32-S3 | Corrected GPIO |
+|----------|--------------|------------------------|----------------|
+| I2C SCL | 22 | GPIO 22 does not exist (S3 skips 22–25) | 9 |
+| Relay Ch5 — UVC lights | 23 | GPIO 23 does not exist | 40 |
+| Relay Ch6 — Grow lights | 25 | GPIO 25 does not exist | 41 |
+| Relay Ch7 — Pump | 26 | Internal QSPI flash line (SPICS1) | 42 |
+| Relay Ch8 — Spare | 27 | Internal QSPI flash line (SPIHD) | 47 |
+| Relay Ch1 — Fogger | 32 | Internal QSPI flash line (SPID/MOSI) | 38 |
+| Relay Ch2 — Tub fan | 33 | PSRAM data line in R8 variants | 39 |
+
+---
+
+### Pins Used by This Build
+
+| GPIO | Direction | Function | External circuit | Notes |
+|------|-----------|----------|-----------------|-------|
+| 4 | Open-drain | 1-Wire data — DS18B20 ×5 | 2.2kΩ pull-up to 3.3V; 100nF ceramic at junction to GND | One pull-up + cap serves all 5 probes on the chain; 2.2kΩ sized for 5–8m cable runs |
+| 7 | Input — ADC1_CH6 | Water level sensor (4–20mA converter) | 1kΩ series; 3.3V Zener/TVS to GND; 100kΩ pull-down to GND | Absolute max input 3.6V; pull-down prevents ADC float when sensor is disconnected |
+| 9 | Bidirectional — I2C SCL | I2C clock bus (all sensors) | Pull-ups on sensor breakout boards | Default SCL pin in ESP32-S3 Arduino framework; replaces non-existent GPIO 22 |
+| 18 | Output | Relay Ch3 — Exhaust fan | 10kΩ pull-up to relay VCC on IN3 | Active LOW; relay holds OFF when GPIO floats or is HIGH |
+| 19 | Output | Relay Ch4 — Intake fan | 10kΩ pull-up to relay VCC on IN4 | Active LOW; also USB D−; only usable as GPIO when native USB CDC is inactive (normal with UART programming) |
+| 21 | Bidirectional — I2C SDA | I2C data bus (all sensors) | Pull-ups on sensor breakout boards | Pull-ups must reference 3.3V regulated rail, not 5V VIN |
+| 38 | Output | Relay Ch1 — Fogger | 10kΩ pull-up to relay VCC on IN1 | Active LOW; clean general-purpose GPIO; safe boot state |
+| 39 | Output | Relay Ch2 — Tub fan | 10kΩ pull-up to relay VCC on IN2 | Active LOW; clean general-purpose GPIO; safe boot state |
+| 40 | Output | Relay Ch5 — UVC lights | 10kΩ pull-up to relay VCC on IN5 | Active LOW; firmware enforces 10s boot guard (5s general + 5s UVC-specific) |
+| 41 | Output | Relay Ch6 — Grow lights | 10kΩ pull-up to relay VCC on IN6 | Active LOW; safe boot state |
+| 42 | Output | Relay Ch7 — Top-off pump (optional) | 10kΩ pull-up to relay VCC on IN7 | Active LOW; pre-wired in base build; activate with pump add-on |
+| 47 | Output | Relay Ch8 — Spare | 10kΩ pull-up to relay VCC on IN8 | Active LOW; available for future expansion |
+
+---
+
+### Strapping Pins — Boot State Requirements
+
+Sampled at reset. The DevKitC-1 holds them at safe defaults if left unconnected. Do not drive them with external circuits that could force the wrong state during power-on.
+
+| GPIO | Required boot state | DevKitC-1 mechanism | Usable after boot | Notes |
+|------|--------------------|--------------------|------------------|-------|
+| 0 | HIGH = boot from flash; LOW = download mode | 10kΩ pull-up to 3.3V; BOOT button shorts to GND | Yes, with caution | Avoid driving with a totem-pole output; do not connect relay or other active load |
+| 3 | HIGH = JTAG enabled; LOW = JTAG disabled | Internal weak pull-up | Yes | Leave NC unless hardware JTAG debugging is needed; default HIGH causes no problems |
+| 45 | LOW = 3.3V VDD_SPI (normal); HIGH = 1.8V | NC — internal weak pull-down | Yes, with caution | Do NOT add an external pull-up — wrong VDD_SPI level can destroy the onboard flash |
+| 46 | LOW = normal | NC — internal weak pull-down | Yes | Treat as input-only during the boot sequence; do not connect to a totem-pole output |
+
+---
+
+### Special-Function Pins
+
+| GPIO | Peripheral | Status in this build | Notes |
+|------|-----------|---------------------|-------|
+| 19 | USB D− (native USB CDC) | In use as Relay Ch4 — Intake fan | Shared function; native USB CDC must remain inactive (use UART programming via GPIO 43/44) |
+| 20 | USB D+ (native USB CDC) | NC | Leave unconnected; do not attach any load if native USB CDC might be needed |
+| 43 | UART0 TX — default serial | Leave as UART | Used for firmware download and Serial debug output via the USB bridge; do not reassign |
+| 44 | UART0 RX — default serial | Leave as UART | Pairs with GPIO 43 |
+| 48 | On-board WS2812 RGB LED | NC — not used in firmware | Official DevKitC-1 v1.0 connects GPIO 48 to the RGB LED; safe to use as general output or to drive the LED |
+
+---
+
+### Available Expansion Pins
+
+Unused GPIOs exposed on the DevKitC-1 38-pin headers. No external termination is required for pins left fully disconnected — the ESP32-S3 GPIO matrix supports configurable internal pull-up/pull-down on every pin, which can be set in firmware. In a high-humidity environment, configure unused input pins with internal pull-down to prevent noise pickup.
+
+| GPIO | ADC / special capability | Notes |
+|------|-------------------------|-------|
+| 0 | Strapping / BOOT button | Spare input — caution: strapping pin; avoid driving HIGH/LOW at reset |
+| 1 | ADC1_CH0, touch sensor | General purpose; good for additional analog or digital sensor |
+| 2 | ADC1_CH1, touch sensor | General purpose |
+| 3 | Strapping, JTAG | Leave NC unless JTAG debugging needed |
+| 5 | ADC1_CH4, touch sensor | General purpose |
+| 6 | ADC1_CH5, touch sensor | General purpose |
+| 8 | ADC1_CH7, touch sensor | Default SDA in ESP32-S3 Arduino; general purpose if I2C stays on GPIO 21 |
+| 10 | ADC1_CH9, touch sensor | General purpose |
+| 11 | ADC2_CH0, touch sensor | General purpose |
+| 15 | ADC2_CH4 | General purpose |
+| 16 | ADC2_CH5 | General purpose |
+| 17 | ADC2_CH6 | General purpose |
+| 20 | USB D+ | Leave NC; do not load if native USB unused |
+| 35 | PSRAM data (R8 variant only) | **NC if using an R8 module** (8MB PSRAM); usable as general GPIO on N8 (no PSRAM) |
+| 36 | PSRAM data (R8 variant only) | Same as GPIO 35 |
+| 37 | PSRAM data (R8 variant only) | Same as GPIO 35 |
+| 45 | Strapping (VDD_SPI) | Leave NC; do not add pull-up |
+| 46 | Strapping | Leave NC |
+| 48 | On-board RGB LED | Drive the DevKitC-1 onboard LED, or leave NC |
+
+---
+
+### Do Not Use — Reserved GPIO
+
+These GPIO numbers are wired internally inside the ESP32-S3-WROOM-1 module and cannot be used for user I/O. Attempting to write to them will corrupt flash or trigger undefined behavior.
+
+| GPIO | Reserved for | Consequence if used |
+|------|-------------|---------------------|
+| 22, 23, 24, 25 | Non-existent — not implemented in ESP32-S3 silicon | Writes are silently ignored or undefined; reads return garbage |
+| 26 | QSPI flash SPICS1 (chip-select) | Flash corruption; immediate crash |
+| 27 | QSPI flash SPIHD (hold line) | Flash corruption |
+| 28 | QSPI flash SPIWP (write-protect line) | Flash corruption |
+| 29 | QSPI flash SPICS0 | Flash corruption |
+| 30 | QSPI flash SPICLK (clock) | Flash corruption |
+| 31 | QSPI flash SPIQ (MISO) | Flash corruption |
+| 32 | QSPI flash SPID (MOSI) | Flash corruption |
+| 33–37 | Octal PSRAM in R8 variants (e.g. WROOM-1 N16R8) | PSRAM corruption; may be usable on N8 no-PSRAM modules, but not recommended |
+
+---
+
+### Power and Control Pins
+
+| Pin | Function | Notes |
+|-----|----------|-------|
+| 3V3 | 3.3V regulated output (500mA max from on-board LDO) | Powers all sensors and relay optocoupler side (VCC on relay board) |
+| 5V | 5V input | Relay coil side (JD-VCC on relay board); also powers the board via VIN or USB |
+| GND | Common ground | Tie both PSU negatives here; ADC accuracy depends on a solid common ground |
+| EN / RST | Active-low chip reset | Pulled HIGH by on-board resistor; short to GND momentarily to reset |
+
+---
+
+### I2C Device Addresses
+
+| Device | Address | Connected via |
+|--------|---------|---------------|
+| TCA9548A (I2C mux) | 0x70 | Direct on bus (GPIO 21/9) |
+| SHT45 ×3 (shelf sensors) | 0x44 each | TCA9548A channels 0 / 1 / 2 |
+| SCD30 (CO2 / temp / RH) | 0x61 | Direct on bus |
+| AS7341 (spectral light) | 0x39 | Direct on bus |
 
 ---
 
