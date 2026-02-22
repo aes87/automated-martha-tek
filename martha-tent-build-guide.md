@@ -25,39 +25,31 @@ This is version 2 of dccrens' build. Version 1 rusted out. The single biggest le
 Air and humidity enter from the **top-right** of the tent. CO2-rich air exhausts from the **bottom-left**. This cross-flow pattern means fresh humid air sweeps down through all the shelves before exiting — efficient and uniform.
 
 ```
-                    [Room Air]
-                         |
-           [4" Waterproof Computer Fan]  ← FAE intake
-           [Top-Right of Tent]
-                         |
-                         ↓
-   ┌─────────────────────────────────────┐
-   │           MARTHA TENT               │
-   │   Shelf 4  [fruiting blocks]        │
-   │   Shelf 3  [fruiting blocks]        │
-   │   Shelf 2  [fruiting blocks]        │
-   │   Shelf 1  [fruiting blocks]        │
-   │   [Drip Tray + 6-mil plastic liner] │
-   └───────────────────┬─────────────────┘
-                       │ CO2-rich air exits
-                       ↓ bottom-left
-           [AC Infinity S4 Inline Fan]
-                       |
-           [Flex duct → ceiling → outside]
-
-   ──── Humidity system (right side) ────
-   [19-gal tub] → [HoH 5-disc fogger]
-   [UVC lights: 1hr ON / 4hr OFF timer]
-   [Computer fan on lid blows DOWN into tub]
-   [Fog forced UP through 4" flex duct]
-   [Duct enters tent top-right at slight upward angle]
-   Controlled by: Inkbird IHC200 (fogger + tub fan together)
-
-   ──── CO2 / FAE system ────
-   CO2 controller monitors tent air
-   On: 950 ppm → kicks on intake fan + exhaust fan simultaneously
-   Off: 650 ppm → fans stop
-   Cycle duration: ~1–2 minutes
+   [Room Air]                                     ┌─────────────────────────┐
+        |                                          │   19-GALLON RESERVOIR   │
+        |  ← FAE intake                           │   [HoH 5-disc fogger]   │
+        ↓                                          │   [UVC: 1hr ON/4hr OFF] │
+   [4" Waterproof     fog enters top-right ──────→ │                         │
+    Computer Fan] ──→ ┌──────────────────────┐ ←──│  [Computer fan on lid]  │
+   (top-right of      │     MARTHA TENT       │    │   blows air DOWN ↓      │
+    tent)             │                       │    │   fog is forced UP ↑    │
+        |             │  Shelf 4  [blocks]    │    │   into 4" flex duct     │
+        ↓             │  Shelf 3  [blocks]    │    │   → slight upward angle │
+                      │  Shelf 2  [blocks]    │    │     into tent top-right │
+                      │  Shelf 1  [blocks]    │    │                         │
+                      │  [Drip Tray +         │    │  Controlled by:         │
+                      │   6-mil liner]        │    │  Inkbird IHC200         │
+                      └──────────┬────────────┘    │  (fogger + fan together)│
+                                 │ CO2-rich         └─────────────────────────┘
+                                 │ air exits
+                                 ↓ bottom-left
+                     [AC Infinity S4 Inline Fan]
+                                 |
+                     [4" flex duct → ceiling
+                      ductwork → outside]
+                     Controlled by: CO2 controller
+                     On: 950 ppm / Off: 650 ppm
+                     Cycle: ~1–2 min
 ```
 
 **What happens in a cycle:**
