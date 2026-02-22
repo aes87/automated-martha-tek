@@ -159,7 +159,7 @@ Once the tent is built and running, the next question is what to actually grow i
 
 ### Part 4A — Select / Buy Strains
 
-**→ [Mushroom Strain Guide](strain-guide.html)** *(open in browser)*
+**→ [Mushroom Strain Guide](https://aes87.github.io/automated-martha-tek/strain-guide.html)**
 
 A reference covering 25 species and strains across three difficulty tiers — beginner, intermediate, and advanced. Each entry includes grow time, temperature range, substrate, Martha tent compatibility, flavor notes, fun facts, and buy links to major spawn vendors.
 
