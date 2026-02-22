@@ -1,5 +1,9 @@
 # Automated Martha Tent — Build Guides
 
+> **⚠️ Work in progress — AI-native design, not yet built**
+>
+> This project is an experiment in AI-assisted hardware and firmware design. The guides and firmware were written collaboratively with an AI assistant and have not been physically implemented or tested on real hardware. If you're interested in building this, you should either review all hardware, wiring, and firmware details carefully yourself before trusting them, or wait for the human author to report back on how the actual build goes.
+
 Three parts for building and automating a Martha tent fruiting chamber. Start with the physical tent, then build the ESP32-S3 controller to replace the off-the-shelf CO2 and humidity controllers, then flash the firmware.
 
 ---
