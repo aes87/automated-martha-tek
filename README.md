@@ -1,12 +1,6 @@
 # Automated Martha Tent — Build Guides
 
-> **⚠️ Work in progress — AI-native design, not yet built**
->
-> This project is an experiment in AI-assisted hardware and firmware design. The guides and firmware were written collaboratively with an AI assistant and have not been physically implemented or tested on real hardware. If you're interested in building this, you should either review all hardware, wiring, and firmware details carefully yourself before trusting them, or wait for the human author to report back on how the actual build goes.
-
-Three parts for building and automating a Martha tent fruiting chamber. Start with the physical tent, then build the ESP32-S3 controller to replace the off-the-shelf CO2 and humidity controllers, then flash the firmware.
-
----
+A writeup of u/dccrens' proven Martha tent build, plus an optional DIY ESP32-S3 controller and firmware that replaces the off-the-shelf controllers with something more data-rich.
 
 ## Part 1 — Martha Tent Build
 
@@ -18,9 +12,21 @@ A proven, fully automated Martha tent fruiting chamber — CO2-controlled FAE, h
 
 **Cost: ~$250 USD** using off-the-shelf controllers.
 
+This guide is a faithful writeup of dccrens' original build — a real, working system that has been running for over a year. **It stands completely on its own.** Parts 2 and 3 below are optional extensions.
+
 ---
 
-## Part 2 — DIY ESP32-S3 Controller
+## Parts 2 & 3 — DIY Controller and Firmware (optional)
+
+> **⚠️ Work in progress — not yet built**
+>
+> Parts 2 and 3 are an experiment in AI-assisted hardware and firmware design. The controller guide and firmware were written collaboratively with an AI assistant and have not been physically implemented or tested. If you want to build the DIY controller, either review the hardware, wiring, and firmware carefully yourself before trusting them, or wait for the human author to report back on how it goes.
+
+The off-the-shelf CO2 and humidity controllers in the Martha tent build work well and are the safe, proven choice. Parts 2 and 3 describe a DIY ESP32-S3 board that replaces them — same tent, same fogger setup, just a different controller. The motivation is more sensors, per-shelf data, and a web dashboard rather than cost savings.
+
+---
+
+## Part 2 — DIY ESP32-S3 Controller *(optional)*
 
 Replace the off-the-shelf CO2 and humidity controllers with a single ESP32-S3-based board. Hardware-adapted from u/mettalmag's open-source greenhouse controller (r/MushroomGrowers, Jan 2025).
 
@@ -41,7 +47,7 @@ Replace the off-the-shelf CO2 and humidity controllers with a single ESP32-S3-ba
 
 ---
 
-## Part 3 — Firmware
+## Part 3 — Firmware *(optional, requires Part 2)*
 
 Open-source ESP32-S3 firmware for the DIY controller. PlatformIO + Arduino framework. Web dashboard at `http://martha.local`, REST API, OTA updates.
 
