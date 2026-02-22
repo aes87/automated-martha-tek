@@ -3,8 +3,9 @@
  * config.h — Martha Tent Controller: pin definitions, I2C addresses,
  *             compile-time thresholds, and version info.
  *
- * All values here match the DIY controller build guide (hardware v1).
- * See include/hal.h for board-variant overrides (ESP32-S3).
+ * Base values target the classic ESP32 DevKit V1 (legacy / fallback).
+ * Building for ESP32-S3 DevKitC-1 (recommended)? Define BOARD_S3 — see
+ * include/hal.h, which overrides all pins that are invalid on the S3.
  */
 
 // ── Firmware version ──────────────────────────────────────────────────────────
@@ -13,20 +14,23 @@
 #endif
 
 // ── GPIO — Relay outputs (active LOW on standard PC817 relay modules) ─────────
-#define PIN_RELAY_FOGGER      16   // Ch1 — UART2 RX; needs 10kΩ pull-up to VCC
-#define PIN_RELAY_TUB_FAN     17   // Ch2 — UART2 TX; glitches LOW at boot
-#define PIN_RELAY_EXHAUST     18   // Ch3 — safe boot state HIGH
-#define PIN_RELAY_INTAKE      19   // Ch4 — safe boot state HIGH
-#define PIN_RELAY_UVC         23   // Ch5 — 5s boot guard; UV safety hazard
-#define PIN_RELAY_LIGHTS      25   // Ch6 — DAC1; non-deterministic until init
-#define PIN_RELAY_PUMP        26   // Ch7 — DAC2; non-deterministic until init
+// NOTE: These are DevKit V1 base values. BOARD_S3 overrides all of these in
+// hal.h — do not use these numbers directly when targeting the ESP32-S3.
+#define PIN_RELAY_FOGGER      16   // Ch1 — V1: UART2 RX; 10kΩ pull-up to VCC required
+#define PIN_RELAY_TUB_FAN     17   // Ch2 — V1: UART2 TX; glitches LOW at boot on V1
+#define PIN_RELAY_EXHAUST     18   // Ch3 — safe boot state HIGH (same on S3)
+#define PIN_RELAY_INTAKE      19   // Ch4 — safe boot state HIGH (same on S3)
+#define PIN_RELAY_UVC         23   // Ch5 — V1 only: UV safety boot guard in firmware
+#define PIN_RELAY_LIGHTS      25   // Ch6 — V1: DAC1; non-deterministic until init
+#define PIN_RELAY_PUMP        26   // Ch7 — V1: DAC2; non-deterministic until init
 #define PIN_RELAY_SPARE       27   // Ch8 — general purpose
 
 // ── GPIO — Sensors ────────────────────────────────────────────────────────────
-#define PIN_ONE_WIRE          4    // DS18B20 ×5; 2.2kΩ pull-up + 100nF at junction
-#define PIN_I2C_SDA           21   // All I2C sensors
-#define PIN_I2C_SCL           22   // All I2C sensors
-#define PIN_ADC_WATER_LEVEL   34   // Input-only; 1kΩ + 3.3V Zener protection required
+// NOTE: PIN_I2C_SCL and PIN_ADC_WATER_LEVEL are overridden for BOARD_S3 in hal.h
+#define PIN_ONE_WIRE          4    // DS18B20 ×5; 2.2kΩ pull-up + 100nF at junction (same on S3)
+#define PIN_I2C_SDA           21   // I2C data — same on both V1 and S3
+#define PIN_I2C_SCL           22   // I2C clock — V1 only; S3 uses GPIO 9 (see hal.h)
+#define PIN_ADC_WATER_LEVEL   34   // V1: input-only GPIO; S3 uses GPIO 7 (see hal.h)
 
 // ── I2C addresses ─────────────────────────────────────────────────────────────
 #define I2C_ADDR_TCA9548A     0x70  // I2C mux (fixed address)

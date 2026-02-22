@@ -14,19 +14,41 @@
 
 #ifdef BOARD_S3
 // ── ESP32-S3 DevKitC-1 variant ───────────────────────────────────────────────
-// Moves Ch1/Ch2 to GPIO 32/33 — avoids UART0 boot-state glitch
-// S3 also has native USB, eliminating CH340 moisture-risk issue
+// The ESP32-S3 skips GPIO 22-25 entirely (those numbers don't exist in the
+// silicon) and GPIO 26-32 are internally wired to the QSPI flash inside the
+// WROOM-1 module. All base-config pins that land on those ranges are remapped
+// here to valid, exposed GPIO on the 38-pin DevKitC-1 header.
+//
+// Base config (V1) → S3 corrections:
+//   Ch1 Fogger:    16 → 38  (16 was UART2 RX on V1; 38 is clean on S3)
+//   Ch2 Tub fan:   17 → 39  (17 was UART2 TX on V1; 39 is clean on S3)
+//   Ch5 UVC:       23 → 40  (23 does not exist on ESP32-S3)
+//   Ch6 Lights:    25 → 41  (25 does not exist on ESP32-S3)
+//   Ch7 Pump:      26 → 42  (26 is internal QSPI flash on ESP32-S3)
+//   Ch8 Spare:     27 → 47  (27 is internal QSPI flash on ESP32-S3)
+//   I2C SCL:       22 →  9  (22 does not exist on ESP32-S3; 9 is default SCL)
+//   ADC water:     34 →  7  (34 is input-only on V1; 7 = ADC1_CH6 on S3)
+//
+// Unchanged (same GPIO valid on both):
+//   Ch3 Exhaust: 18, Ch4 Intake: 19, I2C SDA: 21
 
 #undef  PIN_RELAY_FOGGER
 #undef  PIN_RELAY_TUB_FAN
-
-#define PIN_RELAY_FOGGER      32   // Ch1 — no UART attachment, safe boot state
-#define PIN_RELAY_TUB_FAN     33   // Ch2 — no UART attachment, safe boot state
-
-// S3 I2C pins remain the same (GPIO 21/22 available on S3)
-// S3 ADC: GPIO 34 is not available on S3; remap to GPIO 7 (ADC1_CH6)
+#undef  PIN_RELAY_UVC
+#undef  PIN_RELAY_LIGHTS
+#undef  PIN_RELAY_PUMP
+#undef  PIN_RELAY_SPARE
+#undef  PIN_I2C_SCL
 #undef  PIN_ADC_WATER_LEVEL
-#define PIN_ADC_WATER_LEVEL   7
+
+#define PIN_RELAY_FOGGER      38   // Ch1 — clean GPIO; safe boot state
+#define PIN_RELAY_TUB_FAN     39   // Ch2 — clean GPIO; safe boot state
+#define PIN_RELAY_UVC         40   // Ch5 — boot guard in firmware (10s total)
+#define PIN_RELAY_LIGHTS      41   // Ch6 — safe boot state
+#define PIN_RELAY_PUMP        42   // Ch7 — safe boot state
+#define PIN_RELAY_SPARE       47   // Ch8 — safe boot state
+#define PIN_I2C_SCL            9   // Default SCL in ESP32-S3 Arduino framework
+#define PIN_ADC_WATER_LEVEL    7   // ADC1_CH6; 1kΩ + Zener protection required
 
 #endif // BOARD_S3
 

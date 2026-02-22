@@ -10,7 +10,7 @@ synced to `aes87/automated-martha-tek/firmware/` on GitHub.
 # Compile for ESP32 hardware
 pio run -e esp32dev
 
-# Compile for ESP32-S3 (rerouted Ch1/Ch2 to GPIO 32/33)
+# Compile for ESP32-S3 (BOARD_S3 remaps all invalid/reserved pins — see hal.h)
 pio run -e esp32s3
 
 # Run unit tests on PC (no ESP32 needed)
