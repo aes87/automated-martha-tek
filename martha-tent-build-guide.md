@@ -52,6 +52,8 @@ Air and humidity enter from the **top-right** of the tent. CO2-rich air exhausts
                      Cycle: ~1–2 min
 ```
 
+![System Diagram](martha-tent-system.svg)
+
 **What happens in a cycle:**
 1. CO2 climbs as blocks respire → hits 950 ppm → both FAE fans kick on
 2. Fans run ~1–2 min, flush CO2 out → CO2 drops to 650 ppm → fans stop
