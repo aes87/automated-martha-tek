@@ -1,14 +1,14 @@
 # DIY Martha Tent Controller — Full Build Guide
 
-A highly-featured ESP32-based controller for a Martha tent fruiting chamber. Replaces ~$233 worth of off-the-shelf CO2 and humidity controllers with a single board that gives you more accurate sensors, full data logging, and a web dashboard.
+A highly-featured ESP32-S3-based controller for a Martha tent fruiting chamber. Replaces ~$233 worth of off-the-shelf CO2 and humidity controllers with a single board that gives you more accurate sensors, full data logging, and a web dashboard.
 
 **What you replace:** dccrens' CO2 controller ($161) + Inkbird IHC200 humidity controller ($42) + Inkbird IBS-TH2 Plus monitor ($30).
 
 **What you get instead:** real-time CO2, per-shelf humidity and temperature gradients, substrate temperature per shelf, spectral light monitoring, continuous water level, VPD calculation, web dashboard, and optional automatic reservoir top-off.
 
-**Hardware cost: ~$270–285** (base build) — roughly the same price for dramatically more capability.
+**Hardware cost: ~$290–310** (base build) — roughly the same price as the off-the-shelf controllers it replaces, with dramatically more capability.
 
-> This guide covers hardware only. Software/firmware is covered separately.
+> This guide covers hardware assembly. Firmware is in [`firmware/`](firmware/) — see [`firmware/README.md`](firmware/README.md) for build, flash, and configuration instructions.
 >
 > Reference build credit: u/mettalmag (r/MushroomGrowers, Jan 2025) — adapted from a 200sqm commercial greenhouse to a home Martha tent.
 > Original post: https://www.reddit.com/r/MushroomGrowers/comments/1rao1ms/
@@ -30,76 +30,47 @@ This build switches 120V AC (or 240V depending on region) mains loads. **Mains v
 
 ## How It Works
 
-The ESP32 reads all sensors and drives an 8-channel relay module that switches the tent's loads. The firmware runs two control loops:
+The ESP32-S3 reads all sensors and drives an 8-channel relay module that switches the tent's loads. The firmware runs two control loops:
 
 - **Humidity loop:** SHT45 sensors measure RH → fogger + tub fan relay fires when RH drops below 85%
 - **CO2/FAE loop:** SCD30 measures CO2 → exhaust + intake fan relays fire when CO2 exceeds 950 ppm
 
-Everything else (UVC, lights) runs on timers. All data streams to a web dashboard in real time. Physical failsafe switches on the panel face let you control any load group manually, independent of the ESP32.
+Everything else (UVC, lights) runs on timers. All data streams to a web dashboard at `http://martha.local` in real time. Physical failsafe switches on the panel face let you control any load group manually, independent of the ESP32-S3.
 
 ```
-                    ┌─────────────────────────────────────┐
-    SENSORS         │           ESP32 DevKit V1            │    RELAY OUTPUTS
-                    │                                       │
-  SCD30 (CO2) ─────┤ I2C (GPIO 21/22)     GPIO 16 ├──── Ch1: Fogger
-  SHT45 ×3 ────────┤ via TCA9548A mux     GPIO 17 ├──── Ch2: Tub fan
-  AS7341 (light) ──┤                      GPIO 18 ├──── Ch3: Exhaust fan
-                   │                      GPIO 19 ├──── Ch4: Intake fan
-  DS18B20 ×5 ──────┤ 1-Wire (GPIO 4)      GPIO 23 ├──── Ch5: UVC lights
-                   │                      GPIO 25 ├──── Ch6: Grow lights
-  Water level ─────┤ ADC (GPIO 34)        GPIO 26 ├──── Ch7: Pump (optional)
-                   │                      GPIO 27 ├──── Ch8: Spare
-                    └─────────────────────────────────────┘
-                              │
-                     Failsafe panel switches
-                     (bypass relay board in MANUAL mode)
+                    ┌───────────────────────────────────────┐
+    SENSORS         │         ESP32-S3 DevKitC-1             │    RELAY OUTPUTS
+                    │                                         │
+  SCD30 (CO2) ─────┤ I2C (GPIO 21/22)       GPIO 32 ├──── Ch1: Fogger
+  SHT45 ×3 ────────┤ via TCA9548A mux        GPIO 33 ├──── Ch2: Tub fan
+  AS7341 (light) ──┤                         GPIO 18 ├──── Ch3: Exhaust fan
+                   │                         GPIO 19 ├──── Ch4: Intake fan
+  DS18B20 ×5 ──────┤ 1-Wire (GPIO 4)         GPIO 23 ├──── Ch5: UVC lights
+                   │                         GPIO 25 ├──── Ch6: Grow lights
+  Water level ─────┤ ADC (GPIO 7)            GPIO 26 ├──── Ch7: Pump (optional)
+                   │                         GPIO 27 ├──── Ch8: Spare
+                    └───────────────────────────────────────┘
+                               │
+                      Failsafe panel switches
+                      (bypass relay board in MANUAL mode)
 ```
 
 ![Controller Architecture](diy-controller-wiring.svg)
 
 ---
 
-## ⚠️ CRITICAL — Hardware Corrections (Read Before Ordering Parts)
+## Why ESP32-S3
 
-Four issues with standard component choices require correction before first power-on with mains voltage. None are expensive to fix — address them at the parts-ordering stage, not on the bench.
+This guide is written for the **ESP32-S3 DevKitC-1**. Earlier drafts used the classic ESP32 DevKit V1; the S3 is the recommended platform for new builds because it eliminates several hardware problems that required workarounds on the V1:
 
-### C1 — Relay board 3.3V logic incompatibility
+| Problem (V1) | How S3 resolves it |
+|---|---|
+| GPIO 16/17 are UART2 — TX briefly pulses LOW during boot and flashing, firing connected relays | GPIO 32/33 (used here for Ch1/Ch2) have safe boot states and no UART attachment |
+| CH340 USB bridge oxidizes in 80–95% RH enclosure — USB port degrades over months | S3 has native USB-C on the chip itself; no external UART bridge or micro-USB port |
+| GPIO 25/26 are DAC outputs — non-deterministic until firmware initialises them | Not used for DAC here; clean GPIO with defined boot state |
+| GPIO 34 is input-only — no ESD tolerance; easy to destroy with wiring faults | GPIO 7 used instead; bidirectional with better fault tolerance (protection circuit still recommended) |
 
-Standard PC817-based relay boards are designed for 5V logic. IN pin current-limiting resistors are 1 kΩ. At 3.3V logic: `(3.3V − 1.2V Vf) ÷ 1000Ω = 2.1 mA` through the LED. The PC817 CTR degrades badly below 5 mA — relays may fail to trigger reliably, especially when warm after a long fruiting cycle.
-
-**Fix (choose one):**
-- Replace each IN pin's 1 kΩ resistor with 470 Ω (raises LED current to ~4.5 mA, firmly in spec) — requires SMD rework
-- Source a relay module explicitly labelled "3.3V compatible" / "3.3V trigger" — verify before ordering
-
-Before connecting any mains loads: bench-test every relay from firmware and confirm it **audibly clicks** (see Step 6 — Initial Power-On Test).
-
-### C2 — Boot-state relay glitch on GPIO 16/17 and GPIO 25/26
-
-GPIO 16 and 17 (Ch1 Fogger, Ch2 Tub fan) are connected to UART2 on the DevKit V1 PCB. During boot and firmware flashing, UART2 TX (GPIO 17) briefly goes LOW — with active-LOW relay logic, this fires the tub fan relay at every power-on. GPIO 25/26 (DAC outputs, Ch6 Lights, Ch7 Pump) have non-deterministic state until firmware initialises them.
-
-**The note in Step 2 stating "GPIOs default HIGH at boot" does not apply to GPIO 16, 17, 25, or 26.**
-
-**Fixes:**
-1. Add 10 kΩ pull-up resistors from each relay IN pin to the relay VCC rail — holds all relays OFF before firmware initialises GPIO direction
-2. Add a 3–5 second relay-arm delay at the top of `setup()` before any relay is permitted to fire
-3. **UVC (Ch5) special rule:** firmware must enforce a minimum 5-second boot delay before UVC can be armed — a boot glitch on UVC is a human safety hazard (UV exposure)
-4. For v2 hardware: move Ch1/Ch2 to GPIO 32/33, which have no UART attachment and have safe boot defaults
-
-### C3 — No overvoltage protection on GPIO 34 (ADC water level input)
-
-The DIY 150 Ω shunt produces 3.0V at nominal 20 mA. A malfunctioning transmitter, cable fault, or wiring error can drive current above 20 mA, pushing voltage above the ESP32's **3.6V absolute maximum** on GPIO 34. The ADC pin is not self-protecting — overvoltage destroys it.
-
-**Fix:** Add a 1 kΩ series resistor + 3.3V Zener (or SMBJ3V3A TVS diode) between the shunt output and GPIO 34. Cost: <$0.50. See the updated water level wiring in Step 3.
-
-> **Safe beginner path:** The DFRobot KIT0139 converter board includes this protection internally. Use it and C3 does not apply to you.
-
-### C4 — No GFCI/RCD protection (electrocution risk in wet environment)
-
-This build operates at 80–95% RH with mains-connected loads, including a fogger that contacts standing water. **A 5A fuse does not protect against electrocution.** A fuse trips at 5,000–10,000 mA — 50–100× the lethal threshold. A GFCI/RCD trips at 5–30 mA in under 40 ms.
-
-**In a wet environment, a GFCI/RCD is not optional.**
-
-A GFCI outlet or 30 mA DIN-rail RCD must be the **first device** on the mains feed, before the fuse block, before anything else. This is listed as a required item in the Parts List and as a mandatory first step in the mains wiring section. This is separate from, and in addition to, having a qualified electrician do the line-side wiring.
+The S3 costs the same as the V1 (~$10–15). Classic ESP32 DevKit V1 can still run this firmware with the `esp32dev` PlatformIO environment — the GPIO mapping differs and the pull-ups on relay IN pins matter more.
 
 ---
 
@@ -109,21 +80,25 @@ A GFCI outlet or 30 mA DIN-rail RCD must be the **first device** on the mains fe
 
 | Component | Part | Source | Qty | Est. Cost |
 |-----------|------|--------|-----|-----------|
-| Microcontroller | ESP32 DevKit V1 | [Amazon](https://www.amazon.com/s?k=ESP32+DevKit+V1+38pin) | 1 | ~$10 |
-| Relay module | 8-channel 5V opto-isolated relay | [Amazon](https://www.amazon.com/s?k=8+channel+relay+module+optocoupler+5v) | 1 | ~$10 |
+| Microcontroller | ESP32-S3 DevKitC-1 (38-pin) | [Amazon](https://www.amazon.com/s?k=ESP32-S3+DevKitC-1) / [Adafruit](https://www.adafruit.com/product/5312) | 1 | ~$10–15 |
+| Relay module | 8-channel **3.3V-compatible** opto-isolated relay | [Amazon](https://www.amazon.com/s?k=8+channel+relay+module+3.3V+optocoupler) | 1 | ~$10–12 |
 | CO2 sensor | Sensirion SCD30 | [Adafruit #4867](https://www.adafruit.com/product/4867) | 1 | $58.95 |
-| Temp/RH sensor | Sensirion SHT45 + PTFE membrane | [Adafruit #6174](https://www.adafruit.com/product/6174) | 3 | $40.50 |
+| Temp/RH sensor | Sensirion SHT45 breakout (PTFE filter) | [Adafruit #6174](https://www.adafruit.com/product/6174) | 3 | $40.50 |
 | I2C multiplexer | TCA9548A 8-channel | [Adafruit #2717](https://www.adafruit.com/product/2717) | 1 | $6.95 |
 | Water level sensor | Submersible pressure sensor + converter | [DFRobot KIT0139](https://www.dfrobot.com/product-1863.html) | 1 | ~$44 |
 | Substrate temp | DS18B20 waterproof probe (1m cable) | [Adafruit #381](https://www.adafruit.com/product/381) | 5 | ~$50 |
 | Light sensor | AS7341 11-channel spectral | [Adafruit #4698](https://www.adafruit.com/product/4698) | 1 | ~$12 |
 
+> **Relay module note:** The ESP32-S3 outputs 3.3V logic. Standard PC817-based relay boards are designed for 5V — at 3.3V they pull only ~2.1 mA through the optocoupler LED, which is below the PC817's reliable operating range. Source a module explicitly rated for 3.3V logic (sometimes labelled "3.3V compatible" or "3.3V trigger"). Bench-test every relay click before connecting any mains loads (see Initial Power-On Test).
+
 ### Power
 
 | Component | Spec | Source | Qty | Est. Cost |
 |-----------|------|--------|-----|-----------|
-| 5V PSU | 5V 2A, DIN rail or panel mount | [Amazon](https://www.amazon.com/s?k=5v+2a+power+supply+DIN+rail) | 1 | ~$10 |
-| 12V PSU | 12V 1A, DIN rail or panel mount | [Amazon](https://www.amazon.com/s?k=12v+1a+power+supply+DIN+rail) | 1 | ~$10 |
+| 5V PSU | **Meanwell or Mornsun**, 5V 3A, DIN rail | [DigiKey](https://www.digikey.com/en/products/filter/power-supplies-board-mount/740?s=N4IgTCBcDaIDIBUDKBaAjABjAZgSygEYQBdAXyA) | 1 | ~$20–30 |
+| 12V PSU | 12V 1A, DIN rail | [Amazon](https://www.amazon.com/s?k=12v+1a+power+supply+DIN+rail) | 1 | ~$10 |
+
+> **PSU quality matters:** Four relays switching simultaneously draws several hundred mA in transient spikes. Generic "5V 2A" supplies from Amazon have poor transient response and can dip enough to reset the ESP32-S3 or cause relay chatter. Meanwell HDR-15-5 or Mornsun equivalents are specified here because their transient response is measured and published. Budget accordingly.
 
 ### Enclosure
 
@@ -131,38 +106,44 @@ A GFCI outlet or 30 mA DIN-rail RCD must be the **first device** on the mains fe
 |-----------|------|--------|-----|-----------|
 | IP65 enclosure | Min 250×200×100mm | [Amazon](https://www.amazon.com/s?k=IP65+waterproof+enclosure+250x200mm) | 1 | ~$20–30 |
 | DIN rail (35mm) | Cut to enclosure width | Hardware store | 1 | ~$5 |
-| Cable glands (PG9/PG11/PG16) | For sensor cables, power in, load out | [Amazon](https://www.amazon.com/s?k=PG11+cable+gland+nylon) | assorted | ~$8 |
+| Cable glands (PG9/PG11/PG16) | Sensor cables, power in, load out | [Amazon](https://www.amazon.com/s?k=PG11+cable+gland+nylon) | assorted | ~$8 |
+
+### Safety & Protection (Required)
+
+| Component | Spec | Purpose | Qty | Est. Cost |
+|-----------|------|---------|-----|-----------|
+| **GFCI outlet or DIN-rail RCD** | **30 mA trip** | Electrocution protection — first device on mains feed | **1** | **~$15–40** |
+| Blade fuse block | DIN rail, 4–8 position | Per-load overcurrent protection (2–3A per channel) | 1 | ~$12–15 |
+| 1kΩ resistor | ¼W | Series protection, GPIO 7 ADC input | 1 | <$1 |
+| 3.3V Zener or SMBJ3V3A TVS diode | 3.3V, 500mW+ | Overvoltage clamp on ADC input | 1 | <$1 |
+| 100kΩ resistor | ¼W | GPIO 7 pull-down (prevents float noise) | 1 | <$1 |
+
+> **GFCI/RCD:** This build operates at 80–95% RH with mains-connected loads including a fogger that contacts standing water. A fuse trips at thousands of milliamps — well above the lethal threshold. A GFCI/RCD trips at 5–30 mA in under 40 ms. **In a wet environment, a GFCI/RCD is not optional.** Mount it as the first device the mains feed reaches inside the enclosure, before everything else.
 
 ### Panel & Wiring
 
-| Component | Spec | Source | Qty | Est. Cost |
-|-----------|------|--------|-----|-----------|
-| **GFCI outlet or DIN rail RCD** | **30 mA trip — REQUIRED (see C4)** | [Amazon](https://www.amazon.com/s?k=GFCI+outlet+20A) or [Automation Direct](https://www.automationdirect.com/adc/shopping/catalog/circuit_protection/ground_fault_circuit_interrupters) | **1** | **~$15–40** |
-| Blade fuse block | DIN rail, 4–8 position, 2–3A fuses per load | [Amazon](https://www.amazon.com/s?k=DIN+rail+blade+fuse+block+8+position) | 1 | ~$12–15 |
-| Panel switches | DPDT toggle (master) + SPST toggle ×4 | [Amazon](https://www.amazon.com/s?k=DPDT+toggle+switch+panel+mount) | 5 | ~$12 |
-| Wire | 22 AWG solid/stranded (low voltage); 14 AWG (mains) | Hardware store | — | ~$10 |
-| Wago 221 connectors | Push-in for mains terminals (safer than bare screws) | [Amazon](https://www.amazon.com/s?k=Wago+221+lever+connectors) | 1 pack | ~$10 |
-| 2.2kΩ resistor | 1-Wire pull-up (replaces 4.7kΩ — see S3) | Electronics supplier | 1 | <$1 |
-| 10kΩ resistor | Relay IN pin pull-ups (×8, one per relay channel — see C2) | Electronics supplier | 8 | <$1 |
-| 150Ω resistor | Water level 4-20mA shunt (DIY path only) | Electronics supplier | 1 | <$1 |
-| 1kΩ resistor | Series resistor, GPIO 34 ADC protection (see C3) | Electronics supplier | 1 | <$1 |
-| 3.3V Zener or SMBJ3V3A TVS | Clamp diode, GPIO 34 ADC protection (see C3) | Electronics supplier | 1 | <$1 |
-| 100kΩ resistor | GPIO 34 pull-down to GND (prevents float noise) | Electronics supplier | 1 | <$1 |
-| 100nF ceramic capacitor | 1-Wire bus decoupling at pull-up junction | Electronics supplier | 1 | <$1 |
-| Ferrule crimp kit | For clean screw terminal ends | [Amazon](https://www.amazon.com/s?k=ferrule+crimp+kit+22AWG) | 1 | ~$10 |
-| Terminal block strip | DIN rail mounted, 10-position | [Amazon](https://www.amazon.com/s?k=DIN+rail+terminal+block+10+position) | 2 | ~$8 |
-| Fuse holder + fuses | Panel mount, 5A (mains feed input) | [Amazon](https://www.amazon.com/s?k=panel+mount+fuse+holder+5A) | 1 | ~$5 |
+| Component | Spec | Qty | Est. Cost |
+|-----------|------|-----|-----------|
+| Panel switches | DPDT toggle (master) + SPST toggle ×4 | 5 | ~$12 |
+| 10kΩ resistor | Relay IN pin pull-ups, one per channel | 8 | <$1 |
+| 2.2kΩ resistor | 1-Wire pull-up | 1 | <$1 |
+| 100nF ceramic capacitor | 1-Wire bus decoupling | 1 | <$1 |
+| Wire | 22 AWG (low voltage); 14 AWG (mains) | — | ~$10 |
+| Wago 221 connectors | Push-in mains terminals | 1 pack | ~$10 |
+| Ferrule crimp kit | Clean screw terminal ends (22 AWG + 14 AWG) | 1 | ~$10 |
+| Terminal block strip | DIN rail, 10-position | 2 | ~$8 |
+| Fuse holder + 5A fuse | Panel mount, mains feed input | 1 | ~$5 |
 
 ### Misc
 
 | Component | Notes | Est. Cost |
 |-----------|-------|-----------|
-| Standoffs (M3, 10mm) | For mounting ESP32 + relay board to DIN rail or base | ~$3 |
+| M3 standoffs (10mm) | Mount ESP32-S3 + relay board | ~$3 |
 | Zip ties / velcro | Cable management | ~$3 |
 | Heat shrink tubing | Insulate splices and solder joints | ~$3 |
-| Label maker tape or marker | Label every wire at both ends | ~$2 |
+| Label maker tape | Label every wire at both ends | ~$2 |
 
-**Base build total: ~$310–340** (includes GFCI/RCD and per-load fuse block — both required)
+**Base build total: ~$320–360** (includes GFCI/RCD and per-load fuse block — both required)
 
 ---
 
@@ -172,7 +153,7 @@ A GFCI outlet or 30 mA DIN-rail RCD must be the **first device** on the mains fe
 
 | Component | Part | Source | Est. Cost |
 |-----------|------|--------|-----------|
-| 12V DC submersible pump | 3–5 L/min, compatible with tap water | [Amazon](https://www.amazon.com/s?k=12v+DC+submersible+water+pump+aquarium) | ~$10 |
+| 12V DC submersible pump | 3–5 L/min, food-safe | [Amazon](https://www.amazon.com/s?k=12v+DC+submersible+water+pump+aquarium) | ~$10 |
 | Food-safe silicone tubing | 3/8" or 1/2" ID | Hardware/aquarium store | ~$5 |
 | Check valve | Prevents backflow into pump | [Amazon](https://www.amazon.com/s?k=aquarium+check+valve+3%2F8+inch) | ~$5 |
 | **Add-on total** | | | **~$20** |
@@ -202,7 +183,7 @@ Use an IP65 box of at least 250×200×100mm. Divide it into two logical zones:
 │  MAINS ZONE (left 1/3)         │  LOW VOLTAGE ZONE (right)  │
 │                                 │                             │
 │  ┌──────────────┐               │  ┌─────────────────────┐   │
-│  │  5V PSU      │               │  │  ESP32 DevKit V1    │   │
+│  │  5V PSU      │               │  │  ESP32-S3 DevKitC-1 │   │
 │  │  12V PSU     │               │  └─────────────────────┘   │
 │  └──────────────┘               │                             │
 │                                 │  ┌─────────────────────┐   │
@@ -256,7 +237,7 @@ Mains In (fused 5A)
     └── PE (Earth) ── 5V PSU PE ─────── 12V PSU PE ─── Enclosure chassis
 
 5V PSU out:
-    + ──── ESP32 VIN (5V) and Relay VCC/JD-VCC
+    + ──── ESP32-S3 5V pin and Relay VCC/JD-VCC
     − ──── Common GND rail
 
 12V PSU out:
@@ -264,7 +245,7 @@ Mains In (fused 5A)
     − ──── Common GND rail (shared with 5V −)
 ```
 
-> **Important:** Share a common negative/GND between both PSUs. This ensures the water level sensor's 4-20mA return current has a proper path and the ESP32 ADC reads correctly.
+> **Important:** Share a common negative/GND between both PSUs. This ensures the water level sensor's 4-20mA return current has a proper path and the ESP32-S3 ADC reads correctly.
 
 ---
 
@@ -276,41 +257,43 @@ Most 8-channel relay boards have a 3-pin header: **VCC**, **JD-VCC**, and **GND*
 
 ```
 Relay board:
-  VCC     ──── 3.3V from ESP32 (3V3 pin)   ← optocoupler logic side
-  JD-VCC  ──── 5V from PSU                  ← relay coil side
+  VCC     ──── 3.3V from ESP32-S3 (3V3 pin)   ← optocoupler logic side
+  JD-VCC  ──── 5V from PSU                      ← relay coil side
   GND     ──── Common GND
 ```
 
-This creates true electrical isolation between the ESP32 signal ground and the relay coil circuit, protecting the ESP32 if a relay coil spikes.
+This creates true electrical isolation between the ESP32-S3 signal ground and the relay coil circuit, protecting the ESP32-S3 if a relay coil spikes.
 
-> **3.3V compatibility:** Confirm your relay module is rated for 3.3V logic, or modify IN pin resistors per C1 above. Bench-test before connecting any loads.
+> **Confirm 3.3V compatibility:** Even with the VCC/JD-VCC jumper removed, the optocoupler LED still runs from the 3.3V signal. Verify your relay module is explicitly rated for 3.3V logic before ordering. Bench-test every relay click before connecting any loads (see Initial Power-On Test).
 
-#### Pull-up resistors on relay IN pins (required — see C2)
+#### Pull-up resistors on relay IN pins (belt-and-suspenders safety)
 
-Add a 10 kΩ pull-up resistor from each relay IN pin to the relay VCC rail (3.3V). This holds every relay OFF during boot before the ESP32 initialises its GPIO pins, preventing boot-glitch relay fires:
+Add a 10 kΩ pull-up resistor from each relay IN pin to the relay VCC rail (3.3V). This holds every relay firmly OFF before the ESP32-S3 initialises its GPIO pins — providing a hardware backstop independent of firmware:
 
 ```
 Relay VCC (3.3V) ─── 10kΩ ─── Relay IN1   (repeat for IN2 through IN8)
 ```
 
-Eight resistors are needed — one per channel. They can be soldered to the relay board's IN pin headers or placed on a small piece of stripboard.
+Eight resistors total. They can be soldered to the relay board's IN pin headers or placed on a small piece of stripboard.
 
-#### Signal connections (ESP32 → Relay)
+#### Signal connections (ESP32-S3 → Relay)
 
 These run through the **failsafe DPDT switch** in normal operation (see Step 4 before soldering these).
 
-| Relay Channel | Load | ESP32 GPIO | Boot safety note |
-|---------------|------|------------|-----------------|
-| IN1 | Fogger | GPIO 16 | ⚠️ GPIO 16 is UART2 RX — use pull-up |
-| IN2 | Tub fan | GPIO 17 | ⚠️ GPIO 17 is UART2 TX — glitches LOW at boot; use pull-up |
+| Relay Channel | Load | ESP32-S3 GPIO | Notes |
+|---------------|------|----------------|-------|
+| IN1 | Fogger | GPIO 32 | Safe boot state; no UART conflict |
+| IN2 | Tub fan | GPIO 33 | Safe boot state; no UART conflict |
 | IN3 | Exhaust fan | GPIO 18 | Safe default HIGH |
 | IN4 | Intake fan | GPIO 19 | Safe default HIGH |
-| IN5 | UVC lights | GPIO 23 | Safe default HIGH — enforce 5s boot delay in firmware |
-| IN6 | Grow lights | GPIO 25 | ⚠️ DAC1 — non-deterministic at boot; use pull-up |
-| IN7 | Top-off pump (optional) | GPIO 26 | ⚠️ DAC2 — non-deterministic at boot; use pull-up |
+| IN5 | UVC lights | GPIO 23 | Safe default HIGH; firmware enforces 10s boot guard |
+| IN6 | Grow lights | GPIO 25 | Safe default HIGH |
+| IN7 | Top-off pump (optional) | GPIO 26 | Safe default HIGH |
 | IN8 | Spare | GPIO 27 | Safe default HIGH |
 
-> **Active LOW:** Relay modules trigger when the IN pin is pulled LOW. Pull-up resistors hold all IN pins HIGH (relays OFF) until the ESP32 actively drives them. Add a 3–5 second relay-arm delay in firmware `setup()` as an additional safety margin before any relay is permitted to fire.
+> **Active LOW:** Relay modules trigger when the IN pin is pulled LOW. Pull-up resistors hold all IN pins HIGH (relays OFF) until the ESP32-S3 actively drives them. The firmware adds a 5-second relay-arm delay in `setup()` as an additional safety margin — no relay can fire in the first 5 seconds after boot regardless of GPIO state.
+
+> **UVC note:** The firmware enforces a 10-second boot guard on the UVC channel specifically (5s general + 5s additional). A boot glitch that fires UV lights is a human safety hazard. Never wire UVC to a channel without this protection in firmware.
 
 ---
 
@@ -318,34 +301,34 @@ These run through the **failsafe DPDT switch** in normal operation (see Step 4 b
 
 #### I2C bus
 
-All I2C sensors share two wires: SDA (GPIO 21) and SCL (GPIO 22), plus 3.3V and GND. Run a 4-wire bus from the ESP32 to each breakout board.
+All I2C sensors share two wires: SDA (GPIO 21) and SCL (GPIO 22), plus 3.3V and GND. Run a 4-wire bus from the ESP32-S3 to each breakout board.
 
-**Power all I2C breakouts from the ESP32's 3V3 pin, not from the 5V PSU rail.** All sensors in this build are 3.3V native. Adafruit breakouts accept 5V on VIN via an on-board regulator, but some of their I2C pull-up resistors reference VIN (5V) rather than the regulated 3.3V rail — if that is the case, SDA/SCL lines can float to 5V, which will damage the ESP32's GPIO pins and the AS7341.
+**Power all I2C breakouts from the ESP32-S3's 3V3 pin, not from the 5V PSU rail.** All sensors in this build are 3.3V native. Adafruit breakouts accept 5V on VIN via an on-board regulator, but some of their I2C pull-up resistors reference VIN rather than the regulated 3.3V rail — if that is the case, SDA/SCL lines can float to 5V, which will damage the ESP32-S3's GPIO pins and the AS7341.
 
 > Before first power-on, check the schematic of each Adafruit breakout you are using and confirm that the on-board I2C pull-up resistors reference the 3.3V regulated rail, not VIN.
-> If you use a **Waveshare AS7341** board (an alternative to the Adafruit version), add an I2C level shifter — the Waveshare board does not include on-board level shifting.
+> If you use a **Waveshare AS7341** board (alternative to the Adafruit version), add an I2C level shifter — the Waveshare board does not include on-board level shifting.
 
 ```
-ESP32 GPIO 21 (SDA) ─────┬── TCA9548A SDA
-ESP32 GPIO 22 (SCL) ─────┼── TCA9548A SCL
-                          ├── SCD30 SDA/SCL (direct on bus — I2C addr 0x61)
-                          └── AS7341 SDA/SCL (direct on bus — I2C addr 0x39)
-ESP32 3V3 ───────────────┬── TCA9548A VIN  (3.3V — do not connect to 5V rail)
-                          ├── SCD30 VIN
-                          └── AS7341 VIN (3.3V only — not 5V tolerant)
-ESP32 GND ───────────────── all sensor GND
+ESP32-S3 GPIO 21 (SDA) ───┬── TCA9548A SDA
+ESP32-S3 GPIO 22 (SCL) ───┼── TCA9548A SCL
+                           ├── SCD30 SDA/SCL (direct on bus — I2C addr 0x61)
+                           └── AS7341 SDA/SCL (direct on bus — I2C addr 0x39)
+ESP32-S3 3V3 ─────────────┬── TCA9548A VIN  (3.3V — do not connect to 5V rail)
+                           ├── SCD30 VIN
+                           └── AS7341 VIN (3.3V only — not 5V tolerant)
+ESP32-S3 GND ──────────────── all sensor GND
 ```
 
-> **SCD30 SEL pin:** Tie LOW (connect to GND) to select I2C mode. On the Adafruit breakout this is handled by a default solder jumper. On a bare SCD30 module, you must wire the SEL pin explicitly.
+> **SCD30 SEL pin:** Tie LOW (connect to GND) to select I2C mode. On the Adafruit breakout this is handled by a default solder jumper. On a bare SCD30 module, wire the SEL pin explicitly.
 
 **SHT45 sensors via TCA9548A multiplexer:**
 
-All three SHT45 sensors share I2C address 0x44. The TCA9548A puts each on its own bus channel so they can coexist:
+All three SHT45 sensors share I2C address 0x44. The TCA9548A puts each on its own bus channel:
 
 ```
-TCA9548A channel 0 ── SHT45 #1 (top shelf) — SDA/SCL/3V3/GND
-TCA9548A channel 1 ── SHT45 #2 (mid shelf) — SDA/SCL/3V3/GND
-TCA9548A channel 2 ── SHT45 #3 (bottom)    — SDA/SCL/3V3/GND
+TCA9548A channel 0 ── SHT45 #1 (top shelf)    — SDA/SCL/3V3/GND
+TCA9548A channel 1 ── SHT45 #2 (middle shelf) — SDA/SCL/3V3/GND
+TCA9548A channel 2 ── SHT45 #3 (bottom shelf) — SDA/SCL/3V3/GND
 ```
 
 TCA9548A I2C address: **0x70** (default, A0/A1/A2 all LOW).
@@ -359,8 +342,8 @@ TCA9548A I2C address: **0x70** (default, A0/A1/A2 all LOW).
 ```
                         100nF ceramic
                  ┌──────┤├──────┐
-ESP32 GPIO 4 ─────── 2.2kΩ ──── 3.3V    ← pull-up resistor
-     │                                     (100nF bypasses cable ringing)
+ESP32-S3 GPIO 4 ─┴─── 2.2kΩ ──── 3.3V    ← pull-up resistor
+     │                                      (100nF suppresses cable ringing)
      └── DS18B20 data pin (yellow wire)
              ├── Probe 1 (shelf 1)
              ├── Probe 2 (shelf 2)
@@ -372,9 +355,9 @@ DS18B20 power (red): 3.3V
 DS18B20 ground (black): GND
 ```
 
-All 5 probes connect to the **same three wires** — data, power, and GND — daisy-chained along the tent. Each probe has a unique factory address so the firmware reads them individually. Label each probe with its shelf number at install time using a label maker.
+All 5 probes connect to the **same three wires** — data, power, and GND — daisy-chained along the tent. Each probe has a unique factory address so the firmware reads them individually. Label each probe with its shelf number at install time.
 
-**2.2kΩ pull-up:** Place this resistor between GPIO 4 and 3.3V. Only one is needed for the whole chain. The DS18B20 datasheet recommends 2.2 kΩ for multi-sensor chains — a 4.7 kΩ pull-up gives marginal RC rise time with 5 probes on 5–8 m of cable and can cause intermittent dropout. Use 1.0 kΩ minimum if dropout occurs on long, moisture-aged cables.
+**2.2kΩ pull-up:** Place between GPIO 4 and 3.3V. Only one is needed for the whole chain. The DS18B20 datasheet recommends 2.2 kΩ for multi-sensor chains — a 4.7 kΩ pull-up gives marginal RC rise time with 5 probes on 5–8 m of cable and can cause intermittent dropout.
 
 **100nF decoupling capacitor:** Place a 100nF ceramic capacitor between the pull-up junction (where the 2.2kΩ connects to the data line) and GND. This suppresses cable ringing that can corrupt 1-Wire transactions.
 
@@ -382,40 +365,29 @@ All 5 probes connect to the **same three wires** — data, power, and GND — da
 
 #### Water level sensor (4-20mA analog)
 
-The DFRobot KIT0139 includes the sensor and a Gravity 4-20mA converter board. Wire the converter board output to the ESP32 ADC:
+The DFRobot KIT0139 includes the sensor and a Gravity 4-20mA converter board. Wire the converter board output to the ESP32-S3 ADC. The KIT0139 Gravity board includes overvoltage protection internally — use it.
 
 ```
-12V PSU + ──────── Sensor supply (brown wire, typically)
-12V PSU − / GND ── Sensor return (blue wire, typically)
+12V PSU + ──────── KIT0139 sensor supply
+12V PSU − / GND ── KIT0139 return / GND
                         │
-               Gravity converter board
+               Gravity converter board (internal protection)
                         │
-               0–3.3V output ── ESP32 GPIO 34 (ADC input)
-               GND            ── ESP32 GND
-               3.3V VCC       ── ESP32 3V3
+                0–3.3V output ─── 1kΩ ─── GPIO 7 (ADC1_CH6)
+                                            │
+                                       3.3V Zener            ← belt-and-suspenders clamp
+                                     (anode GND,               even with KIT0139
+                                      cathode GPIO 7)          internal protection
+                                            │
+                                       100kΩ to GND           ← prevents ADC float
+                                                                  when sensor unplugged
+                GND ────────────── ESP32-S3 GND
+                3.3V VCC ────────── ESP32-S3 3V3
 ```
 
-**Without the DFRobot converter board (DIY approach — include ADC protection per C3):**
-```
-12V+ ─── Sensor supply ─── Sensor ─── 150Ω shunt ─── 12V−/GND
-                                           │
-                                         1kΩ            ← series protection resistor
-                                           │
-                                    ┌── GPIO 34         ← ADC input
-                                    │
-                               3.3V Zener               ← overvoltage clamp
-                             (or SMBJ3V3A TVS)          (anode to GND, cathode to GPIO 34)
-                                    │
-                                   GND
-                              also: 100kΩ pull-down
-                              from GPIO 34 to GND
-                              (prevents float noise when
-                               sensor is disconnected)
-```
+> **Why the external 1kΩ + Zener even with KIT0139?** The KIT0139 protects against sensor faults. The Zener on the GPIO side protects against wiring errors — e.g. accidentally connecting the 12V supply line to the signal output wire during installation. The ESP32-S3 GPIO 7 absolute maximum is 3.6V. A 3.3V Zener costs under $0.50 and is good insurance.
 
-Voltage across shunt at 4–20 mA: 0.6V–3.0V (nominal). The 1 kΩ series resistor + Zener clamps any fault condition to 3.3V before it reaches the GPIO pin, protecting the ESP32's 3.6V absolute maximum ADC input rating.
-
-> **ADC calibration:** The ESP32 ADC has significant non-linearity without calibration (5–10% INL). On a 30–35 cm reservoir, this is 1.5–3.5 cm of error — enough to miss refill thresholds. Use `esp_adc_cal_characterize()` from ESP-IDF, 32+ sample rolling average, and 10% hysteresis on pump thresholds. For sub-mm accuracy, an ADS1115 16-bit I2C ADC (~$3) on the same I2C bus is a clean upgrade.
+> **ADC non-linearity:** The ESP32-S3 ADC has meaningful non-linearity without calibration. Use `esp_adc_cal_characterize()` from ESP-IDF, 32+ sample rolling average, and 10% hysteresis on pump thresholds. The firmware implements all three. For sub-mm accuracy, an ADS1115 16-bit I2C ADC (~$3) on the same I2C bus is a clean upgrade.
 
 Drop the sensor probe to the bottom of the 19-gallon reservoir. Route the cable through a PG9 cable gland in the enclosure.
 
@@ -423,24 +395,25 @@ Drop the sensor probe to the bottom of the 19-gallon reservoir. Route the cable 
 
 ### Step 4 — Failsafe Panel Switches
 
-The failsafe allows manual load control when the ESP32 is dead, rebooting, or on a bad WiFi cycle. Wire it using a DPDT master toggle plus 4 SPST group switches.
+The failsafe allows manual load control when the ESP32-S3 is dead, rebooting, or in a bad state. Wire it using a DPDT master toggle plus 4 SPST group switches.
 
 #### How it works — wiring topology
 
-A single DPDT switch has two poles. It cannot individually switch all 8 relay IN signal lines. What the DPDT actually switches is the **common reference wire** that the SPST group switches use to pull relay IN pins LOW.
+A single DPDT switch cannot individually control all 8 relay IN signal lines. What the DPDT actually switches is the **common reference wire** that the SPST group switches use to pull relay IN pins LOW.
 
 - **AUTO position:** The manual SPST switches' common wire is connected to VCC (3.3V). Closing a manual switch has no effect — it can only pull an IN pin toward 3.3V, which is already its pulled-up state.
-- **MANUAL position:** The ESP32 is powered down or its GPIOs are in a safe state (HIGH or high-Z, held by pull-up resistors). The DPDT connects the manual SPST switches' common wire to GND. Closing a manual switch pulls the corresponding relay IN pins LOW, firing those relays.
+- **MANUAL position:** The DPDT connects the manual SPST switches' common wire to GND. The ESP32-S3 should have its relay GPIOs released to high-Z (the firmware does this when it detects MANUAL mode). Closing a manual switch pulls the corresponding relay IN pins LOW, firing those relays.
 
 ```
                             ┌── Pole A: manual switch common wire
 DPDT switch ────────────────┤   AUTO  throw → VCC (3.3V) — manual switches inactive
                             │   MANUAL throw → GND       — manual switches active
                             │
-                            └── Pole B: optional LED or indicator
+                            └── Pole B: optional indicator LED
 
-ESP32 GPIOs are always wired to relay IN pins.
-In MANUAL, the ESP32 should be off or GPIOs held HIGH by pull-up resistors.
+ESP32-S3 GPIOs are always wired to relay IN pins.
+In MANUAL, firmware releases GPIOs to INPUT (high-Z); pull-ups hold relays OFF
+until a manual switch is closed.
 ```
 
 ```
@@ -456,9 +429,7 @@ In MANUAL mode (DPDT common = GND):
   Opening it releases → pull-up resistors hold IN1 + IN2 HIGH → relays off
 ```
 
-**Why this is safe:** The 10 kΩ pull-up resistors on each IN pin (see Step 2) ensure that in the absence of an active LOW signal from either the ESP32 or a closed manual switch, all relays default to OFF. When the ESP32 is dead or rebooting, the pull-ups take over and hold everything off until you manually override.
-
-**Important:** This failsafe design is most effective when the ESP32 is off or in reset. If the ESP32 is running and driving a relay LOW, and you flip to MANUAL mode, the ESP32 will still hold that relay on until firmware releases the GPIO. Design your firmware to respect a dedicated "MANUAL mode" GPIO input that releases all relay outputs to HIGH when detected.
+**Why this is safe:** The 10 kΩ pull-up resistors on each IN pin (see Step 2) ensure that in the absence of an active LOW signal from either the ESP32-S3 or a closed manual switch, all relays default to OFF. When the ESP32-S3 is dead or rebooting, the pull-ups hold everything off until you manually override.
 
 Mount all 5 switches on the enclosure lid face, clearly labeled.
 
@@ -468,7 +439,7 @@ Mount all 5 switches on the enclosure lid face, clearly labeled.
 
 > ⚠️ Work in the mains zone only. Double-check the enclosure is unplugged.
 
-#### 5a — GFCI/RCD (mandatory first device — see C4)
+#### 5a — GFCI/RCD (mandatory first device)
 
 The GFCI outlet or DIN-rail RCD must be **the first device on the mains feed** when it enters the enclosure. Wire it before the fuse holder and before the PSUs:
 
@@ -496,25 +467,22 @@ Size fuses at ~125% of normal load current per channel, rounded up to the next s
 
 #### 5c — Load wiring
 
-Each load (fogger, fans, UVC, lights) uses the relay's **Normally Open (NO)** and **Common (COM)** contacts. The relay switches the **Hot (Live)** wire only. Neutral runs straight through to the load.
+Each load uses the relay's **Normally Open (NO)** and **Common (COM)** contacts. The relay switches the **Hot (Live)** wire only. Neutral runs straight through to the load.
 
 ```
 For each load:
 
   Mains L (Hot) ──── Relay COM ──── per-load fuse ──── Load Live wire
-  Relay NO ──────── (not used for NO contact loads — see above)
   Mains N (Neutral) ─ straight through ──── Load Neutral wire
   Mains PE (Earth) ── Load ground (if load is earthed)
 ```
 
-**Use Wago 221 lever connectors** for all mains connections. They are safer than bare screw terminals, can be opened for inspection, and are UL-listed. Do not use wire nuts in an enclosure.
+**Use Wago 221 lever connectors** for all mains connections. Do not use wire nuts in an enclosure.
 
 **Wire gauge:**
 - Mains in to GFCI, fuse block, and PSUs: 14 AWG
 - Load leads (fans, fogger): 18 AWG minimum; 16 AWG preferred
 - Terminate all wire ends with crimped ferrules before inserting into any terminal
-
-**Main fuse:** Fit a 5A fuse in the mains feed immediately after the GFCI/RCD. This protects the input cable and wiring before the per-load fuse block.
 
 ---
 
@@ -524,19 +492,19 @@ Before first power-on:
 
 **Low voltage side:**
 - [ ] VCC/JD-VCC jumper removed from relay board
-- [ ] Relay module confirmed 3.3V compatible (or IN pin resistors modified to 470Ω per C1)
-- [ ] 10 kΩ pull-up resistors fitted on all 8 relay IN pins
-- [ ] All I2C sensors powered from ESP32 3V3 pin (not 5V rail)
-- [ ] I2C breakout pull-up resistors confirmed to reference 3.3V rail (not VIN)
-- [ ] 2.2kΩ pull-up resistor on 1-Wire line (not 4.7kΩ)
+- [ ] Relay module confirmed 3.3V compatible — bench-test required before mains loads
+- [ ] 10 kΩ pull-up resistors fitted on all 8 relay IN pins (to relay VCC rail)
+- [ ] All I2C sensors powered from ESP32-S3 3V3 pin (not 5V rail)
+- [ ] I2C breakout pull-up resistors confirmed to reference 3.3V regulated rail (not VIN)
+- [ ] 2.2kΩ pull-up on 1-Wire line (GPIO 4)
 - [ ] 100nF ceramic cap at 1-Wire pull-up junction to GND
-- [ ] Water level sensor output: 1kΩ series + Zener/TVS clamp fitted before GPIO 34 (DIY path) or KIT0139 board used (protected path)
-- [ ] 100kΩ pull-down resistor on GPIO 34 to GND
+- [ ] Water level sensor output: 1kΩ series + Zener/TVS clamp fitted before GPIO 7
+- [ ] 100kΩ pull-down on GPIO 7 to GND
 - [ ] All sensor GNDs tied to common GND rail
 - [ ] 5V PSU − and 12V PSU − both tied to common GND
 
 **Mains side:**
-- [ ] GFCI/RCD fitted and tested (Test button trips; Reset button restores) — **first device on mains feed**
+- [ ] GFCI/RCD fitted and tested (Test button trips; Reset restores) — **first device on mains feed**
 - [ ] All mains connections terminated with ferrules
 - [ ] Wago connectors fully seated (lever closed)
 - [ ] Main fuse fitted (5A) downstream of GFCI/RCD
@@ -557,17 +525,17 @@ Before first power-on:
 | GPIO | Function | Notes |
 |------|----------|-------|
 | 4 | 1-Wire (DS18B20 ×5) | 2.2kΩ pull-up to 3.3V; 100nF decoupling cap at junction |
-| 16 | Relay Ch1 — Fogger | Active LOW; UART2 RX — add 10kΩ pull-up to relay VCC |
-| 17 | Relay Ch2 — Tub fan | Active LOW; UART2 TX — glitches LOW at boot; add 10kΩ pull-up |
-| 18 | Relay Ch3 — Exhaust fan | Active LOW; safe default HIGH |
-| 19 | Relay Ch4 — Intake fan | Active LOW; safe default HIGH |
+| 7 | ADC — Water level (ADC1_CH6) | 1kΩ series + 3.3V Zener/TVS clamp; 100kΩ pull-down to GND |
+| 18 | Relay Ch3 — Exhaust fan | Active LOW; safe boot state |
+| 19 | Relay Ch4 — Intake fan | Active LOW; safe boot state |
 | 21 | I2C SDA | All I2C sensors |
 | 22 | I2C SCL | All I2C sensors |
-| 23 | Relay Ch5 — UVC lights | Active LOW; enforce 5s boot delay before arming |
-| 25 | Relay Ch6 — Grow lights | Active LOW; DAC1 output — non-deterministic at boot; add 10kΩ pull-up |
-| 26 | Relay Ch7 — Top-off pump (opt.) | Active LOW; DAC2 output — non-deterministic at boot; add 10kΩ pull-up |
-| 27 | Relay Ch8 — Spare | Active LOW; safe default HIGH |
-| 34 | ADC — Water level sensor | Input-only; 1kΩ series + 3.3V Zener/TVS protection required; 100kΩ pull-down to GND |
+| 23 | Relay Ch5 — UVC lights | Active LOW; firmware enforces 10s boot guard (5s general + 5s additional) |
+| 25 | Relay Ch6 — Grow lights | Active LOW; safe boot state |
+| 26 | Relay Ch7 — Top-off pump (opt.) | Active LOW; safe boot state |
+| 27 | Relay Ch8 — Spare | Active LOW; safe boot state |
+| 32 | Relay Ch1 — Fogger | Active LOW; no UART/DAC conflict; safe boot state |
+| 33 | Relay Ch2 — Tub fan | Active LOW; no UART/DAC conflict; safe boot state |
 
 **I2C device addresses:**
 
@@ -582,22 +550,20 @@ Before first power-on:
 
 ## Initial Power-On Test
 
-Do this before connecting any loads:
+Do this before connecting any mains loads:
 
 1. **Unplug all mains load cables** from the relay output terminals
 2. Power on
 3. Open a serial monitor at 115200 baud
-4. **Relay boot-state check:** Immediately after power-on, before firmware runs, verify that no relay clicks. Any relay that fires during boot indicates a pull-up or GPIO assignment problem — do not proceed until resolved (see C2)
-5. **Relay compatibility test:** Manually trigger each relay from the serial console or test firmware. Confirm every relay **audibly clicks** and its indicator LED illuminates. If any relay fails to click (coil hums or no response), you have a 3.3V logic incompatibility — see C1 before proceeding
-6. Verify each I2C sensor is detected (SCD30, TCA9548A, 3× SHT45, AS7341)
-7. Verify DS18B20 addresses are found on 1-Wire bus (should see 5 unique addresses)
-8. Verify water level ADC reads a value in a reasonable range; confirm no ADC pin overvoltage (measure voltage at GPIO 34 pin — should be ≤3.3V)
-9. Flip the MASTER switch to MANUAL, test each group switch — confirm the corresponding relay fires, and confirm other relays do not fire
-10. **GFCI test:** With a GFCI outlet, press the Test button — power should cut. Press Reset to restore. Do not skip this step.
+4. **Relay boot-state check:** Immediately after power-on, before firmware runs, verify that **no relay clicks**. Any relay that fires during boot indicates a pull-up or GPIO problem — do not proceed until resolved
+5. **Relay compatibility test:** Wait 10 seconds for the firmware's boot guard to expire, then manually trigger each relay from the serial console or web UI. Confirm every relay **audibly clicks** and its indicator LED illuminates. If any relay fails to click (coil hums or no response), you have a 3.3V logic incompatibility with your specific relay module — source a different module before proceeding
+6. Verify each I2C sensor is detected (SCD30 at 0x61, TCA9548A at 0x70, 3× SHT45 via mux, AS7341 at 0x39)
+7. Verify 5 DS18B20 addresses appear on the 1-Wire bus
+8. Verify water level ADC reads a plausible value; measure voltage at GPIO 7 — should be ≤3.3V under all sensor conditions
+9. Flip the MASTER switch to MANUAL, test each group switch — confirm the correct relay fires; confirm other relays stay off
+10. **GFCI test:** Press the Test button — power should cut. Press Reset to restore. Do not skip this step.
 
 Only after all sensors report, all relays confirm, and GFCI is tested: reconnect loads and test under power.
-
-> **Firmware safety requirement before live use:** Ensure your `setup()` function includes a 3–5 second delay before enabling any relay control, and a minimum 5-second guard on the UVC channel before it can first fire.
 
 ---
 
@@ -615,32 +581,11 @@ Only after all sensors report, all relays confirm, and GFCI is tested: reconnect
 
 ---
 
-## Platform Notes and Known Limitations
-
-### ESP32 DevKit V1 — CH340 moisture risk
-
-The DevKit V1 carries the USB-to-UART bridge chip (CH340 or CP2102) and micro-USB port on the carrier PCB, exposed inside the enclosure. In a sealed box with 80–95% RH ambient, these metal contacts and chips oxidize over months, potentially corrupting USB connections. The WROOM-32 module itself is more durable.
-
-**Mitigations:**
-- Flash firmware and test everything on the bench before sealing the enclosure
-- Set up OTA (over-the-air) firmware updates for all subsequent flashing — do not repeatedly open the enclosure to plug in USB
-- If building fresh today, consider the **ESP32-S3** as the starting platform (see below)
-
-### ESP32-S3 as a better starting point for new builds
-
-The ESP32-S3 resolves several issues in this guide:
-- **Native USB** — no CH340/CP2102 chip; USB-C directly on the chip. No oxidation-prone UART bridge
-- **No GPIO 16/17 UART2 issue** — GPIO mapping is different; UART pins do not overlap with relay assignments in the same way
-- **Better ADC calibration support** — ESP-IDF ADC calibration API has better characterisation support on the S3
-- Same price as the DevKit V1 (~$10)
-
-If you are starting a fresh build, the ESP32-S3 DevKitC-1 is the recommended platform. GPIO mapping in this guide will need minor adjustment.
-
-### WiFi/OTA security note
+## Security Note
 
 The web dashboard must **not** be exposed outside your local network. A relay controller accessible from the internet is a fire and safety risk.
 - Use WPA2 on your local WiFi; do not set up port forwarding to this device
-- If implementing OTA firmware updates, use HTTPS/TLS — do not accept unsigned firmware over plaintext HTTP
+- For OTA firmware updates, use the built-in ElegantOTA interface at `http://martha.local/update` — this runs only on your local network
 
 ---
 
@@ -652,6 +597,7 @@ See [diy-controller-hardware-reference.md](diy-controller-hardware-reference.md)
 - CO2: **SCD30** over SCD41 (photoacoustic is sensitive to fan vibration) and MH-Z19x (no reference channel, drifts)
 - Temp/RH: **SHT45 + PTFE** over SHT3x series (SHT45 has on-chip heater that recovers from high-RH creep drift; SHT3x doesn't)
 - Water level: **Submersible pressure sensor** over ultrasonic JSN-SR04T (fogger mist destroys ultrasonic readings at the water surface) and XKC-Y25 capacitive (binary only — can't give continuous level)
+- MCU: **ESP32-S3** over classic ESP32 DevKit V1 (native USB, no UART boot glitch on relay GPIO, better ADC support)
 
 ---
 
@@ -662,14 +608,15 @@ The base build pre-wires relay Ch 7 and the 12V rail for this. To add the pump:
 1. Mount the 12V submersible pump in a secondary reservoir (or dedicate one corner of the main tub as a clean water supply)
 2. Run silicone tubing from the pump outlet to the main reservoir, terminated with a check valve
 3. Connect pump leads: 12V+ → relay Ch 7 NO contact; 12V− → GND
-4. Enable the water level firmware logic: set low/high thresholds for the pressure sensor, configure Ch 7 to trigger top-off cycle
-
-The firmware monitors reservoir level continuously and runs short top-off cycles to keep the level in range — no manual filling needed.
+4. Firmware monitors reservoir level continuously and runs short top-off cycles to keep it in range — no manual filling needed
 
 ---
 
-## Next Steps
+## Firmware
 
-This guide covers hardware assembly. The firmware and web dashboard are covered in a separate guide (coming soon), based on the open-source software stack from u/mettalmag's greenhouse project, adapted for Martha tent control loops.
-
-GitHub (software reference): https://github.com/shonomore/greenhouse-lab-demo
+Firmware is in [`firmware/`](firmware/). See [`firmware/README.md`](firmware/README.md) for:
+- Build and flash instructions (PlatformIO)
+- OTA update procedure
+- Config reference (RH setpoint, CO2 thresholds, light schedules)
+- REST API reference
+- Hardware bring-up checklist (`firmware/test/embedded/README.md`)
