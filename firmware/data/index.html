@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Martha Controller</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Martha Tent Controller</h1>
+    <div id="conn-status" class="conn-dot disconnected" title="WebSocket status"></div>
+    <span id="fw-ver" class="fw-ver"></span>
+  </header>
+
+  <!-- ── Sensor Cards ─────────────────────────────────────────────────── -->
+  <section class="cards">
+
+    <div class="card" id="card-co2">
+      <div class="card-label">CO₂</div>
+      <div class="card-value" id="co2-val">—</div>
+      <div class="card-unit">ppm</div>
+      <canvas id="chart-co2" class="sparkline"></canvas>
+    </div>
+
+    <div class="card" id="card-rh">
+      <div class="card-label">Humidity (avg)</div>
+      <div class="card-value" id="rh-val">—</div>
+      <div class="card-unit">%</div>
+      <canvas id="chart-rh" class="sparkline"></canvas>
+    </div>
+
+    <div class="card" id="card-water">
+      <div class="card-label">Water Level</div>
+      <div class="card-value" id="water-val">—</div>
+      <div class="card-unit">%</div>
+    </div>
+
+    <div class="card" id="card-vpd">
+      <div class="card-label">VPD</div>
+      <div class="card-value" id="vpd-val">—</div>
+      <div class="card-unit">kPa</div>
+    </div>
+
+  </section>
+
+  <!-- ── Shelf Sensors ────────────────────────────────────────────────── -->
+  <section class="shelf-grid">
+    <h2>Shelf Sensors</h2>
+    <div class="shelf-row">
+      <div class="shelf-cell" id="shelf-0">
+        <div class="shelf-label">Shelf 1</div>
+        <div class="shelf-rh">—% RH</div>
+        <div class="shelf-temp">— °C</div>
+        <div class="shelf-probe">— °C (substrate)</div>
+      </div>
+      <div class="shelf-cell" id="shelf-1">
+        <div class="shelf-label">Shelf 2</div>
+        <div class="shelf-rh">—% RH</div>
+        <div class="shelf-temp">— °C</div>
+        <div class="shelf-probe">— °C (substrate)</div>
+      </div>
+      <div class="shelf-cell" id="shelf-2">
+        <div class="shelf-label">Shelf 3</div>
+        <div class="shelf-rh">—% RH</div>
+        <div class="shelf-temp">— °C</div>
+        <div class="shelf-probe">— °C (substrate)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Relay Panel ──────────────────────────────────────────────────── -->
+  <section class="relay-panel">
+    <h2>Relay Control <span id="relay-mode-badge" class="badge"></span></h2>
+    <div class="relay-grid" id="relay-grid">
+      <!-- populated by app.js -->
+    </div>
+    <div class="relay-actions">
+      <button id="btn-manual-on"  class="btn-secondary">Enter Manual Mode</button>
+      <button id="btn-manual-off" class="btn-secondary" style="display:none">Exit Manual Mode</button>
+    </div>
+  </section>
+
+  <!-- ── Config Panel ─────────────────────────────────────────────────── -->
+  <section class="config-panel">
+    <h2>Configuration <button id="btn-config-save" class="btn-primary">Save</button></h2>
+    <div class="config-grid">
+      <label>RH Setpoint (%)<input id="cfg-rh-on" type="number" min="50" max="99" step="0.5"></label>
+      <label>RH Hysteresis (%)<input id="cfg-rh-hyst" type="number" min="0.5" max="10" step="0.5"></label>
+      <label>CO₂ ON (ppm)<input id="cfg-co2-on" type="number" min="500" max="2000" step="10"></label>
+      <label>CO₂ OFF (ppm)<input id="cfg-co2-off" type="number" min="300" max="1800" step="10"></label>
+      <label>Lights ON (HH:MM UTC)<input id="cfg-lights-on" type="time"></label>
+      <label>Lights OFF (HH:MM UTC)<input id="cfg-lights-off" type="time"></label>
+      <label>UVC ON duration (min)<input id="cfg-uvc-on" type="number" min="15" max="120" step="5"></label>
+      <label>UVC OFF duration (min)<input id="cfg-uvc-off" type="number" min="60" max="480" step="15"></label>
+    </div>
+    <div id="cfg-status" class="cfg-status"></div>
+  </section>
+
+  <!-- ── Footer ───────────────────────────────────────────────────────── -->
+  <footer>
+    <a href="/update">OTA Update</a> &nbsp;|&nbsp;
+    <a href="/api/status" target="_blank">JSON Status</a> &nbsp;|&nbsp;
+    <span id="uptime">uptime: —</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
