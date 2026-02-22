@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Martha Tent Build — Shopping List</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --orange: #d29922;
+    --red: #f85149;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* Sticky header */
+  #site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+  }
+
+  #site-header .header-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 52px;
+  }
+
+  #site-header h1 {
+    font-size: 15px;
+    font-weight: 600;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .back-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 13px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .back-link:hover { text-decoration: underline; }
+
+  #settings-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  #settings-btn:hover { background: var(--border); }
+
+  /* Settings panel */
+  #settings-panel {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.25s ease, padding 0.25s ease;
+    padding: 0 16px;
+  }
+  #settings-panel.open {
+    max-height: 360px;
+    padding: 16px;
+  }
+
+  #settings-panel .panel-inner {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  #settings-panel p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  .pat-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+
+  .pat-row input[type="password"] {
+    flex: 1;
+    min-width: 180px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    padding: 6px 10px;
+    font-size: 13px;
+    font-family: 'SFMono-Regular', Consolas, monospace;
+  }
+  .pat-row input[type="password"]:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .btn-sm {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 5px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    white-space: nowrap;
+    transition: background 0.15s;
+  }
+  .btn-sm:hover { background: var(--border); }
+
+  #sync-status {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+    min-height: 18px;
+  }
+  #sync-status.syncing { color: var(--accent); }
+  #sync-status.synced  { color: var(--green); }
+  #sync-status.error   { color: var(--red); }
+  #sync-status.local   { color: var(--muted); }
+
+  /* Main content */
+  #main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+  }
+
+  /* Progress bar */
+  #progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  #progress-bar-bg {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  #progress-bar-fill {
+    height: 100%;
+    background: var(--green);
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  #progress-label {
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  /* Section cards */
+  .section-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .section-header:hover { background: rgba(255,255,255,0.03); }
+
+  .section-title {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .section-badge {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 11px;
+    color: var(--muted);
+    padding: 1px 8px;
+    white-space: nowrap;
+  }
+
+  .section-chevron {
+    color: var(--muted);
+    font-size: 12px;
+    transition: transform 0.2s;
+  }
+  .section-card.collapsed .section-chevron {
+    transform: rotate(-90deg);
+  }
+
+  .section-body {
+    border-top: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .section-card.collapsed .section-body {
+    display: none;
+  }
+
+  /* Item rows */
+  .item-row {
+    padding: 10px 16px 8px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .item-row:last-child { border-bottom: none; }
+  .item-row:hover { background: rgba(255,255,255,0.02); }
+
+  .item-main {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  /* Custom checkbox */
+  .item-main input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg);
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    transition: border-color 0.15s, background 0.15s;
+    accent-color: var(--green);
+  }
+  .item-main input[type="checkbox"]:checked {
+    background: var(--green);
+    border-color: var(--green);
+  }
+  .item-main input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 0px;
+    width: 5px;
+    height: 9px;
+    border: 2px solid #0d1117;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+  }
+  .item-main input[type="checkbox"]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .item-label {
+    flex: 1;
+    cursor: pointer;
+    min-width: 0;
+    font-size: 14px;
+  }
+
+  .item-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .badge-optional {
+    color: var(--orange);
+    font-size: 11px;
+    border: 1px solid var(--orange);
+    border-radius: 4px;
+    padding: 0 5px;
+    white-space: nowrap;
+  }
+
+  .item-price {
+    color: var(--muted);
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .item-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 1;
+  }
+  .item-link:hover { color: var(--text); }
+
+  /* Checked state */
+  .item-row.is-checked .item-label {
+    text-decoration: line-through;
+    opacity: 0.35;
+  }
+  .item-row.is-checked .item-meta {
+    opacity: 0.35;
+  }
+
+  /* Note input */
+  .item-note-wrap {
+    margin-top: 5px;
+    padding-left: 26px;
+  }
+
+  .item-note {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid transparent;
+    color: var(--muted);
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    font-size: 12px;
+    padding: 2px 4px;
+    outline: none;
+    transition: border-color 0.15s, color 0.15s;
+    resize: none;
+  }
+  .item-note::placeholder { color: var(--border); }
+  .item-note:focus {
+    border-bottom-color: var(--accent);
+    color: var(--text);
+  }
+  .item-note.has-value {
+    border-bottom-color: var(--border);
+    color: var(--muted);
+  }
+
+  /* Footer */
+  #footer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #footer-note {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  #reset-btn {
+    background: none;
+    border: 1px solid var(--red);
+    color: var(--red);
+    border-radius: 6px;
+    padding: 5px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.15s;
+  }
+  #reset-btn:hover { background: rgba(248, 81, 73, 0.1); }
+
+  @media (max-width: 540px) {
+    #site-header h1 { font-size: 13px; }
+    .item-price { display: none; }
+    #footer { flex-direction: column; gap: 10px; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header id="site-header">
+  <div class="header-inner">
+    <h1>Martha Tent Build — Shopping List</h1>
+    <a class="back-link" href="martha-tent-build-guide.md">← Martha Tent Build Guide</a>
+    <button id="settings-btn">⚙ Settings</button>
+  </div>
+</header>
+
+<div id="settings-panel">
+  <div class="panel-inner">
+    <p>Optional — without a token, your list is saved to this browser only. With a
+GitHub Personal Access Token, your progress and notes sync to a private Gist
+and are accessible from any browser where you enter the token.</p>
+    <p>Create a token at github.com/settings/tokens — select Gist scope only
+(no other permissions needed). The token is stored only in this browser's
+local storage, never transmitted anywhere except the GitHub API.</p>
+    <div class="pat-row">
+      <input type="password" id="pat-input" placeholder="ghp_…" autocomplete="off" spellcheck="false">
+      <button class="btn-sm" id="pat-save-btn">Save</button>
+      <button class="btn-sm" id="pat-clear-btn">Clear</button>
+    </div>
+    <div id="sync-status" class="local">● Saved locally</div>
+  </div>
+</div>
+
+<div id="main">
+  <div id="progress-wrap">
+    <div id="progress-bar-bg"><div id="progress-bar-fill"></div></div>
+    <span id="progress-label">0 / 0 items checked</span>
+  </div>
+  <div id="list-container"></div>
+</div>
+
+<footer>
+  <div id="footer">
+    <span id="footer-note">Prices approximate.</span>
+    <button id="reset-btn">Reset all</button>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  // ── Constants ──────────────────────────────────────────────────────────────
+  const LIST_ID   = 'martha-tent';
+  const GIST_FILE = 'martha-tent-shopping-list.json';
+
+  const LS_STATE_KEY = 'martha_shopping_' + LIST_ID;
+  const LS_PAT_KEY   = 'martha_pat';
+  const LS_GIST_KEY  = 'martha_gist_id_' + LIST_ID;
+
+  // ── List data ──────────────────────────────────────────────────────────────
+  const LIST_DATA = [
+    { section: 'Tent', id: 'tent', items: [
+      { id: 'tent-greenhouse', label: 'Greenhouse shelving tent', price: '~$64', url: 'https://www.amazon.com/dp/B07TSC1MB3' },
+    ]},
+    { section: 'CO₂ Controller', id: 'co2', items: [
+      { id: 'co2-controller', label: 'CO₂ controller', price: '~$161', url: 'https://www.amazon.com/dp/B08HQMBQ79' },
+    ]},
+    { section: 'Humidity Controller', id: 'rh', items: [
+      { id: 'rh-ihc200', label: 'Inkbird IHC200 Humidistat (primary)', price: '~$42', url: 'https://www.amazon.com/dp/B07XGQ7Q53' },
+      { id: 'rh-secondary', label: 'Secondary humidity controller (cross-check)', price: '', url: 'https://www.amazon.com/dp/B07HF9W41Y', optional: true },
+      { id: 'rh-ibs-th2', label: 'Inkbird IBS-TH2 Plus (data logger / app)', price: '~$30', url: 'https://www.amazon.com/dp/B095W39L4M' },
+    ]},
+    { section: 'Fogger & Humidity System', id: 'fog', items: [
+      { id: 'fog-fogger', label: 'House of Hydro 5-disc ultrasonic fogger', price: '', url: 'https://thehouseofhydro.com/' },
+      { id: 'fog-tub', label: '19-gallon tub — black/yellow, locking lid', price: '' },
+      { id: 'fog-uvc', label: 'Aquarium-grade UVC lights (mounts inside tub)', price: '' },
+      { id: 'fog-timer', label: 'Outlet timer (for UVC — 1hr ON / 4hr OFF cycle)', price: '' },
+      { id: 'fog-fan', label: '4" waterproof computer fan (mounts on tub lid)', price: '' },
+      { id: 'fog-h2o2', label: 'Hydrogen peroxide 3% (pharmacy bottle)', price: '~$2' },
+    ]},
+    { section: 'FAE Fans', id: 'fae', items: [
+      { id: 'fae-s4', label: 'AC Infinity CLOUDLINE S4 4" inline fan ×2 (buy a spare)', price: '~$99 ea' },
+      { id: 'fae-intake', label: '4" waterproof computer fan (tent intake, top-right)', price: '' },
+    ]},
+    { section: 'Ducting', id: 'duct', items: [
+      { id: 'duct-flex', label: '4" flexible silver duct / flex pipe', price: '' },
+      { id: 'duct-elbow', label: '4" galvanized adjustable elbow', price: '' },
+      { id: 'duct-adapter', label: 'Custom inlet adapter — hard plastic sheet, 4" hole (DIY)', price: '' },
+    ]},
+    { section: 'Drip Tray & Floor', id: 'floor', items: [
+      { id: 'floor-tray', label: 'Commercial drip tray — 41.3" × 27.75" × 1"', price: '', url: 'https://www.amazon.com/dp/B0002NNWDW' },
+      { id: 'floor-plastic', label: '6-mil plastic sheeting (cut to fit inside tray)', price: '' },
+    ]},
+    { section: 'Lighting & Misc', id: 'misc', items: [
+      { id: 'misc-led', label: 'LED strips (interior lighting)', price: '' },
+      { id: 'misc-rustoleum', label: 'Rustoleum spray paint — hunter green, ×3 cans', price: '' },
+      { id: 'misc-velcro', label: 'Velcro (use everywhere instead of zip ties)', price: '' },
+      { id: 'misc-substrate', label: 'Grow bags / substrate', price: '', url: 'https://mushroommediaonline.com/' },
+    ]},
+  ];
+
+  // ── State ──────────────────────────────────────────────────────────────────
+  let state = {};          // { [itemId]: { checked: boolean, note: string } }
+  let gistSyncTimer = null;
+  let noteSaveTimers = {};
+
+  // ── localStorage helpers ───────────────────────────────────────────────────
+  function loadLocalState() {
+    try {
+      const raw = localStorage.getItem(LS_STATE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch { return {}; }
+  }
+
+  function saveLocalState() {
+    try {
+      localStorage.setItem(LS_STATE_KEY, JSON.stringify(state));
+    } catch {}
+  }
+
+  function getPat() {
+    return localStorage.getItem(LS_PAT_KEY) || '';
+  }
+
+  function getGistId() {
+    return localStorage.getItem(LS_GIST_KEY) || '';
+  }
+
+  function setGistId(id) {
+    localStorage.setItem(LS_GIST_KEY, id);
+  }
+
+  // ── Sync status UI ─────────────────────────────────────────────────────────
+  const syncStatusEl = document.getElementById('sync-status');
+
+  function setSyncStatus(type, msg) {
+    syncStatusEl.className = type;
+    syncStatusEl.textContent = msg;
+  }
+
+  // ── GitHub Gist API ────────────────────────────────────────────────────────
+  async function apiFetch(path, opts = {}) {
+    const pat = getPat();
+    const headers = {
+      'Accept': 'application/vnd.github+json',
+      'Content-Type': 'application/json',
+    };
+    if (pat) headers['Authorization'] = 'Bearer ' + pat;
+    const res = await fetch('https://api.github.com' + path, { ...opts, headers });
+    return res;
+  }
+
+  async function findOrCreateGist() {
+    // 1. Try stored gist id
+    const storedId = getGistId();
+    if (storedId) {
+      const res = await apiFetch('/gists/' + storedId);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.files && data.files[GIST_FILE]) return data.id;
+      }
+    }
+
+    // 2. List gists, search for matching file
+    const res = await apiFetch('/gists?per_page=100');
+    if (!res.ok) throw new Error('Could not list gists: ' + res.status);
+    const gists = await res.json();
+    for (const g of gists) {
+      if (g.files && g.files[GIST_FILE]) {
+        setGistId(g.id);
+        return g.id;
+      }
+    }
+
+    // 3. Create new gist
+    const body = JSON.stringify({
+      description: 'Martha shopping list: ' + LIST_ID,
+      public: false,
+      files: {
+        [GIST_FILE]: { content: JSON.stringify(makeGistContent(), null, 2) }
+      }
+    });
+    const createRes = await apiFetch('/gists', { method: 'POST', body });
+    if (!createRes.ok) throw new Error('Could not create gist: ' + createRes.status);
+    const created = await createRes.json();
+    setGistId(created.id);
+    return created.id;
+  }
+
+  function makeGistContent() {
+    return {
+      version: 1,
+      listId: LIST_ID,
+      savedAt: new Date().toISOString(),
+      items: state,
+    };
+  }
+
+  async function loadFromGist() {
+    const gistId = await findOrCreateGist();
+    const res = await apiFetch('/gists/' + gistId);
+    if (!res.ok) throw new Error('Could not fetch gist: ' + res.status);
+    const data = await res.json();
+    const file = data.files[GIST_FILE];
+    if (!file || !file.content) return;
+    const parsed = JSON.parse(file.content);
+    if (parsed && parsed.items) {
+      state = parsed.items;
+    }
+  }
+
+  async function saveToGist() {
+    setSyncStatus('syncing', '↻ Syncing…');
+    try {
+      const gistId = await findOrCreateGist();
+      const body = JSON.stringify({
+        files: {
+          [GIST_FILE]: { content: JSON.stringify(makeGistContent(), null, 2) }
+        }
+      });
+      const res = await apiFetch('/gists/' + gistId, { method: 'PATCH', body });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const now = new Date();
+      const t = now.toTimeString().slice(0, 8);
+      setSyncStatus('synced', '✓ Synced ' + t);
+    } catch (e) {
+      setSyncStatus('error', '✗ Error: ' + e.message);
+    }
+  }
+
+  function scheduleGistSync() {
+    if (!getPat()) return;
+    clearTimeout(gistSyncTimer);
+    gistSyncTimer = setTimeout(saveToGist, 1000);
+  }
+
+  // ── DOM building ───────────────────────────────────────────────────────────
+  function getItemState(id) {
+    return state[id] || { checked: false, note: '' };
+  }
+
+  function setItemChecked(id, val) {
+    if (!state[id]) state[id] = { checked: false, note: '' };
+    state[id].checked = val;
+    saveLocalState();
+    scheduleGistSync();
+    if (!getPat()) setSyncStatus('local', '● Saved locally');
+  }
+
+  function setItemNote(id, val) {
+    if (!state[id]) state[id] = { checked: false, note: '' };
+    state[id].note = val;
+    saveLocalState();
+    scheduleGistSync();
+    if (!getPat()) setSyncStatus('local', '● Saved locally');
+  }
+
+  function updateProgress() {
+    let total = 0, checked = 0;
+    LIST_DATA.forEach(sec => {
+      sec.items.forEach(item => {
+        total++;
+        if (getItemState(item.id).checked) checked++;
+      });
+    });
+    const pct = total === 0 ? 0 : Math.round((checked / total) * 100);
+    document.getElementById('progress-bar-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = checked + ' / ' + total + ' items checked';
+  }
+
+  function updateSectionBadge(sectionId) {
+    const sec = LIST_DATA.find(s => s.id === sectionId);
+    if (!sec) return;
+    const total = sec.items.length;
+    const checked = sec.items.filter(i => getItemState(i.id).checked).length;
+    const badge = document.querySelector('[data-section-badge="' + sectionId + '"]');
+    if (badge) badge.textContent = checked + ' / ' + total;
+  }
+
+  function buildItemRow(item) {
+    const iState = getItemState(item.id);
+
+    const row = document.createElement('div');
+    row.className = 'item-row' + (iState.checked ? ' is-checked' : '');
+    row.dataset.itemId = item.id;
+
+    // Main line
+    const main = document.createElement('div');
+    main.className = 'item-main';
+
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.id = 'cb-' + item.id;
+    cb.checked = iState.checked;
+
+    const label = document.createElement('label');
+    label.className = 'item-label';
+    label.htmlFor = 'cb-' + item.id;
+    label.textContent = item.label;
+
+    const meta = document.createElement('div');
+    meta.className = 'item-meta';
+
+    if (item.optional) {
+      const badge = document.createElement('span');
+      badge.className = 'badge-optional';
+      badge.textContent = 'optional';
+      meta.appendChild(badge);
+    }
+
+    if (item.price) {
+      const price = document.createElement('span');
+      price.className = 'item-price';
+      price.textContent = item.price;
+      meta.appendChild(price);
+    }
+
+    if (item.url) {
+      const link = document.createElement('a');
+      link.className = 'item-link';
+      link.href = item.url;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.title = 'Open link';
+      link.textContent = '↗';
+      meta.appendChild(link);
+    }
+
+    main.appendChild(cb);
+    main.appendChild(label);
+    main.appendChild(meta);
+
+    // Note input
+    const noteWrap = document.createElement('div');
+    noteWrap.className = 'item-note-wrap';
+
+    const noteInput = document.createElement('input');
+    noteInput.type = 'text';
+    noteInput.className = 'item-note' + (iState.note ? ' has-value' : '');
+    noteInput.placeholder = 'note / substitution…';
+    noteInput.value = iState.note || '';
+    noteInput.setAttribute('aria-label', 'Note for ' + item.label);
+
+    noteWrap.appendChild(noteInput);
+    row.appendChild(main);
+    row.appendChild(noteWrap);
+
+    // Events
+    cb.addEventListener('change', () => {
+      const checked = cb.checked;
+      row.classList.toggle('is-checked', checked);
+      setItemChecked(item.id, checked);
+      updateProgress();
+      updateSectionBadge(findSectionId(item.id));
+    });
+
+    noteInput.addEventListener('input', () => {
+      noteInput.classList.toggle('has-value', noteInput.value.length > 0);
+      clearTimeout(noteSaveTimers[item.id]);
+      noteSaveTimers[item.id] = setTimeout(() => {
+        setItemNote(item.id, noteInput.value);
+      }, 800);
+    });
+
+    noteInput.addEventListener('blur', () => {
+      setItemNote(item.id, noteInput.value);
+    });
+
+    return row;
+  }
+
+  function findSectionId(itemId) {
+    for (const sec of LIST_DATA) {
+      if (sec.items.find(i => i.id === itemId)) return sec.id;
+    }
+    return null;
+  }
+
+  function buildSection(sec) {
+    const card = document.createElement('div');
+    card.className = 'section-card';
+    card.dataset.sectionId = sec.id;
+
+    // Header
+    const header = document.createElement('div');
+    header.className = 'section-header';
+    header.setAttribute('role', 'button');
+    header.setAttribute('tabindex', '0');
+    header.setAttribute('aria-expanded', 'true');
+
+    const title = document.createElement('span');
+    title.className = 'section-title';
+    title.textContent = sec.section;
+
+    const badge = document.createElement('span');
+    badge.className = 'section-badge';
+    badge.dataset.sectionBadge = sec.id;
+    const checkedCount = sec.items.filter(i => getItemState(i.id).checked).length;
+    badge.textContent = checkedCount + ' / ' + sec.items.length;
+
+    const chevron = document.createElement('span');
+    chevron.className = 'section-chevron';
+    chevron.textContent = '▾';
+
+    header.appendChild(title);
+    header.appendChild(badge);
+    header.appendChild(chevron);
+
+    // Body
+    const body = document.createElement('div');
+    body.className = 'section-body';
+
+    sec.items.forEach(item => {
+      body.appendChild(buildItemRow(item));
+    });
+
+    card.appendChild(header);
+    card.appendChild(body);
+
+    // Toggle collapse
+    function toggleCollapse() {
+      const collapsed = card.classList.toggle('collapsed');
+      header.setAttribute('aria-expanded', String(!collapsed));
+    }
+    header.addEventListener('click', toggleCollapse);
+    header.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleCollapse(); }
+    });
+
+    return card;
+  }
+
+  function renderList() {
+    const container = document.getElementById('list-container');
+    container.textContent = '';
+    LIST_DATA.forEach(sec => container.appendChild(buildSection(sec)));
+    updateProgress();
+  }
+
+  // ── Apply Gist state to existing DOM (no full re-render) ──────────────────
+  function applyStateToDOM() {
+    LIST_DATA.forEach(sec => {
+      sec.items.forEach(item => {
+        const iState = getItemState(item.id);
+        const row = document.querySelector('[data-item-id="' + item.id + '"]');
+        if (!row) return;
+        const cb = row.querySelector('input[type="checkbox"]');
+        const noteInput = row.querySelector('.item-note');
+        if (cb) cb.checked = iState.checked;
+        row.classList.toggle('is-checked', iState.checked);
+        if (noteInput) {
+          noteInput.value = iState.note || '';
+          noteInput.classList.toggle('has-value', (iState.note || '').length > 0);
+        }
+      });
+      updateSectionBadge(sec.id);
+    });
+    updateProgress();
+  }
+
+  // ── Settings panel ─────────────────────────────────────────────────────────
+  const settingsBtn   = document.getElementById('settings-btn');
+  const settingsPanel = document.getElementById('settings-panel');
+  const patInput      = document.getElementById('pat-input');
+  const patSaveBtn    = document.getElementById('pat-save-btn');
+  const patClearBtn   = document.getElementById('pat-clear-btn');
+
+  settingsBtn.addEventListener('click', () => {
+    settingsPanel.classList.toggle('open');
+  });
+
+  patInput.value = getPat();
+
+  patSaveBtn.addEventListener('click', async () => {
+    const val = patInput.value.trim();
+    if (val) {
+      localStorage.setItem(LS_PAT_KEY, val);
+      setSyncStatus('syncing', '↻ Syncing…');
+      try {
+        await loadFromGist();
+        applyStateToDOM();
+        await saveToGist();
+      } catch (e) {
+        setSyncStatus('error', '✗ Error: ' + e.message);
+      }
+    }
+  });
+
+  patClearBtn.addEventListener('click', () => {
+    patInput.value = '';
+    localStorage.removeItem(LS_PAT_KEY);
+    localStorage.removeItem(LS_GIST_KEY);
+    setSyncStatus('local', '● Saved locally');
+  });
+
+  // ── Reset ──────────────────────────────────────────────────────────────────
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    if (confirm('Reset all checkboxes and notes? This cannot be undone.')) {
+      state = {};
+      saveLocalState();
+      applyStateToDOM();
+      if (getPat()) saveToGist();
+      else setSyncStatus('local', '● Saved locally');
+    }
+  });
+
+  // ── Init ───────────────────────────────────────────────────────────────────
+  async function init() {
+    state = loadLocalState();
+    renderList();
+
+    const pat = getPat();
+    if (pat) {
+      setSyncStatus('syncing', '↻ Syncing…');
+      try {
+        await loadFromGist();
+        applyStateToDOM();
+        const now = new Date();
+        setSyncStatus('synced', '✓ Synced ' + now.toTimeString().slice(0, 8));
+      } catch (e) {
+        setSyncStatus('error', '✗ Error: ' + e.message);
+      }
+    } else {
+      setSyncStatus('local', '● Saved locally');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+</body>
+</html>
