@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🍄 Mushroom Strain Guide</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #FAF7F2;
+      --card-bg: #FFFFFF;
+      --text: #1C1C1C;
+      --text-muted: #6B6B6B;
+      --border: #E8E2D9;
+      --green-dark: #2D5016;
+      --green-mid: #4A7C24;
+      --beginner: #4A7A1E;
+      --beginner-bg: #EDF4E3;
+      --intermediate: #B87000;
+      --intermediate-bg: #FFF4D6;
+      --hard: #B82020;
+      --hard-bg: #FDEAEA;
+      --accent: #6B4226;
+      --shadow: 0 2px 8px rgba(0,0,0,0.08);
+      --shadow-hover: 0 8px 24px rgba(0,0,0,0.14);
+      --radius: 16px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(140deg, #1E3A0D 0%, #2D5016 45%, #4A7C24 100%);
+      color: white;
+      padding: 56px 24px 48px;
+      text-align: center;
+    }
+    header .hero-emoji { font-size: 3.5rem; display: block; margin-bottom: 14px; }
+    header h1 { font-size: 2.6rem; font-weight: 800; letter-spacing: -0.5px; }
+    header p {
+      font-size: 1.1rem; opacity: 0.85; margin-top: 10px;
+      max-width: 580px; margin-left: auto; margin-right: auto;
+    }
+
+    /* ── Stats bar ── */
+    .stats-bar {
+      background: #1E3A0D;
+      color: rgba(255,255,255,0.85);
+      display: flex; justify-content: center; align-items: center;
+      gap: 28px; padding: 11px 24px; font-size: 0.88rem; flex-wrap: wrap;
+    }
+    .stats-bar span { display: flex; align-items: center; gap: 7px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .dot-beginner     { background: #8BC34A; }
+    .dot-intermediate { background: #FFB300; }
+    .dot-hard         { background: #EF5350; }
+
+    /* ── Sticky controls ── */
+    .controls {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    }
+    .filter-btn {
+      padding: 7px 18px; border-radius: 999px;
+      border: 2px solid transparent; cursor: pointer;
+      font-size: 0.88rem; font-weight: 600; transition: all 0.18s;
+      background: var(--bg);
+    }
+    .filter-btn.all          { border-color: #444; color: #444; }
+    .filter-btn.all.active,
+    .filter-btn.all:hover    { background: #444; color: white; }
+    .filter-btn.beginner          { border-color: var(--beginner); color: var(--beginner); }
+    .filter-btn.beginner.active,
+    .filter-btn.beginner:hover    { background: var(--beginner); color: white; }
+    .filter-btn.intermediate          { border-color: var(--intermediate); color: var(--intermediate); }
+    .filter-btn.intermediate.active,
+    .filter-btn.intermediate:hover    { background: var(--intermediate); color: white; }
+    .filter-btn.hard          { border-color: var(--hard); color: var(--hard); }
+    .filter-btn.hard.active,
+    .filter-btn.hard:hover    { background: var(--hard); color: white; }
+
+    .search-box {
+      margin-left: auto; padding: 7px 16px;
+      border: 2px solid var(--border); border-radius: 999px;
+      font-size: 0.88rem; outline: none; min-width: 210px;
+      transition: border-color 0.2s;
+    }
+    .search-box:focus { border-color: var(--green-mid); }
+    .count-badge { font-size: 0.82rem; color: var(--text-muted); white-space: nowrap; }
+
+    /* ── Main ── */
+    main { max-width: 1440px; margin: 0 auto; padding: 28px 24px 48px; }
+
+    .section-header {
+      margin: 36px 0 18px; display: flex; align-items: center; gap: 12px;
+    }
+    .section-header h2 { font-size: 1.45rem; font-weight: 700; }
+    .section-badge {
+      padding: 4px 14px; border-radius: 999px; font-size: 0.75rem;
+      font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    .section-badge.beginner     { background: var(--beginner-bg);     color: var(--beginner); }
+    .section-badge.intermediate { background: var(--intermediate-bg); color: var(--intermediate); }
+    .section-badge.hard         { background: var(--hard-bg);         color: var(--hard); }
+
+    /* ── Grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      box-shadow: var(--shadow); transition: box-shadow 0.2s, transform 0.2s;
+      display: flex; flex-direction: column;
+    }
+    .card:hover { box-shadow: var(--shadow-hover); transform: translateY(-3px); }
+    .card.hidden { display: none; }
+
+    .card-header {
+      padding: 18px 18px 0;
+      display: flex; justify-content: space-between; align-items: flex-start;
+    }
+    .card-emoji { font-size: 2.6rem; line-height: 1; }
+    .difficulty-badge {
+      padding: 4px 12px; border-radius: 999px;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    .difficulty-badge.beginner     { background: var(--beginner-bg);     color: var(--beginner); }
+    .difficulty-badge.intermediate { background: var(--intermediate-bg); color: var(--intermediate); }
+    .difficulty-badge.hard         { background: var(--hard-bg);         color: var(--hard); }
+
+    .card-body { padding: 10px 18px 0; flex: 1; }
+    .card-name       { font-size: 1.15rem; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+    .card-scientific { font-style: italic; font-size: 0.83rem; color: var(--text-muted); margin-bottom: 10px; }
+
+    .martha-compat {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 0.77rem; font-weight: 600; padding: 3px 10px;
+      border-radius: 8px; margin-bottom: 12px;
+    }
+    .martha-compat.yes     { background: #EDF4E3; color: var(--beginner); }
+    .martha-compat.partial { background: #FFF4D6; color: var(--intermediate); }
+    .martha-compat.no      { background: #FDEAEA; color: var(--hard); }
+
+    .stats-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 13px; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--bg); border: 1px solid var(--border);
+      padding: 4px 10px; border-radius: 8px;
+      font-size: 0.78rem; color: var(--text-muted);
+    }
+    .chip strong { color: var(--text); }
+
+    .flavor { margin-bottom: 11px; font-size: 0.84rem; }
+    .flavor-label { font-weight: 700; color: var(--accent); }
+
+    .why-grow {
+      background: var(--bg); border-radius: 10px;
+      padding: 10px 13px; font-size: 0.84rem; margin-bottom: 11px;
+    }
+    .why-grow-label {
+      font-weight: 700; font-size: 0.72rem; text-transform: uppercase;
+      letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 4px;
+    }
+
+    .facts { margin-bottom: 14px; }
+    .facts-label {
+      font-weight: 700; font-size: 0.72rem; text-transform: uppercase;
+      letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px;
+    }
+    .facts ul { padding-left: 16px; }
+    .facts li { font-size: 0.81rem; color: var(--text-muted); margin-bottom: 4px; }
+
+    /* ── Card footer ── */
+    .card-footer {
+      padding: 14px 18px; border-top: 1px solid var(--border); background: #FAFAF8;
+    }
+    .buy-label {
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 8px;
+    }
+    .buy-links { display: flex; flex-wrap: wrap; gap: 6px; }
+    .buy-link {
+      padding: 5px 11px; background: white;
+      border: 1.5px solid var(--green-mid); color: var(--green-mid);
+      text-decoration: none; border-radius: 8px;
+      font-size: 0.76rem; font-weight: 600; transition: all 0.15s;
+    }
+    .buy-link:hover { background: var(--green-mid); color: white; }
+    .buy-link.na { border-color: var(--border); color: var(--text-muted); pointer-events: none; }
+
+    /* ── No results ── */
+    .no-results {
+      display: none; text-align: center; padding: 80px 24px;
+      color: var(--text-muted); font-size: 1.1rem;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--green-dark); color: rgba(255,255,255,0.75);
+      text-align: center; padding: 28px 24px; font-size: 0.84rem;
+    }
+    footer a { color: rgba(255,255,255,0.92); }
+    footer p + p { margin-top: 6px; }
+
+    @media (max-width: 640px) {
+      header h1 { font-size: 1.9rem; }
+      .controls { gap: 8px; }
+      .search-box { min-width: 0; width: 100%; margin-left: 0; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="hero-emoji">🍄</span>
+  <h1>Mushroom Strain Guide</h1>
+  <p>Everything from weekend-warrior oysters to the legendary, nearly-impossible-to-grow truffle — with buying links, growing facts, and what they actually taste like.</p>
+</header>
+
+<div class="stats-bar">
+  <span><span class="dot dot-beginner"></span> 9 Beginner strains</span>
+  <span><span class="dot dot-intermediate"></span> 9 Intermediate strains</span>
+  <span><span class="dot dot-hard"></span> 7 Advanced strains</span>
+  <span>· 25 total · Updated Feb 2026</span>
+</div>
+
+<div class="controls">
+  <button class="filter-btn all active"         onclick="setFilter('all', this)">All</button>
+  <button class="filter-btn beginner"           onclick="setFilter('beginner', this)">🌱 Beginner</button>
+  <button class="filter-btn intermediate"       onclick="setFilter('intermediate', this)">🌿 Intermediate</button>
+  <button class="filter-btn hard"               onclick="setFilter('hard', this)">🔥 Advanced</button>
+  <span class="count-badge" id="count-badge">Showing all 25 strains</span>
+  <input class="search-box" type="text" placeholder="Search strains…" oninput="setSearch(this.value)">
+</div>
+
+<main>
+  <div class="no-results" id="no-results">No strains match your search. Try a different keyword.</div>
+
+  <!-- ════════════════════════════════════════════
+       BEGINNER
+  ════════════════════════════════════════════ -->
+  <div class="section-header" data-section="beginner">
+    <span class="section-badge beginner">Beginner</span>
+    <h2>Great First Grows</h2>
+  </div>
+  <div class="grid" id="grid-beginner">
+
+    <!-- Pearl Oyster -->
+    <div class="card" data-difficulty="beginner"
+         data-name="pearl oyster pleurotus ostreatus straw gateway stir fry">
+      <div class="card-header">
+        <span class="card-emoji">🍄</span>
+        <span class="difficulty-badge beginner">Beginner</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Pearl Oyster</div>
+        <div class="card-scientific">Pleurotus ostreatus</div>
+        <span class="martha-compat yes">✅ Martha Compatible</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>3–4 weeks</strong></span>
+          <span class="chip">🌡 <strong>55–75°F</strong></span>
+          <span class="chip">📦 <strong>Straw / Hardwood / Coffee</strong></span>
+          <span class="chip">💰 <strong>High yield</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Mild, slightly sweet, firm and meaty. Excellent sautéed in butter or tossed in pasta.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          The "gateway" mushroom. Grows on almost anything — straw, cardboard, coffee grounds — and forgives beginner mistakes. Produces multiple generous flushes and is delicious every time.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>World's #1 most cultivated mushroom by volume</li>
+            <li>Used in environmental cleanup — mycelium breaks down petroleum waste (mycoremediation)</li>
+            <li>Grows wild on dying hardwood trees across the Northern Hemisphere</li>
+            <li>Typical yield: 1–2 lbs per lb of dry substrate across 2–3 flushes</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Buy Spawn / Cultures</div>
+        <div class="buy-links">
+          <a class="buy-link" href="https://northspore.com" target="_blank">North Spore</a>
+          <a class="buy-link" href="https://fungi.com" target="_blank">Fungi Perfecti</a>
+          <a class="buy-link" href="https://out-grow.com" target="_blank">Out-Grow</a>
+          <a class="buy-link" href="https://fieldforest.net" target="_blank">Field &amp; Forest</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blue Oyster -->
+    <div class="card" data-difficulty="beginner"
+         data-name="blue oyster pleurotus columbinus cool basement clusters umami">
+      <div class="card-header">
+        <span class="card-emoji">🫐</span>
+        <span class="difficulty-badge beginner">Beginner</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Blue Oyster</div>
+        <div class="card-scientific">Pleurotus ostreatus var. columbinus</div>
+        <span class="martha-compat yes">✅ Martha Compatible — Perfect for Cool Basements</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>3–4 weeks</strong></span>
+          <span class="chip">🌡 <strong>45–65°F</strong></span>
+          <span class="chip">📦 <strong>Straw / Hardwood</strong></span>
+          <span class="chip">💰 <strong>Very high yield</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Savory, umami-rich, slightly chewy. Excellent sautéed in butter with garlic.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          Loves cool temps — a basement Martha is the ideal setup. The most forgiving oyster, producing massive cascading clusters. The beautiful blue-gray color is striking right out of the bag.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>The blue-gray color fades to cream when cooked — flavor stays great</li>
+            <li>Produces enormous cluster-style fruiting bodies — up to 2 lbs at once</li>
+            <li>Technically the same species as Pearl Oyster, just a cool-weather strain</li>
+            <li>One of the easiest mushrooms to grow on cardboard or straw bales</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Buy Spawn / Cultures</div>
+        <div class="buy-links">
+          <a class="buy-link" href="https://northspore.com" target="_blank">North Spore</a>
+          <a class="buy-link" href="https://fungi.com" target="_blank">Fungi Perfecti</a>
+          <a class="buy-link" href="https://out-grow.com" target="_blank">Out-Grow</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pink Oyster -->
+    <div class="card" data-difficulty="beginner"
+         data-name="pink oyster pleurotus djamor tropical fast bacon beautiful">
+      <div class="card-header">
+        <span class="card-emoji">🌸</span>
+        <span class="difficulty-badge beginner">Beginner</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Pink Oyster</div>
+        <div class="card-scientific">Pleurotus djamor</div>
+        <span class="martha-compat partial">⚠️ Martha Compatible (needs supplemental heat in basement)</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>2–3 weeks</strong></span>
+          <span class="chip">🌡 <strong>65–85°F</strong></span>
+          <span class="chip">📦 <strong>Straw / Hardwood</strong></span>
+          <span class="chip">💰 <strong>Very high yield</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Mild, slightly seafood-like, velvety. When fried crispy, used as a "bacon" or "pulled pork" substitute.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          The fastest-fruiting mushroom you can grow indoors. Vivid hot-pink clusters are absolutely stunning to look at and photograph. A guaranteed wow-factor on the Martha.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>Fastest-colonizing oyster — can fruit in as little as 14 days</li>
+            <li>Color fades from vivid pink to pale tan when cooked (still delicious)</li>
+            <li>Tropical origin — doesn't tolerate refrigeration; best eaten day of harvest</li>
+            <li>Thin strips fried until crispy are a popular plant-based "bacon"</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Buy Spawn / Cultures</div>
+        <div class="buy-links">
+          <a class="buy-link" href="https://northspore.com" target="_blank">North Spore</a>
+          <a class="buy-link" href="https://mushroommountain.com" target="_blank">Mushroom Mountain</a>
+          <a class="buy-link" href="https://out-grow.com" target="_blank">Out-Grow</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Golden Oyster -->
+    <div class="card" data-difficulty="beginner"
+         data-name="golden oyster pleurotus citrinopileatus yellow beautiful photogenic farmers market">
+      <div class="card-header">
+        <span class="card-emoji">✨</span>
+        <span class="difficulty-badge beginner">Beginner</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Golden Oyster</div>
+        <div class="card-scientific">Pleurotus citrinopileatus</div>
+        <span class="martha-compat yes">✅ Martha Compatible</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>3–4 weeks</strong></span>
+          <span class="chip">🌡 <strong>65–80°F</strong></span>
+          <span class="chip">📦 <strong>Hardwood / Straw</strong></span>
+          <span class="chip">💰 <strong>Moderate–high yield</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Mild, slightly nutty, very delicate. Best lightly sautéed or folded into eggs fresh-picked.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          The most visually striking mushroom you can grow indoors. Bright yellow clusters that look almost unreal. A guaranteed conversation starter — and farmers market gold if you ever sell.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>Native to eastern Russia, Japan, and China</li>
+            <li>The delicate caps tear extremely easily — handle gently at harvest</li>
+            <li>One of the most photogenic mushrooms in existence</li>
+            <li>Spores are noticeably fragrant — good FAE in your Martha is a plus</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Buy Spawn / Cultures</div>
+        <div class="buy-links">
+          <a class="buy-link" href="https://northspore.com" target="_blank">North Spore</a>
+          <a class="buy-link" href="https://out-grow.com" target="_blank">Out-Grow</a>
+          <a class="buy-link" href="https://spawnrunners.com" target="_blank">Spawnrunners</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- King Oyster -->
+    <div class="card" data-difficulty="beginner"
+         data-name="king oyster pleurotus eryngii trumpet royale scallop steak meaty cool">
+      <div class="card-header">
+        <span class="card-emoji">👑</span>
+        <span class="difficulty-badge beginner">Beginner</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">King Oyster / Trumpet Royale</div>
+        <div class="card-scientific">Pleurotus eryngii</div>
+        <span class="martha-compat yes">✅ Martha Compatible</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>4–6 weeks</strong></span>
+          <span class="chip">🌡 <strong>45–65°F</strong></span>
+          <span class="chip">📦 <strong>Supplemented Hardwood</strong></span>
+          <span class="chip">💰 <strong>Moderate yield</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Rich, meaty, deeply umami — the most "steak-like" flavor of all oysters. The thick stem is the prize.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          Stem sliced into rounds is a near-perfect vegan scallop. The longest shelf life of any oyster. Your cool basement is exactly what this species wants for fruiting.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>The only Pleurotus that grows underground in nature (on plant roots)</li>
+            <li>Thick stem rounds sautéed in butter = a near-perfect scallop substitute</li>
+            <li>Stays fresh in the refrigerator for 2+ weeks — far longer than other oysters</li>
+            <li>Called "Eryngii" — a staple in Korean BBQ, Japanese hot pot, and Italian antipasto</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Buy Spawn / Cultures</div>
+        <div class="buy-links">
+          <a class="buy-link" href="https://northspore.com" target="_blank">North Spore</a>
+          <a class="buy-link" href="https://fungi.com" target="_blank">Fungi Perfecti</a>
+          <a class="buy-link" href="https://fieldforest.net" target="_blank">Field &amp; Forest</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phoenix Oyster -->
+    <div class="card" data-difficulty="beginner"
+         data-name="phoenix oyster pleurotus pulmonarius summer indian warm forgiving">
+      <div class="card-header">
+        <span class="card-emoji">🔥</span>
+        <span class="difficulty-badge beginner">Beginner</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Phoenix / Summer Oyster</div>
+        <div class="card-scientific">Pleurotus pulmonarius</div>
+        <span class="martha-compat yes">✅ Martha Compatible</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>3–4 weeks</strong></span>
+          <span class="chip">🌡 <strong>65–80°F</strong></span>
+          <span class="chip">📦 <strong>Straw / Hardwood / Coffee / Paper</strong></span>
+          <span class="chip">💰 <strong>High yield</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Mild, slightly peppery when raw, rich and savory when cooked. Nearly identical to Pearl Oyster.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          Practically identical to Pearl Oyster but thrives at warmer temps. Extremely forgiving — a great warm-season grow or backup when Blue Oyster won't pin reliably.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>Also called "Indian Oyster" or "Summer Oyster" — thrives where Pearl Oyster stalls</li>
+            <li>One of the most globally widespread mushrooms on Earth</li>
+            <li>Grows on an enormous variety of substrates including paper, cardboard, and straw</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Buy Spawn / Cultures</div>
+        <div class="buy-links">
+          <a class="buy-link" href="https://northspore.com" target="_blank">North Spore</a>
+          <a class="buy-link" href="https://out-grow.com" target="_blank">Out-Grow</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Elm Oyster -->
+    <div class="card" data-difficulty="beginner"
+         data-name="elm oyster hypsizygus ulmarius white firm soup stew asian">
+      <div class="card-header">
+        <span class="card-emoji">🌳</span>
+        <span class="difficulty-badge beginner">Beginner</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Elm Oyster</div>
+        <div class="card-scientific">Hypsizygus ulmarius</div>
+        <span class="martha-compat yes">✅ Martha Compatible</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>5–8 weeks</strong></span>
+          <span class="chip">🌡 <strong>55–70°F</strong></span>
+          <span class="chip">📦 <strong>Supplemented Hardwood</strong></span>
+          <span class="chip">💰 <strong>Moderate yield</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Mild, firm, slightly nutty. Holds its texture in soups and stews where other mushrooms go limp.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          The firmest texture of all oyster-type mushrooms — won't turn to mush in a long-cooked soup or braise. Rare in US grocery stores. Popular across Asia and worth getting to know.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>Grows naturally on elm trees — most wild specimens in North America are found on elms</li>
+            <li>Also called "White Elm Mushroom" in Asian markets</li>
+            <li>Significantly firmer than standard oysters — can be sliced thin like deli meat</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Buy Spawn / Cultures</div>
+        <div class="buy-links">
+          <a class="buy-link" href="https://northspore.com" target="_blank">North Spore</a>
+          <a class="buy-link" href="https://fieldforest.net" target="_blank">Field &amp; Forest</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brown Beech / Shimeji -->
+    <div class="card" data-difficulty="beginner"
+         data-name="brown beech shimeji hypsizygus tessellatus buna japanese ramen hot pot cluster">
+      <div class="card-header">
+        <span class="card-emoji">🤎</span>
+        <span class="difficulty-badge beginner">Beginner</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Brown Beech / Buna Shimeji</div>
+        <div class="card-scientific">Hypsizygus tessellatus</div>
+        <span class="martha-compat yes">✅ Martha Compatible</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>8–12 weeks</strong></span>
+          <span class="chip">🌡 <strong>55–65°F</strong></span>
+          <span class="chip">📦 <strong>Supplemented Hardwood</strong></span>
+          <span class="chip">💰 <strong>Moderate yield</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Nutty, rich, satisfyingly crunchy. Slightly bitter raw — always cook. Transforms beautifully in ramen or hot pot.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          A staple of Japanese cuisine almost never seen fresh in US stores. Grows in the most beautiful tight clusters. Crunchy texture even after cooking — a total revelation compared to typical mushrooms.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>Must always be cooked — bitter and mildly toxic when eaten raw</li>
+            <li>Grows naturally in dense clusters on beech trees — spectacular at harvest</li>
+            <li>Very long fridge life — stays firm for 2+ weeks after harvest</li>
+            <li>White variety (Bunapi Shimeji) is the same species without pigment</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Buy Spawn / Cultures</div>
+        <div class="buy-links">
+          <a class="buy-link" href="https://northspore.com" target="_blank">North Spore</a>
+          <a class="buy-link" href="https://out-grow.com" target="_blank">Out-Grow</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wine Cap -->
+    <div class="card" data-difficulty="beginner"
+         data-name="wine cap stropharia rugosoannulata garden giant outdoor wood chips perennial">
+      <div class="card-header">
+        <span class="card-emoji">🍷</span>
+        <span class="difficulty-badge beginner">Beginner</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Wine Cap / Garden Giant</div>
+        <div class="card-scientific">Stropharia rugosoannulata</div>
+        <span class="martha-compat no">🌿 Outdoor Garden Only</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>2–3 months</strong></span>
+          <span class="chip">🌡 <strong>50–75°F soil temp</strong></span>
+          <span class="chip">📦 <strong>Wood chips / Straw beds</strong></span>
+          <span class="chip">💰 <strong>Very high yield — perennial</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Rich, earthy, slightly potato-like. Young caps have a subtle red wine note — hence the name.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          The easiest outdoor mushroom in existence. Spread spawn on wood chips in a garden bed and nature does the rest. Produces enormous caps, improves your soil, and fruits every year.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>Caps can grow up to 12 inches wide — one mushroom can feed a family</li>
+            <li>Breaks down wood chips into rich compost, improving garden soil over time</li>
+            <li>Perennial — a single bed can fruit for 3–5+ consecutive seasons</li>
+            <li>Also called "King Stropharia" — one of the tastiest outdoor-cultivated species</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Buy Spawn</div>
+        <div class="buy-links">
+          <a class="buy-link" href="https://northspore.com" target="_blank">North Spore</a>
+          <a class="buy-link" href="https://fungi.com" target="_blank">Fungi Perfecti</a>
+          <a class="buy-link" href="https://fieldforest.net" target="_blank">Field &amp; Forest</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /grid beginner -->
+
+  <!-- ════════════════════════════════════════════
+       INTERMEDIATE
+  ════════════════════════════════════════════ -->
+  <div class="section-header" data-section="intermediate">
+    <span class="section-badge intermediate">Intermediate</span>
+    <h2>Worth the Extra Effort</h2>
+  </div>
+  <div class="grid" id="grid-intermediate">
+
+    <!-- Lion's Mane -->
+    <div class="card" data-difficulty="intermediate"
+         data-name="lion's mane hericium erinaceus brain seafood lobster crab neuroprotective">
+      <div class="card-header">
+        <span class="card-emoji">🦁</span>
+        <span class="difficulty-badge intermediate">Intermediate</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Lion's Mane</div>
+        <div class="card-scientific">Hericium erinaceus</div>
+        <span class="martha-compat yes">✅ Martha Compatible (avoid direct airflow on fruiting body)</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>4–6 weeks</strong></span>
+          <span class="chip">🌡 <strong>60–75°F</strong></span>
+          <span class="chip">📦 <strong>Masters Mix / Supplemented Hardwood</strong></span>
+          <span class="chip">💰 <strong>Moderate yield · $20–40/lb retail</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Sweet, seafood-like — widely compared to lobster and crab. Absorbs butter beautifully and has a substantial, toothsome texture.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          A genuinely unique mushroom in every way — flavor, appearance, and nutrition. Contains compounds actively studied for neuroprotection. The "brain food" mushroom with a flavor that surprises everyone who tries it.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>Contains hericenones and erinacines — studied for potential Alzheimer's and Parkinson's research</li>
+            <li>The cascading white "teeth" are the spore-bearing surfaces, not caps</li>
+            <li>Needs high RH but dislikes direct airflow — causes browning; route your FAE carefully</li>
+            <li>Sells for $20–40/lb at farmers markets — one of the most valuable cultivated mushrooms</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Buy Spawn / Cultures</div>
+        <div class="buy-links">
+          <a class="buy-link" href="https://northspore.com" target="_blank">North Spore</a>
+          <a class="buy-link" href="https://fungi.com" target="_blank">Fungi Perfecti</a>
+          <a class="buy-link" href="https://mushroommountain.com" target="_blank">Mushroom Mountain</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shiitake -->
+    <div class="card" data-difficulty="intermediate"
+         data-name="shiitake lentinula edodes oak umami dashi miso cold shock immune">
+      <div class="card-header">
+        <span class="card-emoji">🍜</span>
+        <span class="difficulty-badge intermediate">Intermediate</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Shiitake</div>
+        <div class="card-scientific">Lentinula edodes</div>
+        <span class="martha-compat yes">✅ Martha Compatible (needs cold shocking to fruit)</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>8–16 weeks</strong></span>
+          <span class="chip">🌡 <strong>Colonize 70–80°F · Fruit 45–65°F</strong></span>
+          <span class="chip">📦 <strong>Supplemented Oak Sawdust</strong></span>
+          <span class="chip">💰 <strong>Moderate yield · 4–5 flushes</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Rich, smoky, deeply savory. Dried shiitake is even more intense — a pantry essential in Asian cooking.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          The world's #2 most cultivated mushroom and a cornerstone of Asian cuisine. Worth every extra week — fresh shiitake is in a completely different league from anything sold dried or in a grocery store.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>Contains lentinan — studied as an immune-modulating compound</li>
+            <li>Soaking dried shiitake creates a rich dashi broth — a Japanese cooking staple</li>
+            <li>Traditionally grown on oak logs in Japan; blocks can flush 4–5 rounds over months</li>
+            <li>Needs a "cold shock" — soaking in cold water 12–24 hrs triggers fruiting</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Buy Spawn / Cultures</div>
+        <div class="buy-links">
+          <a class="buy-link" href="https://northspore.com" target="_blank">North Spore</a>
+          <a class="buy-link" href="https://fieldforest.net" target="_blank">Field &amp; Forest</a>
+          <a class="buy-link" href="https://fungi.com" target="_blank">Fungi Perfecti</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chestnut -->
+    <div class="card" data-difficulty="intermediate"
+         data-name="chestnut pholiota adiposa nutty flavorful clusters korean japanese underrated">
+      <div class="card-header">
+        <span class="card-emoji">🌰</span>
+        <span class="difficulty-badge intermediate">Intermediate</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Chestnut Mushroom</div>
+        <div class="card-scientific">Pholiota adiposa</div>
+        <span class="martha-compat yes">✅ Martha Compatible</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>6–8 weeks</strong></span>
+          <span class="chip">🌡 <strong>55–70°F</strong></span>
+          <span class="chip">📦 <strong>Supplemented Hardwood</strong></span>
+          <span class="chip">💰 <strong>Moderate yield</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Rich, nutty, earthy — one of the most complex and satisfying flavors of any cultivated mushroom.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          An underrated gem almost never seen in US grocery stores. More complex flavor than any oyster. Grows in beautiful tight clusters. A fun surprise for dinner guests who think they've tried all the mushrooms.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>Very popular in Korean and Japanese cooking — hard to find fresh in the US</li>
+            <li>Has a slightly sticky cap when wet — normal, not a sign of contamination</li>
+            <li>Dries and reconstitutes beautifully, retaining most of its complex flavor</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Buy Spawn / Cultures</div>
+        <div class="buy-links">
+          <a class="buy-link" href="https://northspore.com" target="_blank">North Spore</a>
+          <a class="buy-link" href="https://spawnrunners.com" target="_blank">Spawnrunners</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pioppino -->
+    <div class="card" data-difficulty="intermediate"
+         data-name="pioppino black poplar cyclocybe aegerita italian delicacy firm pasta braise">
+      <div class="card-header">
+        <span class="card-emoji">🌲</span>
+        <span class="difficulty-badge intermediate">Intermediate</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Pioppino / Black Poplar</div>
+        <div class="card-scientific">Cyclocybe aegerita</div>
+        <span class="martha-compat yes">✅ Martha Compatible (needs temperature drop to fruit)</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>6–10 weeks</strong></span>
+          <span class="chip">🌡 <strong>Colonize 75°F · Fruit 55–65°F</strong></span>
+          <span class="chip">📦 <strong>Supplemented Hardwood or Straw</strong></span>
+          <span class="chip">💰 <strong>Moderate yield</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Rich, meaty, slightly nutty. Stays firm through long braises and pasta sauces where most mushrooms dissolve.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          A beloved Italian autumn delicacy nearly impossible to find fresh in the US. The firmest cultivated mushroom — holds up to cooking in ways no oyster can. A genuine treat for anyone who loves Italian food.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>Called "pioppini" in Italy — an eagerly awaited autumn delicacy</li>
+            <li>Grows wild on poplar stumps across Europe and parts of North America</li>
+            <li>Longer shelf life than most fresh mushrooms — stays good for a week+</li>
+            <li>Requires a temperature drop (cold shock) to initiate pin formation</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Buy Spawn / Cultures</div>
+        <div class="buy-links">
+          <a class="buy-link" href="https://northspore.com" target="_blank">North Spore</a>
+          <a class="buy-link" href="https://out-grow.com" target="_blank">Out-Grow</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nameko -->
+    <div class="card" data-difficulty="intermediate"
+         data-name="nameko pholiota miso soup japanese sticky gel ramen third most consumed">
+      <div class="card-header">
+        <span class="card-emoji">🍱</span>
+        <span class="difficulty-badge intermediate">Intermediate</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Nameko</div>
+        <div class="card-scientific">Pholiota nameko</div>
+        <span class="martha-compat yes">✅ Martha Compatible</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>8–12 weeks</strong></span>
+          <span class="chip">🌡 <strong>Colonize 70–75°F · Fruit 50–60°F</strong></span>
+          <span class="chip">📦 <strong>Supplemented Hardwood</strong></span>
+          <span class="chip">💰 <strong>Moderate yield</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Rich, earthy, slightly nutty. The natural gel coating thickens soups — like a built-in sauce binder.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          Japan's essential miso soup mushroom. Fresh nameko is a revelation compared to the canned version sold in the US — different texture, richer flavor, and that distinctive natural gel. Japan's #3 most consumed mushroom.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>Natural polysaccharide gel coating thickens soups and stocks automatically</li>
+            <li>Japan's third most-consumed mushroom after shiitake and enoki</li>
+            <li>Canned nameko (the US default) is a pale shadow of the fresh product</li>
+            <li>Popular dried as a ramen topping in Japan</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Buy Spawn / Cultures</div>
+        <div class="buy-links">
+          <a class="buy-link" href="https://northspore.com" target="_blank">North Spore</a>
+          <a class="buy-link" href="https://fungi.com" target="_blank">Fungi Perfecti</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enoki -->
+    <div class="card" data-difficulty="intermediate"
+         data-name="enoki flammulina velutipes winter mushroom cold fruiting hot pot ramen white long">
+      <div class="card-header">
+        <span class="card-emoji">🌾</span>
+        <span class="difficulty-badge intermediate">Intermediate</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Enoki / Winter Mushroom</div>
+        <div class="card-scientific">Flammulina velutipes</div>
+        <span class="martha-compat yes">✅ Martha Compatible (needs cold fruiting — basement advantage)</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>5–8 weeks</strong></span>
+          <span class="chip">🌡 <strong>Colonize 70–75°F · Fruit 35–50°F</strong></span>
+          <span class="chip">📦 <strong>Supplemented Hardwood</strong></span>
+          <span class="chip">💰 <strong>Moderate–high yield</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Mild, slightly fruity, satisfyingly crunchy. Great raw in salads or cooked briefly in hot pot and ramen.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          The familiar white enoki from grocery stores is an etiolated (light-starved) cultivated form — wild enoki are brown and completely different-looking. Your cold basement is a natural fruiting chamber for this species.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>The grocery store white form is grown in darkness and cold — suppresses color and encourages elongation</li>
+            <li>Wild enoki are brown and stubby — nearly unrecognizable vs. the store version</li>
+            <li>Called "Winter Mushroom" — fruits naturally in near-freezing conditions</li>
+            <li>One of the few mushrooms safe to eat raw in moderate amounts</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Buy Spawn / Cultures</div>
+        <div class="buy-links">
+          <a class="buy-link" href="https://northspore.com" target="_blank">North Spore</a>
+          <a class="buy-link" href="https://out-grow.com" target="_blank">Out-Grow</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reishi -->
+    <div class="card" data-difficulty="intermediate"
+         data-name="reishi ganoderma lucidum lingzhi medicinal immune tea tincture immortality beautiful">
+      <div class="card-header">
+        <span class="card-emoji">☯️</span>
+        <span class="difficulty-badge intermediate">Intermediate</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Reishi / Lingzhi</div>
+        <div class="card-scientific">Ganoderma lucidum</div>
+        <span class="martha-compat yes">✅ Martha Compatible (high humidity required)</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>12–24 weeks</strong></span>
+          <span class="chip">🌡 <strong>70–80°F</strong></span>
+          <span class="chip">📦 <strong>Supplemented Hardwood</strong></span>
+          <span class="chip">💰 <strong>Medicinal / Supplement use</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Very bitter — not eaten directly. Dried and used as tea, tincture, or supplement powder.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          Called the "Mushroom of Immortality" in Chinese tradition. The gorgeous lacquered fruiting bodies look like art objects. A meditative, slow grow — and the result is used as a daily immune supplement.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>Used in Traditional Chinese Medicine for 2,000+ years — called "Lingzhi" (靈芝)</li>
+            <li>Shape is controllable: high CO2 = antler form; fresh air = classic shelf form</li>
+            <li>Releases a rust-red cloud of spores at maturity — stunning and messy</li>
+            <li>Supplement powder sells for $15–30/oz in health stores</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Buy Spawn / Cultures</div>
+        <div class="buy-links">
+          <a class="buy-link" href="https://northspore.com" target="_blank">North Spore</a>
+          <a class="buy-link" href="https://fungi.com" target="_blank">Fungi Perfecti</a>
+          <a class="buy-link" href="https://mushroommountain.com" target="_blank">Mushroom Mountain</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Turkey Tail -->
+    <div class="card" data-difficulty="intermediate"
+         data-name="turkey tail trametes versicolor medicinal PSK immune cancer tea decorative paul stamets">
+      <div class="card-header">
+        <span class="card-emoji">🦃</span>
+        <span class="difficulty-badge intermediate">Intermediate</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Turkey Tail</div>
+        <div class="card-scientific">Trametes versicolor</div>
+        <span class="martha-compat yes">✅ Martha Compatible</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>12–20 weeks</strong></span>
+          <span class="chip">🌡 <strong>60–80°F</strong></span>
+          <span class="chip">📦 <strong>Hardwood Sawdust / Logs</strong></span>
+          <span class="chip">💰 <strong>Medicinal tea / Decorative</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Too tough to eat directly. Simmered as a medicinal tea or ground into powder for capsules.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          The most scientifically studied mushroom in the world. Contains PSK, an approved cancer therapy adjunct in Japan since 1977. Growing your own means a fresh, ongoing supply of daily medicinal tea.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>PSK (polysaccharide-K, from Turkey Tail) is an approved cancer supplement in Japan since 1977</li>
+            <li>Grows on virtually every dead hardwood tree in North America — the most common medicinal mushroom</li>
+            <li>Beautiful concentric banding in dozens of color combinations — striking decorative object</li>
+            <li>Paul Stamets' mother used Turkey Tail extract during breast cancer treatment — featured in the documentary "Fantastic Fungi"</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Buy Spawn / Cultures</div>
+        <div class="buy-links">
+          <a class="buy-link" href="https://northspore.com" target="_blank">North Spore</a>
+          <a class="buy-link" href="https://fungi.com" target="_blank">Fungi Perfecti</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Button/Crimini/Portobello -->
+    <div class="card" data-difficulty="intermediate"
+         data-name="button crimini portobello agaricus bisporus pizza burger pasta world most consumed">
+      <div class="card-header">
+        <span class="card-emoji">🍕</span>
+        <span class="difficulty-badge intermediate">Intermediate</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Button / Crimini / Portobello</div>
+        <div class="card-scientific">Agaricus bisporus</div>
+        <span class="martha-compat partial">⚠️ Possible — requires complex substrate and casing layer</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>8–12 weeks</strong></span>
+          <span class="chip">🌡 <strong>65–75°F</strong></span>
+          <span class="chip">📦 <strong>Composted manure + straw (complex)</strong></span>
+          <span class="chip">💰 <strong>High yield</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Classic umami, earthy, universally familiar. Portobello is just a fully matured crimini — same mushroom, richer flavor.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          The world's most consumed mushroom. There's something satisfying about growing exactly what you know. Button = young, crimini = adolescent, portobello = fully matured. All are the same species.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>Accounts for approximately 90% of US mushroom sales by volume</li>
+            <li>Button, crimini, and portobello are literally the same species at different maturities</li>
+            <li>Requires a peat/limestone "casing layer" on top of substrate to trigger fruiting</li>
+            <li>Substrate is complex — horse manure, straw, and gypsum, composted and pasteurized</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Buy Spawn / Cultures</div>
+        <div class="buy-links">
+          <a class="buy-link" href="https://northspore.com" target="_blank">North Spore</a>
+          <a class="buy-link" href="https://fieldforest.net" target="_blank">Field &amp; Forest</a>
+          <a class="buy-link" href="https://mushroommountain.com" target="_blank">Mushroom Mountain</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /grid intermediate -->
+
+  <!-- ════════════════════════════════════════════
+       ADVANCED / HARD
+  ════════════════════════════════════════════ -->
+  <div class="section-header" data-section="hard">
+    <span class="section-badge hard">Advanced</span>
+    <h2>The Legends — Mostly Impossible to Cultivate Indoors</h2>
+  </div>
+  <div class="grid" id="grid-hard">
+
+    <!-- Morel -->
+    <div class="card" data-difficulty="hard"
+         data-name="morel morchella holy grail spring forage impossible mycorrhizal tree roots 200 per pound">
+      <div class="card-header">
+        <span class="card-emoji">🏆</span>
+        <span class="difficulty-badge hard">Advanced</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Morel</div>
+        <div class="card-scientific">Morchella spp.</div>
+        <span class="martha-compat no">❌ Cannot be grown indoors</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>Spring only — season-dependent</strong></span>
+          <span class="chip">🌡 <strong>50–60°F soil temp triggers fruiting</strong></span>
+          <span class="chip">📦 <strong>Mycorrhizal — lives with specific tree roots</strong></span>
+          <span class="chip">💰 <strong>$50–200/lb fresh</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Intensely earthy, nutty, almost meaty — one of the most prized and complex flavors in all of cooking.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          The holy grail. Decades of commercial cultivation attempts have largely failed. Outdoor beds near compatible trees (elm, ash, apple) sometimes produce results — but it's more hope than science.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>Lives in symbiosis with specific tree roots — cannot complete its life cycle without them</li>
+            <li>Appears overnight after spring rains when soil hits ~50°F</li>
+            <li>Always hollow inside — distinguishes true morels from toxic false morels</li>
+            <li>Mycelium can persist in soil for decades, fruiting unpredictably year to year</li>
+            <li>$50–200/lb at specialty food stores and high-end restaurants</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Outdoor Cultivation Attempts</div>
+        <div class="buy-links">
+          <a class="buy-link" href="https://fungi.com" target="_blank">Fungi Perfecti (outdoor kits)</a>
+          <a class="buy-link na">Indoor: Not Possible</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chanterelle -->
+    <div class="card" data-difficulty="hard"
+         data-name="chanterelle cantharellus apricot fruity golden forage mycorrhizal oak pine impossible expensive">
+      <div class="card-header">
+        <span class="card-emoji">🌟</span>
+        <span class="difficulty-badge hard">Advanced</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Golden Chanterelle</div>
+        <div class="card-scientific">Cantharellus cibarius</div>
+        <span class="martha-compat no">❌ Cannot be cultivated — forage only</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>Forage only — summer and fall</strong></span>
+          <span class="chip">🌡 <strong>Cool, moist forest floor</strong></span>
+          <span class="chip">📦 <strong>Mycorrhizal — symbiotic with oak, beech, pine</strong></span>
+          <span class="chip">💰 <strong>$30–80/lb fresh</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Fruity, apricot-like, peppery, buttery — one of the top five most prized culinary mushrooms on Earth.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          Cannot be cultivated — all commercial supply is wild-foraged. Decades of attempts have failed. Learn to forage — chanterelles are abundant in forests near oaks, and the hunt is its own reward.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>All commercial supply worldwide is wild-foraged — no cultivated chanterelles exist at scale</li>
+            <li>The "false gills" are actually forked ridges — a key identification feature vs. look-alikes</li>
+            <li>Beloved across Europe, North America, and West Africa</li>
+            <li>European countries export hundreds of tons per year to global luxury food markets</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Where to Get Them</div>
+        <div class="buy-links">
+          <a class="buy-link na">Forage wild — or farmers markets in season</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Porcini -->
+    <div class="card" data-difficulty="hard"
+         data-name="porcini boletus edulis cep king bolete italian french dried risotto pasta nutty expensive">
+      <div class="card-header">
+        <span class="card-emoji">🎯</span>
+        <span class="difficulty-badge hard">Advanced</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Porcini / Cep / King Bolete</div>
+        <div class="card-scientific">Boletus edulis</div>
+        <span class="martha-compat no">❌ Cannot be cultivated — forage only</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>Forage only — late summer and fall</strong></span>
+          <span class="chip">🌡 <strong>Cool mountain forests after rain</strong></span>
+          <span class="chip">📦 <strong>Mycorrhizal — pine, spruce, oak, chestnut</strong></span>
+          <span class="chip">💰 <strong>$40–100/lb fresh · $60–200/lb dried</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Rich, deeply nutty, intensely savory. Dried porcini is even more concentrated — the backbone of Italian and French cooking.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          The king of European cuisine — essential in risotto, pasta, and sauces. All supply is wild-foraged. Dried porcini is one of the most intensely flavored ingredients that exists. Cannot be cultivated, period.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>Dried porcini is approximately 10× more concentrated in flavor than fresh</li>
+            <li>Italy exports hundreds of tons of dried porcini annually to global kitchens</li>
+            <li>Cultivation attempts stretch back to the 1800s — none have succeeded long-term</li>
+            <li>A single late-summer rain event can produce thousands of pounds in one forest</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Where to Get Them</div>
+        <div class="buy-links">
+          <a class="buy-link na">Forage wild or buy dried at specialty grocery stores</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Matsutake -->
+    <div class="card" data-difficulty="hard"
+         data-name="matsutake tricholoma japanese pine luxury expensive cultural gift cinnamon spicy 2000 per pound">
+      <div class="card-header">
+        <span class="card-emoji">💎</span>
+        <span class="difficulty-badge hard">Advanced</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Matsutake</div>
+        <div class="card-scientific">Tricholoma matsutake</div>
+        <span class="martha-compat no">❌ Cannot be cultivated</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>Forage only — autumn</strong></span>
+          <span class="chip">🌡 <strong>Cool mountain pine forests</strong></span>
+          <span class="chip">📦 <strong>Mycorrhizal — Japanese red pine</strong></span>
+          <span class="chip">💰 <strong>$100–2,000/lb depending on grade</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Intensely aromatic — spicy, cinnamon-like, uniquely pungent. Completely unlike any other mushroom in the world.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          Cannot be cultivated. Japan imports 1,000+ tons per year and domestic supply is collapsing. If you live near Japanese red pine forests in the Pacific Northwest, you can forage them in fall.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>Top-grade specimens sell for $2,000/lb in Japan during peak season</li>
+            <li>Cultural significance in Japan rivals cherry blossoms — given as luxury autumn gifts</li>
+            <li>Japanese domestic harvest has fallen over 99% since the 1940s due to pine forest changes</li>
+            <li>Pacific Northwest US and Canada export significant quantities to Japan every year</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Where to Get Them</div>
+        <div class="buy-links">
+          <a class="buy-link na">Forage or purchase at Asian specialty markets in fall</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Black Truffle -->
+    <div class="card" data-difficulty="hard"
+         data-name="black truffle tuber melanosporum perigord diamond expensive luxury dog inoculated tree 5 year">
+      <div class="card-header">
+        <span class="card-emoji">💰</span>
+        <span class="difficulty-badge hard">Advanced</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Black Truffle / Périgord Truffle</div>
+        <div class="card-scientific">Tuber melanosporum</div>
+        <span class="martha-compat no">❌ Requires inoculated outdoor trees — 5–10 year wait</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>5–10 years from inoculated sapling</strong></span>
+          <span class="chip">🌡 <strong>Mediterranean climate preferred</strong></span>
+          <span class="chip">📦 <strong>Mycorrhizal — oak and hazelnut trees</strong></span>
+          <span class="chip">💰 <strong>$800–3,000/lb</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Earthy, musky, chocolate-like, intensely aromatic. Shaved raw over pasta, eggs, or risotto — heat destroys the aroma.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          The "black diamond" of cuisine. You can purchase inoculated hazelnut saplings today and potentially harvest your own truffles in 5–10 years. A very long game — but truly possible.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>$800–3,000/lb — one of the most expensive food ingredients by weight on Earth</li>
+            <li>Trained dogs and pigs locate them underground by scent — no reliable alternative method</li>
+            <li>80% of French black truffle production comes from the Périgord region</li>
+            <li>Inoculated hazelnut trees are commercially available — truffle farming is a real (very patient) business</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Buy Inoculated Saplings (for outdoor cultivation)</div>
+        <div class="buy-links">
+          <a class="buy-link na">Search: "inoculated truffle tree nursery" — several US suppliers exist</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Maitake -->
+    <div class="card" data-difficulty="hard"
+         data-name="maitake grifola frondosa hen of the woods dancing mushroom oak beta glucan immune 100 pound">
+      <div class="card-header">
+        <span class="card-emoji">🍂</span>
+        <span class="difficulty-badge hard">Advanced</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Maitake / Hen of the Woods</div>
+        <div class="card-scientific">Grifola frondosa</div>
+        <span class="martha-compat partial">⚠️ Very difficult — some indoor cultivation reported but low yield</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>Very long — mostly wild-foraged</strong></span>
+          <span class="chip">🌡 <strong>Cool autumn conditions</strong></span>
+          <span class="chip">📦 <strong>Semi-mycorrhizal with oak</strong></span>
+          <span class="chip">💰 <strong>$25–40/lb at specialty stores</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Rich, earthy, woodsy — often called the most flavorful of all foraged or cultivated mushrooms. Extraordinary in soups.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          Some dedicated growers have achieved indoor results on supplemented sawdust — yields are low and unpredictable, but the flavor payoff is enormous. Worth attempting once you're comfortable with harder grows.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>A single wild specimen at the base of old-growth oak can weigh over 100 lbs</li>
+            <li>Called "Dancing Mushroom" (舞茸) in Japanese — legend says people danced with joy upon finding one</li>
+            <li>Studied extensively for beta-glucan content and immune system support</li>
+            <li>Whole Foods and specialty grocers stock these at $25–40/lb in autumn</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Buy Spawn (for cultivation attempts)</div>
+        <div class="buy-links">
+          <a class="buy-link" href="https://northspore.com" target="_blank">North Spore</a>
+          <a class="buy-link" href="https://fungi.com" target="_blank">Fungi Perfecti</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- White Truffle -->
+    <div class="card" data-difficulty="hard"
+         data-name="white truffle tuber magnatum alba italy most expensive luxury garlic shallot 10000 per pound">
+      <div class="card-header">
+        <span class="card-emoji">👑</span>
+        <span class="difficulty-badge hard">Advanced</span>
+      </div>
+      <div class="card-body">
+        <div class="card-name">White Truffle / Alba Truffle</div>
+        <div class="card-scientific">Tuber magnatum</div>
+        <span class="martha-compat no">❌ Impossible — every cultivation attempt has failed</span>
+        <div class="stats-chips">
+          <span class="chip">⏱ <strong>Cannot be cultivated</strong></span>
+          <span class="chip">🌡 <strong>Northern Italian forest conditions</strong></span>
+          <span class="chip">📦 <strong>Mycorrhizal — oak, poplar, linden, willow</strong></span>
+          <span class="chip">💰 <strong>$3,000–10,000/lb</strong></span>
+        </div>
+        <div class="flavor"><span class="flavor-label">Flavor: </span>Garlicky, musky, honey-like — intensely aromatic raw garlic and shallot notes. Always shaved raw; heat kills the aroma.</div>
+        <div class="why-grow">
+          <div class="why-grow-label">Why grow this?</div>
+          You simply cannot. Every commercial and academic cultivation attempt has failed. The White Truffle depends entirely on wild harvest from northern Italy. It is the most expensive food ingredient by weight in the world.
+        </div>
+        <div class="facts">
+          <div class="facts-label">Fun Facts</div>
+          <ul>
+            <li>$3,000–10,000/lb — the most expensive food ingredient on Earth by weight</li>
+            <li>A single specimen sold at charity auction for $330,000</li>
+            <li>Found almost exclusively around Alba, Piedmont, Italy — a tightly guarded secret</li>
+            <li>Season runs October–December; restaurants worldwide wait for the first shipments of the year</li>
+            <li>Every scientific attempt at indoor cultivation has failed — no exception</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="buy-label">Where to Get Them</div>
+        <div class="buy-links">
+          <a class="buy-link na">Wild-foraged only — luxury food importers in season</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /grid hard -->
+</main>
+
+<footer>
+  <p>Built for the Martha Tent grow project &mdash; basement setup, external exhaust &mdash; Updated February 2026</p>
+  <p>Spawn vendors: <a href="https://northspore.com" target="_blank">North Spore</a> &middot; <a href="https://fungi.com" target="_blank">Fungi Perfecti</a> &middot; <a href="https://fieldforest.net" target="_blank">Field &amp; Forest</a> &middot; <a href="https://out-grow.com" target="_blank">Out-Grow</a> &middot; <a href="https://mushroommountain.com" target="_blank">Mushroom Mountain</a> &middot; <a href="https://spawnrunners.com" target="_blank">Spawnrunners</a></p>
+</footer>
+
+<script>
+  let activeFilter = 'all';
+  let searchTerm   = '';
+
+  function applyFilters() {
+    const cards = document.querySelectorAll('.card');
+    let visible = 0;
+
+    cards.forEach(card => {
+      const matchesDiff   = activeFilter === 'all' || card.dataset.difficulty === activeFilter;
+      const matchesSearch = searchTerm === '' || (card.dataset.name || '').includes(searchTerm.toLowerCase());
+      if (matchesDiff && matchesSearch) {
+        card.classList.remove('hidden');
+        visible++;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    ['beginner', 'intermediate', 'hard'].forEach(section => {
+      const grid   = document.getElementById('grid-' + section);
+      const header = document.querySelector('[data-section="' + section + '"]');
+      if (!grid || !header) return;
+      const anyVisible  = grid.querySelectorAll('.card:not(.hidden)').length > 0;
+      const showSection = activeFilter === 'all' || activeFilter === section;
+      header.style.display = (showSection && anyVisible) ? '' : 'none';
+      grid.style.display   = anyVisible ? '' : 'none';
+    });
+
+    const total = document.querySelectorAll('.card').length;
+    document.getElementById('count-badge').textContent =
+      visible === total
+        ? 'Showing all ' + total + ' strains'
+        : 'Showing ' + visible + ' of ' + total + ' strains';
+
+    document.getElementById('no-results').style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  function setFilter(type, btn) {
+    activeFilter = type;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  function setSearch(val) {
+    searchTerm = val.trim();
+    applyFilters();
+  }
+</script>
+</body>
+</html>
