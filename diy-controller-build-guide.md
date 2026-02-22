@@ -55,8 +55,6 @@ Everything else (UVC, lights) runs on timers. All data streams to a web dashboar
                      (bypass relay board in MANUAL mode)
 ```
 
-![Controller Architecture](diy-controller-wiring.svg)
-
 ---
 
 ## Parts List
