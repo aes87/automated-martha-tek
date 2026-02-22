@@ -135,6 +135,26 @@ This section is a placeholder — implementation coming once the hardware is run
 
 ---
 
+## Part 5 — Growing Mushrooms
+
+Once the tent is built and running, the next question is: what do you actually grow in it?
+
+**→ [Mushroom Strain Guide](strain-guide.html)** *(open in browser)*
+
+A reference covering 25 species and strains across three difficulty tiers — beginner, intermediate, and advanced. Each entry includes:
+
+- Time from inoculation to first harvest
+- Temperature range for colonization and fruiting
+- Substrate requirements
+- Martha tent compatibility
+- Flavor description
+- Fun facts and background
+- Buy links to major spawn vendors (North Spore, Fungi Perfecti, Out-Grow, Field & Forest, Mushroom Mountain, Spawnrunners)
+
+The guide is filterable by difficulty and searchable by keyword.
+
+---
+
 ## How the Parts Fit Together
 
 The tent guide is self-contained — you can build it exactly as dccrens designed it, using the Inkbird humidity controller and CO2 controller. The DIY controller guide is a drop-in upgrade that replaces those two controllers (and the Inkbird IBS-TH2 Plus monitor) with the ESP32-S3 board. The firmware is the software for that board. The HA integration adds persistent logging and alerts on top.
@@ -146,6 +166,7 @@ dccrens Martha 2.0 tent
   └── replace: CO2 controller + Inkbird IHC200 + Inkbird IBS-TH2 Plus
       └── with: DIY ESP32-S3 controller (Part 2) + firmware (Part 3)
           └── optional: HA integration (Part 4A) → persistent history + alerts
+              └── what to grow: strain guide (Part 5) → species selection + sourcing
 ```
 
 ---
