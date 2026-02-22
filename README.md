@@ -2,6 +2,24 @@
 
 A writeup of u/dccrens' proven Martha tent build, plus an optional DIY ESP32-S3 controller and firmware that replaces the off-the-shelf controllers with something more data-rich.
 
+## Contents
+
+- [Part 1 — Martha Tent Build](#part-1--martha-tent-build)
+- [Part 2 — Build a Controller *(optional)*](#part-2--build-a-controller-optional)
+  - [Part 2A — DIY ESP32-S3 Controller](#part-2a--diy-esp32-s3-controller)
+  - [Part 2B — Firmware](#part-2b--firmware)
+- [Part 3 — Home Assistant Integration *(optional)*](#part-3--home-assistant-integration-optional)
+  - [Part 3A — HA Integration (via ha-tools)](#part-3a--ha-integration-via-ha-tools)
+  - [Part 3B — Grafana + InfluxDB *(coming soon)*](#part-3b--grafana--influxdb-coming-soon)
+- [Part 4 — Grow Mushrooms](#part-4--grow-mushrooms)
+  - [Part 4A — Select / Buy Strains](#part-4a--select--buy-strains)
+  - [Part 4B — Setup *(coming soon)*](#part-4b--setup-coming-soon)
+  - [Part 4C — Tracking / Learning *(coming soon)*](#part-4c--tracking--learning-coming-soon)
+- [How the Parts Fit Together](#how-the-parts-fit-together)
+- [Credits](#credits)
+
+---
+
 ## Part 1 — Martha Tent Build
 
 A proven, fully automated Martha tent fruiting chamber — CO2-controlled FAE, humidity-controlled fogger, modular for easy cleaning. Based on u/dccrens' Martha 2.0 build shared on r/MushroomGrowers in January 2022 (274 upvotes).
@@ -12,21 +30,21 @@ A proven, fully automated Martha tent fruiting chamber — CO2-controlled FAE, h
 
 **Cost: ~$250 USD** using off-the-shelf controllers.
 
-This guide is a faithful writeup of dccrens' original build — a real, working system that has been running for over a year. **It stands completely on its own.** Parts 2 and 3 below are optional extensions.
+This guide is a faithful writeup of dccrens' original build — a real, working system that has been running for over a year. **It stands completely on its own.** Parts 2, 3, and 4 below are optional extensions.
 
 ---
 
-## Parts 2 & 3 — DIY Controller and Firmware (optional)
+## Part 2 — Build a Controller *(optional)*
 
 > **⚠️ Work in progress — not yet built**
 >
-> Parts 2 and 3 are an experiment in AI-assisted hardware and firmware design. The controller guide and firmware were written collaboratively with an AI assistant and have not been physically implemented or tested. If you want to build the DIY controller, either review the hardware, wiring, and firmware carefully yourself before trusting them, or wait for the human author to report back on how it goes.
+> Parts 2A and 2B are an experiment in AI-assisted hardware and firmware design. The controller guide and firmware were written collaboratively with an AI assistant and have not been physically implemented or tested. If you want to build the DIY controller, either review the hardware, wiring, and firmware carefully yourself before trusting them, or wait for the human author to report back on how it goes.
 
-The off-the-shelf CO2 and humidity controllers in the Martha tent build work well and are the safe, proven choice. Parts 2 and 3 describe a DIY ESP32-S3 board that replaces them — same tent, same fogger setup, just a different controller. The motivation is more sensors, per-shelf data, and a web dashboard rather than cost savings.
+The off-the-shelf CO2 and humidity controllers in the Martha tent build work well and are the safe, proven choice. Parts 2A and 2B describe a DIY ESP32-S3 board that replaces them — same tent, same fogger setup, just a different controller. The motivation is more sensors, per-shelf data, and a web dashboard rather than cost savings.
 
 ---
 
-## Part 2 — DIY ESP32-S3 Controller *(optional)*
+### Part 2A — DIY ESP32-S3 Controller
 
 Replace the off-the-shelf CO2 and humidity controllers with a single ESP32-S3-based board. Hardware-adapted from u/mettalmag's open-source greenhouse controller (r/MushroomGrowers, Jan 2025).
 
@@ -47,7 +65,7 @@ Replace the off-the-shelf CO2 and humidity controllers with a single ESP32-S3-ba
 
 ---
 
-## Part 3 — Firmware *(optional, requires Part 2)*
+### Part 2B — Firmware
 
 Open-source ESP32-S3 firmware for the DIY controller. PlatformIO + Arduino framework. Web dashboard at `http://martha.local`, REST API, OTA updates.
 
@@ -74,11 +92,11 @@ pio test -e native                       # run unit tests on PC (no hardware nee
 
 ---
 
-## Part 4 — Home Assistant Integration *(optional, requires Part 3)*
+## Part 3 — Home Assistant Integration *(optional)*
 
 Connect the ESP32 controller to Home Assistant for persistent time-series logging, dashboards, and alerts. The controller's built-in web dashboard shows a live 30-minute window only — HA stores the full history and survives browser refreshes and reboots.
 
-### Part 4A — HA Integration (via ha-tools)
+### Part 3A — HA Integration (via ha-tools)
 
 > **⚠️ Work in progress — not yet tested against live hardware**
 
@@ -127,7 +145,7 @@ After applying, Martha sensors appear in HA at `sensor.martha_co2`, `sensor.mart
 
 ---
 
-### Part 4B — Grafana + InfluxDB *(coming soon)*
+### Part 3B — Grafana + InfluxDB *(coming soon)*
 
 An overkill but beautiful alternative: InfluxDB for long-term time-series storage + Grafana for dashboards with per-shelf overlays, VPD heatmaps, and substrate temperature trends.
 
@@ -135,23 +153,29 @@ This section is a placeholder — implementation coming once the hardware is run
 
 ---
 
-## Part 5 — Growing Mushrooms
+## Part 4 — Grow Mushrooms
 
-Once the tent is built and running, the next question is: what do you actually grow in it?
+Once the tent is built and running, the next question is what to actually grow in it.
+
+### Part 4A — Select / Buy Strains
 
 **→ [Mushroom Strain Guide](strain-guide.html)** *(open in browser)*
 
-A reference covering 25 species and strains across three difficulty tiers — beginner, intermediate, and advanced. Each entry includes:
+A reference covering 25 species and strains across three difficulty tiers — beginner, intermediate, and advanced. Each entry includes grow time, temperature range, substrate, Martha tent compatibility, flavor notes, fun facts, and buy links to major spawn vendors.
 
-- Time from inoculation to first harvest
-- Temperature range for colonization and fruiting
-- Substrate requirements
-- Martha tent compatibility
-- Flavor description
-- Fun facts and background
-- Buy links to major spawn vendors (North Spore, Fungi Perfecti, Out-Grow, Field & Forest, Mushroom Mountain, Spawnrunners)
+The guide is filterable by difficulty level and searchable by keyword.
 
-The guide is filterable by difficulty and searchable by keyword.
+---
+
+### Part 4B — Setup *(coming soon)*
+
+Substrate preparation, sterilization, inoculation, and fruiting workflows for each strain. Coming once the first grows are underway.
+
+---
+
+### Part 4C — Tracking / Learning *(coming soon)*
+
+Per-batch grow logs, yield tracking, environmental correlation, and lessons learned over time.
 
 ---
 
@@ -164,9 +188,9 @@ The physical tent, fogger system, fans, ducting, and everything else stays the s
 ```
 dccrens Martha 2.0 tent
   └── replace: CO2 controller + Inkbird IHC200 + Inkbird IBS-TH2 Plus
-      └── with: DIY ESP32-S3 controller (Part 2) + firmware (Part 3)
-          └── optional: HA integration (Part 4A) → persistent history + alerts
-              └── what to grow: strain guide (Part 5) → species selection + sourcing
+      └── with: DIY ESP32-S3 controller (Part 2A) + firmware (Part 2B)
+          └── optional: HA integration (Part 3A) → persistent history + alerts
+              └── what to grow: strain guide (Part 4A) → species selection + sourcing
 ```
 
 ---
