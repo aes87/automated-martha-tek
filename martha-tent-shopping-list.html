@@ -327,10 +327,15 @@
   .item-link {
     color: var(--accent);
     text-decoration: none;
-    font-size: 13px;
+    font-size: 11px;
+    font-weight: 600;
     line-height: 1;
+    border: 1px solid var(--accent);
+    border-radius: 3px;
+    padding: 2px 5px;
+    white-space: nowrap;
   }
-  .item-link:hover { color: var(--text); }
+  .item-link:hover { background: rgba(88,166,255,0.12); color: var(--text); border-color: var(--text); }
 
   /* Checked state */
   .item-row.is-checked .item-label {
@@ -473,8 +478,8 @@ local storage, never transmitted anywhere except the GitHub API.</p>
     ]},
     { section: 'Fogger & Humidity System', id: 'fog', items: [
       { id: 'fog-fogger', label: 'House of Hydro 5-disc ultrasonic fogger', price: '', url: 'https://thehouseofhydro.com/products/5-disc-mist-maker-with-float-and-spare-discs' },
-      { id: 'fog-tub', label: '19-gallon tub — black/yellow, locking lid', price: '', url: 'https://www.amazon.com/CX-17-Gallon-Snap-Tight-Weather-Resistant-Organization/dp/B097YTDXQB' },
-      { id: 'fog-uvc', label: 'Aquarium-grade UVC sterilizer (mounts inside tub)', price: '', url: 'https://www.amazon.com/s?k=aquarium+uv+sterilizer+submersible' },
+      { id: 'fog-tub', label: '19-gallon tub — black/yellow, locking lid', price: '', url: 'https://www.amazon.com/Storage-Stackable-Durable-Lockable-Tie-Down/dp/B0FXC83H93/ref=sr_1_4?crid=UGSXNR9I26K5&dib=eyJ2IjoiMSJ9.jXoiWvajcIps7RsaQb9oyqdgsfALABl9HbcMpXLrGNhwhs_QBgsenMhcxVhVBpvITVDeb_pMo-ex6Df7uS8Z6Qrcz11PNXez_eMDVAo_XP9bgXphvNYWmDsqEJJKNKtBNSDXCrDevAdCz1DhENNb4R41zSqICWMI1vI55XoSVA36OfxnS7PtphYDXeiYc1HjsW2tCy3kUWV_XxDySMfGJj2BbgAQlCXHSoz_GZg7_gToIf8N81iCIT95Gc4Wcm4HTTk2qa5C8flthItyYsXaTyLscin-NEaU7lry7NDP2qg.q5kD3eK-7Y0S8zw8yI86biC6eeP87MJGTy3O97uPXn8&dib_tag=se&keywords=storage+tub+17+gallon+gasket&qid=1771797696&s=hi&sprefix=storage+tub+17+gallon+gasket%2Ctools%2C95&sr=1-4' },
+      { id: 'fog-uvc', label: 'Aquarium-grade UVC sterilizer (mounts inside tub)', price: '', url: 'https://www.amazon.com/Aquarium-Light-Fish-Tank-Pond/dp/B0FK1Y1V52?crid=4R7I7JSODJDR&dib=eyJ2IjoiMSJ9.eyQa5ryf-YlUdZm7EAHlX9DTSlSoexkMhF9jFXwVXENVEmgsdURRAvVFnOZc3W6jSr16v9xbYKlsYb9UuWqV43f_SvExcO2DSOOkG8-lw54DcHKfssstR5_mxPg72LPQtpQjW6VqSVysU4DtkxyKtmqwHq9wM6mciFnS9O5nWm6VvSVJESJzHaQVJhX5qRkbNu5_-a6IwpYVtbH_CVf-sip-GJg6k0DAeKNZNEMFVNna61oBMRLmISFK7drwaG-A72BaH4-q-lf1hOd3iS1kjHbdhqVpXNqRBvuHB4noYQY.QNyZ5XRxk7_vguuKuxixDhgBD76BtjurRhKnusC9yH4&dib_tag=se&keywords=aquarium+uv+stabilizer+submersible+9w&qid=1771798467&sprefix=aquarium+uv+stabilizer+submersible+9w%2Caps%2C119&sr=8-2' },
       { id: 'fog-timer', label: 'Outlet timer (for UVC — 1hr ON / 4hr OFF cycle)', price: '', url: 'https://www.amazon.com/DEWENWILS-Mechanical-Programmable-Electrical-Grounded/dp/B074L2ZLQQ' },
       { id: 'fog-fan', label: '4" waterproof computer fan (mounts on tub lid)', price: '', url: 'https://www.amazon.com/AmRunJe-Waterproof-Computer-Variable-Controller/dp/B0DW8JDTV7' },
       { id: 'fog-h2o2', label: 'Hydrogen peroxide 3% (pharmacy bottle)', price: '~$2' },
@@ -486,14 +491,14 @@ local storage, never transmitted anywhere except the GitHub API.</p>
     { section: 'Ducting', id: 'duct', items: [
       { id: 'duct-flex', label: '4" flexible silver duct / flex pipe', price: '', url: 'https://www.amazon.com/AC-Infinity-Heavy-Duty-Four-Layer-Ventilation/dp/B071LHCFZ8' },
       { id: 'duct-elbow', label: '4" galvanized adjustable elbow', price: '', url: 'https://www.amazon.com/Mitchell-Metal-Adjustable-Elbow-Degree/dp/B0DFDSC1C5' },
-      { id: 'duct-adapter', label: 'Custom inlet adapter — hard plastic sheet, 4" hole (DIY)', price: '' },
+      { id: 'duct-adapter', label: 'Custom inlet adapter — hard plastic sheet, 4" hole (DIY)', price: '', url: 'https://www.amazon.com/gp/product/B0BP9VGR3T?smid=A37FRF5AURRF9M&psc=1' },
     ]},
     { section: 'Drip Tray & Floor', id: 'floor', items: [
       { id: 'floor-tray', label: 'Commercial drip tray — 41.3" × 27.75" × 1"', price: '', url: 'https://www.amazon.com/dp/B0002NNWDW' },
       { id: 'floor-plastic', label: '6-mil plastic sheeting (cut to fit inside tray)', price: '', url: 'https://www.amazon.com/Plastic-Sheeting-Polyethylene-Construction-Barrier/dp/B0CN9GMZJN' },
     ]},
     { section: 'Lighting & Misc', id: 'misc', items: [
-      { id: 'misc-led', label: 'LED strips (interior lighting)', price: '', url: 'https://www.amazon.com/Lahoku-Plant-16-4ft-Waterproof-Spectrum/dp/B01KLUTB1M' },
+      { id: 'misc-led', label: 'LED strips + driver (interior lighting)', price: '', url: 'https://www.amazon.com/MujHoJm-Waterproof-Transformer-Outdoor-Lighting/dp/B0F6CN7ZTJ?crid=1C9DYPLZLLMQP&dib=eyJ2IjoiMSJ9.tGQo-IRH2KCGIGbBxGhGk7pdIgX6LnttFRkAKH_KOrHaSv4EXH5ZYtSMg_FkopkHdyWfl2NXSlLuGopjW0RM-JLZ85hOysvExcs4XXDjAJXJhYlY0pJwhvkAbvtL4a0u4OzJMYiRdvgI6vLoLb1z4tJrAyNipvF6ORnHvdtvDMrOVvlWEtflmGVh0ufVQjZwln980WWAHe6dWpsWMsPBWA7EavusZ3h8uNljsbvYi_yNxjr_yMUQGZLo62YkodoYJUPXJTTDM-R-qIVATkCVHK4qgmAYacKLAINbCE3-u1Q.CzfWdm8kulGkR_dfhLBn1OZQMvGrVzp2Lu4lqTL2xLo&dib_tag=se&keywords=12v+2a+led+driver+class+2&qid=1771797345&s=hi&sprefix=12v+2a+led+driver+class+2%2Ctools%2C105&sr=1-5', url2: 'https://www.amazon.com/BTF-LIGHTING-Flexible-Daylight-Dimmable-Controller/dp/B0FNMJMR77?crid=31QIW1RU7H6VX&dib=eyJ2IjoiMSJ9.pe6jlVrE9ueQJhEtKPLlwi-M8uZUT3eKFd2SWjgqEvptfqW6O9in2DYgYM9yL61YdebKLblQxnT6ElKsdEyYPEG1l3_e8pz9bU0cCtHsPFHRbFhFVto359tJZ9mirxtDjlIZ1FfmNIdGZBUONkRl3mlTESlXRZwtmvxend5fS8d3SqlPtoKSdVFAmNAzs2040NfrFK-AQ6tY9eRIVakFBbljiT34VUZNynWbxuXM8VyzPj7L2Kb2o1gF9Qz94C19MkgoCDl30ZuotG3MBXbwHcOdSXE5-DYzzPqfpsMh2iw.hBm4n6wlSrXYwKyG3GxZRZTzGmWdsf64tlHzNjaozJI&dib_tag=se&keywords=BTF-LIGHTING%2BIP67%2B12V%2B5000K%2BLED%2Bstrip&qid=1771797234&s=hi&sprefix=btf-lighting%2Bip67%2B12v%2B5000k%2Bled%2Bstrip%2Ctools%2C157&sr=1-2&th=1' },
       { id: 'misc-rustoleum', label: 'Rustoleum spray paint — hunter green, ×3 cans', price: '', url: 'https://www.amazon.com/Rust-Oleum-7732830-Enamel-12-Ounce-Hunter/dp/B000SKXSRO' },
       { id: 'misc-velcro', label: 'Velcro (use everywhere instead of zip ties)', price: '', url: 'https://www.amazon.com/VELCRO-Brand-Industrial-Fasteners-Professional/dp/B00114LOMM' },
       { id: 'misc-substrate', label: 'Grow bags / substrate', price: '', url: 'https://mushroommediaonline.com/' },
@@ -723,8 +728,18 @@ local storage, never transmitted anywhere except the GitHub API.</p>
       link.target = '_blank';
       link.rel = 'noopener noreferrer';
       link.title = 'Open link';
-      link.textContent = '↗';
+      link.textContent = 'BUY LINK';
       meta.appendChild(link);
+    }
+    if (item.url2) {
+      const link2 = document.createElement('a');
+      link2.className = 'item-link';
+      link2.href = item.url2;
+      link2.target = '_blank';
+      link2.rel = 'noopener noreferrer';
+      link2.title = 'Open link 2';
+      link2.textContent = 'BUY LINK 2';
+      meta.appendChild(link2);
     }
 
     main.appendChild(cb);

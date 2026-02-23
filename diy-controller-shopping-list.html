@@ -327,10 +327,15 @@
   .item-link {
     color: var(--accent);
     text-decoration: none;
-    font-size: 13px;
+    font-size: 11px;
+    font-weight: 600;
     line-height: 1;
+    border: 1px solid var(--accent);
+    border-radius: 3px;
+    padding: 2px 5px;
+    white-space: nowrap;
   }
-  .item-link:hover { color: var(--text); }
+  .item-link:hover { background: rgba(88,166,255,0.12); color: var(--text); border-color: var(--text); }
 
   /* Checked state */
   .item-row.is-checked .item-label {
@@ -461,48 +466,48 @@ local storage, never transmitted anywhere except the GitHub API.</p>
   // ── List data ──────────────────────────────────────────────────────────────
   const LIST_DATA = [
     { section: 'Core Electronics', id: 'core', items: [
-      { id: 'core-esp32s3', label: 'ESP32-S3 DevKitC-1 (38-pin)', price: '~$10–15', url: 'https://www.adafruit.com/product/5312' },
-      { id: 'core-relay', label: '8-channel 3.3V-compatible opto-isolated relay module', price: '~$10–12', url: 'https://www.amazon.com/s?k=8+channel+relay+module+3.3v+optocoupler' },
+      { id: 'core-esp32s3', label: 'ESP32-S3 DevKitC-1 (38-pin)', price: '~$10–15', url: 'https://www.adafruit.com/product/5364' },
+      { id: 'core-relay', label: '8-channel 3.3V-compatible opto-isolated relay module', price: '~$10–12', url: 'https://www.amazon.com/gp/product/B0057OC5WK?smid=A1CJB5SYI9X4XC&psc=1' },
       { id: 'core-scd30', label: 'Sensirion SCD30 (CO₂ / temp / RH)', price: '$58.95', url: 'https://www.adafruit.com/product/4867' },
       { id: 'core-sht45', label: 'Sensirion SHT45 breakout (PTFE filter) ×3', price: '~$13.50 ea', url: 'https://www.adafruit.com/product/6174' },
-      { id: 'core-tca9548a', label: 'TCA9548A 8-channel I²C multiplexer', price: '$6.95', url: 'https://www.adafruit.com/product/2717' },
+      { id: 'core-tca9548a', label: 'TCA9548A 8-channel I²C multiplexer', price: '$6.95', url: 'https://www.amazon.com/AITRIP-PCSTCA9548A-Multiplexer-Breakout-Expansion/dp/B08JGSMRF9?crid=2YOASXPDQ1RWX&dib=eyJ2IjoiMSJ9.y6HNT02UTwa9H9vXEawzB0vCW7ZdWLT_5ehMBlyP2lM2zBcxEq5ULW_lXNrzE64_oF-aT5nPYF8Cm_ag5rg_Ch-Vf-WXZp8wT-YY66eSj6QdjlLG0b83E04Z5d_KrJMKqRtnGY-95E6uN2DG_ovvNJDDW3GeYPCLON5YJLg1JPBimTHktf7L3yuPCXbXrzQQx8ud0T67aWSCTkuczsCnIAPH0P3dLuGo1yhhn5YQ-Mc.xp5z6u3b2xg9HcTrMi480NYw9wh31synqyXEAxRPTHc&dib_tag=se&keywords=tca9548a%2Bi2c%2Bmultiplexer&qid=1771800147&sprefix=TCA9548A%2BI2C%2B%2Caps%2C123&sr=8-1&th=1' },
       { id: 'core-water', label: 'DFRobot KIT0139 submersible pressure water level sensor', price: '~$44', url: 'https://www.dfrobot.com/product-1863.html' },
       { id: 'core-ds18b20', label: 'DS18B20 waterproof temp probe 1m ×5', price: '~$10 ea', url: 'https://www.adafruit.com/product/381' },
       { id: 'core-as7341', label: 'AS7341 11-channel spectral light sensor', price: '~$12', url: 'https://www.adafruit.com/product/4698' },
     ]},
     { section: 'Power', id: 'power', items: [
-      { id: 'power-5v', label: '5V 3A DIN-rail PSU — Meanwell HDR-15-5 or Mornsun equivalent', price: '~$20–30', url: 'https://www.digikey.com/en/products/detail/mean-well-usa-inc/HDR-15-5/7703796' },
-      { id: 'power-12v', label: '12V 1A DIN-rail PSU — Meanwell HDR-15-12', price: '~$10', url: 'https://www.mouser.com/ProductDetail/MEAN-WELL/HDR-15-12' },
+      { id: 'power-5v', label: '5V 3A DIN-rail PSU — Meanwell HDR-15-5 or Mornsun equivalent', price: '~$20–30', url: 'https://www.amazon.com/cart/smart-wagon?newItems=59553bfd-9e5b-4080-84f5-93565cc86c28,1&ref_=sw_refresh' },
+      { id: 'power-12v', label: '12V 1A DIN-rail PSU — Meanwell HDR-15-12', price: '~$10', url: 'https://www.amazon.com/gp/product/B0G65HL5CK?smid=ARYIQE30Y3GAW&psc=1' },
     ]},
     { section: 'Enclosure', id: 'encl', items: [
       { id: 'encl-box', label: 'IP65 enclosure — min 250×200×100mm', price: '~$20–30', url: 'https://www.amazon.com/LeMotech-Dustproof-Waterproof-Electrical-200mmx100mmx70mm/dp/B075DKJ3LX' },
-      { id: 'encl-din', label: '35mm DIN rail (cut to width)', price: '~$5', url: 'https://www.amazon.com/VAMRONE-Aluminum-Rails-7-5mm-Slotted/dp/B0D99K9XTF' },
-      { id: 'encl-glands', label: 'Cable glands — PG9 ×4, PG11 ×6, PG16 ×1', price: '~$8', url: 'https://www.amazon.com/TUPARKA-Waterproof-Connectors-Adjustable-Plastic/dp/B0BLYSTRL5' },
+      { id: 'encl-din', label: '35mm DIN rail (cut to width)', price: '~$5', url: 'https://www.amazon.com/Aluminum-MXU-DIN-100-Hardware-Components-Mounting/dp/B0DF4XG386/ref=sr_1_4?crid=5ZZJ7YMSNKO0&dib=eyJ2IjoiMSJ9.eXNWOFJqIbBUyKYD3fYxfFviIqRxBD_DF9EoSZDrhU3OgQDND_yLRe0yBkj5UDIe44EcipybCjZBML302A-4rQWq--rP1__iAuZLai_Kowwi5vakqZufHK_nOkNvVlZU-3bQQrtxRQ8viIlnAY6EypGFFhZ-dGHTTfTcL97hSdS68H1F69mjEagR8BCL-y7eg7CcuY-p-vEiX2asDZRy56dLRJIh0YF8qkfGo94DQql31IqP9pBjpT57T-tLTi_IYzc_C2DBFbUpob9B3s-SDq83wfqI_QDT2ZlrZviIbog.2gfcajN-KInBhrL_PquOPmyaD281QPsXpWKCxPVOZbE&dib_tag=se&keywords=35mm+din+rail+8+inch&qid=1771800598&s=hi&sprefix=35mm+din+rail+8+inch%2Ctools%2C145&sr=1-4' },
+      { id: 'encl-glands', label: 'Cable glands — PG9 ×4, PG11 ×6, PG16 ×1', price: '~$8', url: 'https://www.amazon.com/gp/product/B07KFCGFYF?smid=A336NL64HXNSK&psc=1' },
     ]},
     { section: 'Safety & Protection (Required)', id: 'safety', items: [
-      { id: 'safety-gfci', label: 'GFCI outlet or DIN-rail RCD — 30mA trip (REQUIRED)', price: '~$15–40', url: 'https://www.amazon.com/Leviton-GFNT1-DIN-Extra-Heavy-Industrial-Receptacle/dp/B01FX5NTKY' },
-      { id: 'safety-fuse', label: 'Blade fuse block — DIN rail, 4–8 position', price: '~$12–15', url: 'https://www.amazon.com/Position-Mount-Distribution-Module-Terminal/dp/B0DXFTW33H' },
-      { id: 'safety-r1k', label: '1kΩ resistor ¼W — series protection, GPIO 7 ADC', price: '<$1', url: 'https://www.digikey.com/en/products/detail/yageo/CFR-25JB-52-1K/338' },
-      { id: 'safety-zener', label: '3.3V Zener diode or SMBJ3V3A TVS — overvoltage clamp', price: '<$1', url: 'https://www.digikey.com/en/products/detail/vishay-semiconductor-diodes-division/SMBJ3V3A-E3-52/1622390' },
+      { id: 'safety-gfci', label: 'GFCI outlet or DIN-rail RCD — 30mA trip (REQUIRED)', price: '~$15–40', url: 'https://www.amazon.com/gp/product/B0CSV7HSL8/ref=sw_img_1?smid=A1GN0KJKI6N800&psc=1' },
+      { id: 'safety-fuse', label: 'Blade fuse block — DIN rail, 4–8 position', price: '~$12–15', url: 'https://www.amazon.com/Channel-Pluggable-Terminal-Distribution-HCDC/dp/B0C72GWDLS/ref=sr_1_2?crid=1TWG0NJOWAYWT&dib=eyJ2IjoiMSJ9.EBytWw2T_t9CpVCC8_XsKEIlXlkXFMks-dRhcJ4WLdYUmb2wlRWpNboqMMUYMOkMSeKc71YMq5Vwb7t_XZ1ZMRbofbzSqda_K9FsjIi5vItT0F5Qh1hsN7uG4s0fj8Krj44Mdm1JZfwUQ6Qp66u0GVIPCCx3E_SmPD8EcIdEVEnwv_t9Qxb7sF86cszLqGQkVxYcV3mlnUfAN9j56yNuqifocs7QqaZ1zZDy-A5aLPROeP7WCSlrz8JWLGLfyzQHEY5ESaYM6siiSmydAhOs1VgbZE38r11zMwzPavMhBng.i8exF-FSWgpqAeSXnwxddc4H0RrQ64YaZFhVp0fchaI&dib_tag=se&keywords=8+position+blade+fuse+block+din+rail&qid=1771801000&s=industrial&sprefix=8+position+blade+fuse+block+din+rail%2Cindustrial%2C98&sr=1-2' },
+      { id: 'safety-r1k', label: '1kΩ resistor ¼W — series protection, GPIO 7 ADC', price: '<$1', url: 'https://www.amazon.com/gp/product/B079FP5WD9/ref=sw_img_1?smid=A1GUQD3SRXOFFI&psc=1' },
+      { id: 'safety-zener', label: '3.3V Zener diode or SMBJ3V3A TVS — overvoltage clamp', price: '<$1', url: 'https://www.amazon.com/Chanzon-Assorted-30-Values-Assortment/dp/B07BTKVRG8/ref=sr_1_2?crid=3V8PL8OSA56LJ&dib=eyJ2IjoiMSJ9.m4kNpRuRRNF31LPOFrHzKd1bt7B6tZPz5QTp3hPWrG0GNQbckUvW7Qa8EtJqzEP7FM6n5MUpvZR3RqkxvUiZS31o-7gGqRDp7gsoUo8aNfl8wgdq1wEZqGS7jj4NTT9puPqBfHp1dHmnQ6EV64LeYJW9K4lYVR6m8gAG6wPhlo-w3tSoEc2nCrnrJj0RpobOwZu2BmrufvWiK25PHMRN9xMCwwDwF-PCbCCYhAfR1Bs.ruLVuoX1lUmGe4qm3HauPbi-pAyFeobJJOMl9qEYFsY&dib_tag=se&keywords=zener+diode+kit&qid=1771801193&sprefix=zener+diode+kit%2Caps%2C143&sr=8-2' },
       { id: 'safety-r100k', label: '100kΩ resistor ¼W — GPIO 7 pull-down', price: '<$1', url: 'https://www.digikey.com/en/products/detail/yageo/CFR-25JB-52-100K/338' },
     ]},
     { section: 'Panel & Wiring', id: 'wire', items: [
-      { id: 'wire-dpdt', label: 'DPDT toggle switch (master AUTO/MANUAL)', price: '~$3–5', url: 'https://www.amazon.com/Panel-Position-Toggle-Switch-KN11-203/dp/B0946KD4L8' },
-      { id: 'wire-spst', label: 'SPST toggle switch ×4 (HUMIDITY, FAE, UVC, LIGHTS)', price: '~$2–4 ea', url: 'https://www.amazon.com/C511B-Panel-Mount-Toggle-Switch/dp/B00Y01ACP8' },
+      { id: 'wire-dpdt', label: 'DPDT toggle switch (master AUTO/MANUAL)', price: '~$3–5', url: 'https://www.amazon.com/mts-202-125VAC-Position-Toggle-Switch/dp/B0799KM8T6/ref=sr_1_4?crid=1XUY5U9S8XVI2&dib=eyJ2IjoiMSJ9.Qg2qI5Be-03LGA-6DuxBy34vN8eOEd5CbiKJ6zTeWoaI56KsW36bgkXebVnCbgtt2oEfB1y09cqShajLWKFij0Tlph4iq_03SUWdh5GnX_yKHoMaJYj59aPSQ4yuD4M6zK0fi0lt9fcyOyZfqQ45ibM_1jsH109KWDD_UMPXL3LBWESo_h9Rpbw2I72V5e2H9WyxPW8KuDkb_1zF5EyCGkxHpW0WART6NJijXoFfOSGrVEZirkRreGlhrspiz_6-Rb1n06ZgxX47XYrZvpO4NvJ_GudMmA6XJ6z87J2ipwo.T-qCeAsdvphORVkEcz8ZiJzYut8wmU5U72O89xPiqaU&dib_tag=se&keywords=dpdt+toggle+switch&qid=1771801241&s=industrial&sprefix=DPDT+toggle%2Cindustrial%2C116&sr=1-4' },
+      { id: 'wire-spst', label: 'SPST toggle switch ×4 (HUMIDITY, FAE, UVC, LIGHTS)', price: '~$2–4 ea', url: 'https://www.amazon.com/MTS-101-Position-Miniature-Toggle-Switch/dp/B0799LBFNY/ref=sr_1_2?crid=RFOBXYPRBMW1&dib=eyJ2IjoiMSJ9.eadxf2p5j58-r268I0K1OvYqlFe4Dm8YIFCm5FZWpJSGRUZ9GvpM2N5JWLrMBpWtWmkAcXps3ju8K0XykB2IQmUcLGASQh00IKPHQkX1T8I4Kmp1pOMJ8r4RaOBO-KTR5yPQagq-3dnainfUNW6c9STc2MtC4SUSN8WjzVqIjDusHMCsuqBCNdaj5kRNtHV43HQPTOf1i9behfC3b6LUtwdsRC6H1NNQ_IcS3N0XePgzDgcpByHPoLW0Mw6RHzDgpaMtlahXo3SwztuoHxRwmmpatqvHBrlUmlCizE7xI4Y.SFYSVILkXjz-cGlFs9YgrFjMBD0uHtnNuyUsPs5iRdk&dib_tag=se&keywords=SPST+toggle&qid=1771801274&s=industrial&sprefix=spst+toggle%2Cindustrial%2C129&sr=1-2' },
       { id: 'wire-r10k', label: '10kΩ resistor ¼W ×8 (relay IN pin pull-ups)', price: '<$1', url: 'https://www.digikey.com/en/products/detail/yageo/CFR-25JB-52-10K/338' },
       { id: 'wire-r2k2', label: '2.2kΩ resistor ¼W (1-Wire pull-up)', price: '<$1', url: 'https://www.digikey.com/en/products/detail/yageo/CFR-25JB-52-2K2/338' },
-      { id: 'wire-c100nf', label: '100nF ceramic capacitor (1-Wire decoupling)', price: '<$1', url: 'https://www.digikey.com/en/products/detail/kemet/C320C104K5R5TA7301/3726028' },
-      { id: 'wire-22awg', label: '22 AWG stranded wire — low-voltage runs', price: '~$10', url: 'https://www.amazon.com/Hook-Up-Wire-Assortment-Stranded-AWG/dp/B01HP250ZK' },
-      { id: 'wire-14awg', label: '14 AWG stranded wire — mains runs', price: '~$10', url: 'https://www.amazon.com/s?k=14+awg+stranded+wire+spool' },
+      { id: 'wire-c100nf', label: '100nF ceramic capacitor (1-Wire decoupling)', price: '<$1', url: 'https://www.amazon.com/gp/product/B0D2GVNDHY?smid=ARPNI681JK4HR&psc=1' },
+      { id: 'wire-22awg', label: '22 AWG stranded wire — low-voltage runs', price: '~$10', url: 'https://www.amazon.com/gp/product/B07TX6BX47?smid=A1P2Y1BEUUWGO2&th=1' },
+      { id: 'wire-14awg', label: '14 AWG stranded wire — mains runs', price: '~$10', url: 'https://www.amazon.com/VIABRICO-Aluminium-Electrical-Breadboard-Automotive/dp/B0DHP5LYLZ/ref=sr_1_7?crid=3VBRKPEVTYYNZ&dib=eyJ2IjoiMSJ9._zfR0sgoCcv0ZEMGpcoNJi7YcOprMP1A3S-tLS7DAo_zDwGJbWHU-dJi1QztvIiAZyNI3fXcdVSE2vkkYEDMOVb0Rb-vHL0cJs0wHgE-cEaHJ8HfTtvOx9WhqAb6M_gFPzcy1LQYRHPGdpkcaoT1pQA0GptkbnN9SHfyOI0qLl0grl45tllIvklCks8bVuE9ZkN3wxiSJLqUR_jNlIuBcZSt47hqUfjHqBftVR-4zqun4JArYFmmcxok8qTJdpiHJ9MF28_zDnpb7oKs0SXP5qu933orZbQf-g8bc6TTbCE.E7LuzYWWh12SmxN-OVPYWaaCxP6eDqJowhCBG9zHQ4w&dib_tag=se&keywords=14+awg+stranded+copper+wire&qid=1771801653&sprefix=14+awg+stranded+copper+wire%2Caps%2C129&sr=8-7' },
       { id: 'wire-wago', label: 'Wago 221-412 lever connectors (mains connections)', price: '~$10', url: 'https://www.amazon.com/Wago-221-412-LEVER-NUTS-Conductor-Connectors/dp/B01AIC8LZU' },
-      { id: 'wire-ferrule', label: 'Ferrule crimp kit — 22 AWG + 14 AWG + crimping tool', price: '~$10', url: 'https://www.amazon.com/Preciva-Self-adjustable-Terminals-Connectors-Uninsulated/dp/B073TZ5BBG' },
-      { id: 'wire-terminal', label: 'DIN rail terminal block strip 10-position ×2', price: '~$8', url: 'https://www.amazon.com/JANDECCN-Terminal-Universal-Connectors-Connection/dp/B0C2YJGG2G' },
-      { id: 'wire-fuse', label: 'Panel-mount fuse holder + 5A fuse', price: '~$5', url: 'https://www.amazon.com/s?k=panel+mount+fuse+holder+5a' },
+      { id: 'wire-ferrule', label: 'Ferrule crimp kit — 22 AWG + 14 AWG + crimping tool', price: '~$10', url: 'https://www.amazon.com/HKS-1000PCS-Wire-Ferrule-Connectors/dp/B0DHRXXNLZ?crid=1WH8X9SN2RI07&dib=eyJ2IjoiMSJ9.UOwT20F-wCDvCLm6K5RHryj1MCvZelagAVi1LkisFIMtxf7bunRK-vbsYG7Vbtxw6y-voL3WZpkXIX87ZR7tgYXpwkizW1tBQ0F297wJQV50rc7l3W8viGimpfS7PvKWZKU74wRiDJqkzE8-VZjBf5zuQIq0HSZigIDAm0lT_OHohp8qMQf8nmcfLWXpYqao2iPKaP3b44xdxcTy-gdUzq3oE1gNlPgtEBBwrUWlbWleYXKrLb1IelpFISXnOWa9lvYXbpck1VX4_OsVpCcEYQaiG36aRzvZlOvdKx5iS0A.AuArgskNMu9sVSYdq4gL3WxcIh-_wEntCFpj0SXlM00&dib_tag=se&keywords=22awg%2Bferrules&qid=1771801922&s=hi&sprefix=22awg%2Bferrules%2Ctools%2C123&sr=1-2&th=1', url2: 'https://www.amazon.com/HKS-1000PCS-Wire-Ferrule-Connectors/dp/B0DHRTYMKP?crid=1WH8X9SN2RI07&dib=eyJ2IjoiMSJ9.UOwT20F-wCDvCLm6K5RHryj1MCvZelagAVi1LkisFIMtxf7bunRK-vbsYG7Vbtxw6y-voL3WZpkXIX87ZR7tgYXpwkizW1tBQ0F297wJQV50rc7l3W8viGimpfS7PvKWZKU74wRiDJqkzE8-VZjBf5zuQIq0HSZigIDAm0lT_OHohp8qMQf8nmcfLWXpYqao2iPKaP3b44xdxcTy-gdUzq3oE1gNlPgtEBBwrUWlbWleYXKrLb1IelpFISXnOWa9lvYXbpck1VX4_OsVpCcEYQaiG36aRzvZlOvdKx5iS0A.AuArgskNMu9sVSYdq4gL3WxcIh-_wEntCFpj0SXlM00&dib_tag=se&keywords=22awg%2Bferrules&qid=1771801922&s=hi&sprefix=22awg%2Bferrules%2Ctools%2C123&sr=1-2&th=1' },
+      { id: 'wire-terminal', label: 'DIN rail terminal block strip 10-position ×2', price: '~$8', url: 'https://www.amazon.com/gp/product/B0DP733947?smid=A2JLTKYCWT3GQ2&psc=1' },
+      { id: 'wire-fuse', label: 'Panel-mount fuse holder + 5A fuse', price: '~$5', url: 'https://www.amazon.com/gp/product/B07VT4VRW7/ref=sw_img_1?smid=A86AD06S3OMVQ&psc=1' },
     ]},
     { section: 'Misc', id: 'misc', items: [
-      { id: 'misc-standoffs', label: 'M3 standoffs 10mm (mount ESP32-S3 + relay board)', price: '~$3', url: 'https://www.amazon.com/s?k=m3+standoffs+10mm+assortment' },
+      { id: 'misc-standoffs', label: 'M3 standoffs 10mm (mount ESP32-S3 + relay board)', price: '~$3', url: 'https://www.amazon.com/Black-Nylon-Standoff-Spacers-Screws/dp/B0F297R23T/ref=sr_1_2?dib=eyJ2IjoiMSJ9.XngEBjCB4Im981Y2Lane8fv7kQPcRnVTkFR7J7w42ETJ00VZo7AXF6kFiorTdQrim3-e9bxgNmXg2hVX8rI5Qqv_zALybW3Zfvag5QddAzMUbztmeCEqmbBPDc9tTLPJMxXHRR5JNm5urOvrCYgmWAQXCPg2rLgg7wEMHu0DfrPVzV-a1L62bKMY9cUswRDuTY6heNaDtlf8Qp-99LwlH-v4olLUef-EgMI3y04EWTk.WhYqGhRiMB3w9uuJG3bHS9Jx8ukm3CH01kcKtFa0pSI&dib_tag=se&keywords=m3+standoffs+10mm+assortment&qid=1771802438&sr=8-2' },
       { id: 'misc-velcro', label: 'Zip ties + velcro (cable management)', price: '~$3', url: 'https://www.amazon.com/VELCRO-Brand-Industrial-Fasteners-Professional/dp/B00114LOMM' },
-      { id: 'misc-heatshrink', label: 'Heat shrink tubing assortment', price: '~$3', url: 'https://www.amazon.com/s?k=heat+shrink+tubing+assortment' },
+      { id: 'misc-heatshrink', label: 'Heat shrink tubing assortment', price: '~$3', url: 'https://www.amazon.com/560PCS-Heat-Shrink-Tubing-Eventronic/dp/B072PCQ2LW?dib=eyJ2IjoiMSJ9.afAtOFc0AWv7IewHnY-SstQVNV3RHKFEncBXZVoeHl4r0GQgnkpZ4rXS1TscH9wkn8JEa-588h00_ygmiql3CARIzzFhThA-b2-Ql8LMkva8blIywitfc41H4uZgpsPGWdSNGhxFz6sJCvcQFxHgEUzm5fG-2S87De8-XonZReQBCkJrnvGAK_NVbiuFJaNqEbrbGezguYxr3KFLiAy63yn2ARPQdjg18vx7Bk_S4xM.PGcM_QpZYHSoJpIhKIphs-by4s73S-Y5HRTmPDYVKCY&dib_tag=se&keywords=heat+shrink+tubing+assortment&qid=1771802464&sr=8-6' },
       { id: 'misc-labels', label: 'Label maker tape (label every wire at both ends)', price: '~$2', url: 'https://www.amazon.com/s?k=label+maker+tape' },
     ]},
     { section: 'Tools Required', id: 'tools', items: [
@@ -510,7 +515,7 @@ local storage, never transmitted anywhere except the GitHub API.</p>
       { id: 'tool-strippers', label: 'Wire strippers — 22 AWG and 14 AWG', price: '', url: 'https://www.amazon.com/s?k=wire+stripper+22+14+awg' },
       { id: 'tool-crimper', label: 'Ferrule crimping tool', price: '', url: 'https://www.amazon.com/Preciva-Self-adjustable-Terminals-Connectors-Uninsulated/dp/B073TZ5BBG' },
       { id: 'tool-meter', label: 'Multimeter (essential)', price: '', url: 'https://www.amazon.com/s?k=multimeter' },
-      { id: 'tool-drill', label: 'Drill + step bit (enclosure cutouts)', price: '', url: 'https://www.amazon.com/s?k=step+drill+bit+set' },
+      { id: 'tool-drill', label: 'Drill + step bit (enclosure cutouts)', price: '', url: 'https://www.amazon.com/OSTTE-Titanium-Stainless-Aluminum-Plastic/dp/B0FPCRTZLP/ref=sr_1_5?crid=1FSEU09DH45EB&dib=eyJ2IjoiMSJ9.h6bAWpxWshxkWuWkdHzmE5SCqApviJSC3_j86n_9Db1_QESVTquIMmCI2pi-k48rncNT8y1YifGHqXPN9qk62nzNCnEw1SNriFriu1rZBPEGAbDCMy6Qxavwzb1C6BVrEG2vKekNzA2O7cwRAuZ4o9qAD1nnH-lhttERN4tfEC4k8Yy65ynDkK0uYIm9iWfEVJZ7W1Mmq_brGzw2KuLUrYjwXTjVp6fA3His-o2hpD0.Wuo43F55vBInnppU1BT8S-uOvMzBWyVxvcqpcIY2Mpk&dib_tag=se&keywords=step+bit+set&qid=1771802554&sprefix=step+bit+set%2Caps%2C164&sr=8-5' },
       { id: 'tool-screwdrivers', label: 'Screwdrivers — flathead + Phillips', price: '' },
     ]},
     { section: 'Optional: Pump Add-on (~$20)', id: 'pump', items: [
@@ -743,8 +748,18 @@ local storage, never transmitted anywhere except the GitHub API.</p>
       link.target = '_blank';
       link.rel = 'noopener noreferrer';
       link.title = 'Open link';
-      link.textContent = '↗';
+      link.textContent = 'BUY LINK';
       meta.appendChild(link);
+    }
+    if (item.url2) {
+      const link2 = document.createElement('a');
+      link2.className = 'item-link';
+      link2.href = item.url2;
+      link2.target = '_blank';
+      link2.rel = 'noopener noreferrer';
+      link2.title = 'Open link 2';
+      link2.textContent = 'BUY LINK 2';
+      meta.appendChild(link2);
     }
 
     main.appendChild(cb);
