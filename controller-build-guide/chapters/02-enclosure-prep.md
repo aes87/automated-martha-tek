@@ -22,24 +22,20 @@ needed — the zones are maintained by discipline during assembly.
 
 ```mermaid
 graph LR
-  subgraph MAINS["MAINS ZONE — 120/230 V AC"]
-    direction TB
-    G["GFCI / RCD"]
-    FH["5A Input Fuse"]
-    FB["Blade Fuse Block"]
-    P5["5V 3A PSU"]
-    P12["12V 1A PSU"]
-    LO[/"Loads → bottom glands"/]
+  subgraph MAINS["MAINS ZONE · 120/230 V AC"]
+    G[GFCI/RCD]
+    FH[5A Fuse]
+    FB[Fuse Block]
+    P5[5V PSU]
+    P12[12V PSU]
   end
-  subgraph LV["LOW-VOLTAGE ZONE — max 5V DC"]
-    direction TB
-    RL["Relay module"]
-    ESP["ESP32-S3"]
-    SEN["I²C sensors"]
-    TB["LV terminal blocks"]
-    SI[/"Sensors ← PG9 glands"/]
+  subgraph LV["LOW-VOLTAGE ZONE · max 5V DC"]
+    RL[Relay Module]
+    ESP[ESP32-S3]
+    SEN[Sensors]
+    TB[Terminal Blocks]
   end
-  RL -- "load contacts cross zones" --> G
+  RL -->|"load contacts"| G
 ```
 
 The relay board physically spans both zones: its load terminals (COM/NO/NC contacts
