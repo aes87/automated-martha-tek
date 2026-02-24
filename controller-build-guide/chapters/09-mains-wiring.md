@@ -12,7 +12,8 @@ crimp kit, multimeter.
 
 ## ⚠️ Before You Begin: Mains Safety
 
-> ⚠️ **SAFETY — READ EVERY ITEM BEFORE TOUCHING THE MAINS ZONE:**
+> [!CAUTION]
+> **Before touching the mains zone, read every item:**
 >
 > 1. **The enclosure must be unplugged.** Verify physically — look at the wall
 >    outlet and confirm the plug is out.
@@ -23,7 +24,7 @@ crimp kit, multimeter.
 >    object.** Keep one hand in your pocket or behind your back while probing.
 > 4. **All mains connections must use ferrule-terminated wire ends.** Crimp a
 >    ferrule on every stripped end before it enters any terminal or Wago connector.
-> 5. **14 AWG minimum for mains runs.** 16–18 AWG for load leads.
+> 5. **14 AWG[^1] minimum for mains runs.** 16–18 AWG for load leads.
 > 6. **Wago 221 connectors** for all mains splices. No wire nuts or open-backed
 >    barrier strips in an enclosed box.
 
@@ -58,9 +59,10 @@ Wire in this sequence, matching the physical left-to-right DIN rail order:
    - Neutral (White/Blue) → LINE N
    - Earth (Green/Bare) → PE terminal
 
-> ⚠️ **SAFETY:** The GFCI/RCD has LINE and LOAD sides — they are different terminals
-> with different markings. Mains input connects to LINE. Reversed wiring defeats the
-> GFCI protection. Check the label before connecting.
+> [!CAUTION]
+> The GFCI/RCD has LINE and LOAD sides — they are different terminals with different
+> markings. Mains input connects to LINE. Reversed wiring defeats the GFCI
+> protection. Check the label before connecting.
 
 Tighten the PG16 cable gland around the mains input cable jacket.
 
@@ -122,8 +124,9 @@ channel. Use 16–18 AWG wire; crimp ferrules.
 | 5 | UVC lights | 2A | Ch5 COM |
 | 6 | Grow lights | 3A | Ch6 COM |
 
-> ⚠️ **SAFETY:** The relay board's load terminals are at mains voltage from this
-> point. Keep the enclosure unplugged until all of 9a–9f is complete.
+> [!CAUTION]
+> The relay board's load terminals are at mains voltage from this point.
+> Keep the enclosure unplugged until all of 9a–9f is complete.
 
 ---
 
@@ -210,8 +213,11 @@ both PSU PE terminals confirmed.
 - [ ] Relay board load terminals (COM/NO) in mains zone only
 - [ ] No LV wiring runs through the mains zone
 
-> ⚠️ **SAFETY:** Complete every item before closing the lid. If any item cannot be
-> ticked, resolve it before powering on.
+> [!CAUTION]
+> Complete every item before closing the lid. If any item cannot be ticked, resolve
+> it before powering on.
+
+[^1]: 14 AWG copper is rated for 15 A continuous in conduit. With a 5 A input fuse this gives a 3× current margin above the fuse rating, ensuring the wire never becomes the weak link in a fault condition. Thinner wire (e.g. 18 AWG, rated 7 A) would also survive a 5 A fuse but leaves far less margin against resistive heating at higher ambient temperatures.
 
 ---
 

@@ -7,8 +7,8 @@ IN pins, and mount the board in the enclosure.
 **Prerequisites:** Chapter 02 complete (standoffs installed). Relay module,
 10 kΩ resistors ×8, soldering iron, solder, multimeter.
 
-> ⚠️ **SAFETY:** No mains voltage. Bench work only. Do not power the relay board
-> during this chapter.
+> [!NOTE]
+> No mains voltage. Bench work only. Do not power the relay board during this chapter.
 
 ---
 

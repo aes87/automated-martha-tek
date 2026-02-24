@@ -7,8 +7,11 @@ mounting holes.
 **Prerequisites:** Empty IP65 enclosure. Drill + step bit, marker, ruler, cable
 glands, DIN rail + screws, label maker.
 
-> ⚠️ **SAFETY:** The enclosure is empty and unplugged. No mains voltage in this
-> chapter. Wear eye protection when drilling and deburring metal.
+> [!NOTE]
+> The enclosure is empty and unplugged. No mains voltage in this chapter.
+
+> [!WARNING]
+> Wear eye protection when drilling and deburring metal.
 
 ---
 
@@ -104,8 +107,9 @@ and compress the rubber seal.
 
 ## Step 3 — Drill Cable Gland Holes
 
-> ⚠️ **SAFETY:** Wear eye protection. Step bits create sharp swarf. Clamp or
-> hold the enclosure securely.
+> [!WARNING]
+> Wear eye protection. Step bits create sharp swarf. Clamp or hold the enclosure
+> securely.
 
 **Step bit technique:**
 

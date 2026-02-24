@@ -8,8 +8,9 @@ water level sensor.
 boards, DS18B20 probes, DFRobot KIT0139 kit, 2.2 kΩ resistors ×2, 100 nF
 capacitors ×2, 22 AWG stranded wire, soldering iron.
 
-> ⚠️ **SAFETY:** All wiring in this chapter is low-voltage (3.3V/5V and 12V DC).
-> No mains voltage. Keep the enclosure unplugged.
+> [!NOTE]
+> All wiring in this chapter is low-voltage (3.3V/5V and 12V DC). No mains voltage.
+> Keep the enclosure unplugged.
 
 ---
 
@@ -41,17 +42,14 @@ ESP32's `3V3` pin, not from the 5V PSU rail.
 
 **Main bus wiring:**
 
-```
-ESP32 GPIO 21 (SDA) ───────┬── TCA9548A SDA
-ESP32 GPIO 9  (SCL) ───────┼── TCA9548A SCL
-                            ├── SCD30 SDA/SCL  (addr 0x61)
-                            └── AS7341 SDA/SCL (addr 0x39)
-
-ESP32 3V3 ─────────────────┬── TCA9548A VIN
-                            ├── SCD30 VIN
-                            └── AS7341 VIN
-
-ESP32 GND ───────────────── all sensor GND
+```mermaid
+graph LR
+  ESP[ESP32-S3] -->|"SDA GPIO 21 / SCL GPIO 9"| TCA["TCA9548A\n0x70"]
+  TCA -->|ch 0| SHT0["SHT45 Top shelf\n0x44"]
+  TCA -->|ch 1| SHT1["SHT45 Mid shelf\n0x44"]
+  TCA -->|ch 2| SHT2["SHT45 Bot shelf\n0x44"]
+  ESP -->|"SDA / SCL"| SCD["SCD30 CO₂\n0x61"]
+  ESP -->|"SDA / SCL"| AS["AS7341 Light\n0x39"]
 ```
 
 Use 22 AWG wire. Colour-code consistently (suggestion: white = SDA, yellow = SCL).
@@ -147,8 +145,9 @@ All VIN connections at 3.3V.
 
 The AS7341 sits on the main I2C bus (address `0x39`).
 
-> ⚠️ **SAFETY:** The AS7341 is **not 5V tolerant**. VIN must be 3.3V. Connecting
-> it to 5V will destroy it.
+> [!CAUTION]
+> The AS7341 is **not 5V tolerant**. VIN must be 3.3V. Connecting it to 5V will
+> destroy it.
 
 **Wiring:**
 
@@ -236,9 +235,9 @@ The KIT0139 kit includes the submersible sensor and the Gravity 4-20mA-to-voltag
 converter board. The converter board provides overvoltage protection for the ESP32
 ADC pin.
 
-> ⚠️ **SAFETY:** The sensor body runs on 12V. The converter board output connects
-> to the ESP32 at 3.3V. Never connect the 12V sensor supply directly to an ESP32
-> GPIO.
+> [!CAUTION]
+> The sensor body runs on 12V. The converter board output connects to the ESP32 at
+> 3.3V. Never connect the 12V sensor supply directly to an ESP32 GPIO.
 
 **Sensor to 12V PSU:**
 

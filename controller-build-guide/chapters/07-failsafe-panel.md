@@ -6,8 +6,9 @@ switch and four SPST group switches, and verify the AUTO/MANUAL topology.
 **Prerequisites:** Chapter 04 complete (relay board with pull-up resistors mounted).
 5 panel switches (1× DPDT, 4× SPST), 22 AWG wire, soldering iron or ferrule crimper.
 
-> ⚠️ **SAFETY:** All wiring here is low-voltage (3.3V and GND). No mains voltage.
-> Keep the enclosure unplugged.
+> [!NOTE]
+> All wiring here is low-voltage (3.3V and GND). No mains voltage. Keep the
+> enclosure unplugged.
 
 ---
 
@@ -38,18 +39,24 @@ mode, flip the master first, then use group switches for load control.
 
 ## The Wiring Topology
 
+```mermaid
+graph LR
+  DM["DPDT MASTER"] -->|"AUTO: common → 3.3V"| OFF["Group switches\ninactive"]
+  DM -->|"MANUAL: common → GND"| CMN{Common wire}
+  CMN --> H[HUMIDITY]
+  CMN --> F[FAE]
+  CMN --> U[UVC]
+  CMN --> L[LIGHTS]
+  H -->|IN1| FG[Fogger]
+  H -->|IN2| TF[Tub fan]
+  F -->|IN3| EX[Exhaust]
+  F -->|IN4| IN[Intake]
+  U -->|IN5| UV[UVC lights]
+  L -->|IN6| GL[Grow lights]
 ```
-                              ┌── AUTO throw → VCC (3.3V) — group switches inactive
-DPDT MASTER switch ───────────┤
-                              └── MANUAL throw → GND — group switches active
 
-SPST HUMIDITY  ── (common wire) ──► IN1 (fogger) + IN2 (tub fan)
-SPST FAE       ── (common wire) ──► IN3 (exhaust) + IN4 (intake)
-SPST UVC       ── (common wire) ──► IN5 (UVC lights)
-SPST LIGHTS    ── (common wire) ──► IN6 (grow lights)
-
-ESP32 GPIOs always connected to IN1–IN8 in both modes.
-```
+ESP32 GPIOs remain connected to IN1–IN8 in both modes — the pull-up resistors
+ensure a safe default when neither source is actively driving an IN pin.
 
 ---
 

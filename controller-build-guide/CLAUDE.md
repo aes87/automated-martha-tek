@@ -40,7 +40,7 @@ Every chapter follows these patterns:
 | Element | Markdown pattern | Future HTML intent |
 |---------|-----------------|-------------------|
 | Inline explainer | `> **[?] Term:** explanation` blockquote | `<details><summary>` collapsible |
-| Safety callout | `> ⚠️ **SAFETY:** ...` | Styled warning box |
+| Safety callout | `> [!CAUTION]` / `[!WARNING]` / `[!IMPORTANT]` / `[!NOTE]` | GitHub native alerts |
 | Verification step | `**✓ Check:** what you should see/hear/measure` | Green check box |
 | Checkpoint list | `- [ ] task` | Interactive checkbox |
 | GPIO / part callout | backtick `` `GPIO 38` `` | Code span |

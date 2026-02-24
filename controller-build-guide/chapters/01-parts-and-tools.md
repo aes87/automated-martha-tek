@@ -37,7 +37,7 @@ covered in the companion shopping list.
 
 | Item | Qty |
 |------|-----|
-| IP65 waterproof enclosure, min 250×200×100mm interior | 1 |
+| IP65[^1] waterproof enclosure, min 250×200×100mm interior | 1 |
 | 35mm DIN rail, cut to enclosure width | 1 |
 | Cable glands — PG9 (sensor cables) | 6 |
 | Cable glands — PG11 (load cables) | 8 |
@@ -110,6 +110,8 @@ covered in the companion shopping list.
 - [ ] Relay module: 8-channel, opto-isolated, 3.3V compatible confirmed
 - [ ] Enclosure: IP65 rated, gasket intact, min 250×200×100mm
 - [ ] GFCI/RCD: confirmed 30 mA trip rating
+
+[^1]: IP (Ingress Protection) rating — first digit 6 = fully dust-tight; second digit 5 = protected against water jets from any direction. IP65 means the enclosure can be hosed down. Required here because mushroom tents run at high humidity and misting equipment produces airborne water.
 
 ---
 

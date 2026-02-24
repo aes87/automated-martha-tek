@@ -6,8 +6,9 @@ on the DIN rail. Label every component. No wiring in this chapter.
 **Prerequisites:** Chapter 02 complete. GFCI/RCD, 5V 3A PSU, 12V 1A PSU, fuse
 holder, blade fuse block, label maker.
 
-> ⚠️ **SAFETY:** Enclosure is unplugged. This chapter is mechanical placement and
-> labelling only. Wiring happens in Chapter 09.
+> [!NOTE]
+> Enclosure is unplugged. This chapter is mechanical placement and labelling only.
+> Wiring happens in Chapter 09.
 
 ---
 
@@ -25,14 +26,20 @@ Use a label maker (Dymo or Brother P-Touch). Permanent marker on tape also works
 
 Mount components left to right in this order:
 
-```
-[GFCI/RCD] → [Fuse Holder 5A] → [Blade Fuse Block] → [5V PSU] → [12V PSU]
+```mermaid
+graph LR
+  M[Mains Input] --> G["GFCI / RCD\n30 mA trip"]
+  G --> F["5A Input Fuse"]
+  F --> FB["Blade Fuse Block\n6 positions"]
+  FB --> P5["5V 3A PSU\nLogic + relay coils"]
+  FB --> P12["12V 1A PSU\nWater level sensor"]
 ```
 
 The GFCI/RCD **must** be the first device the mains feed reaches — before the
 fuse, before the PSUs, before anything else.
 
-> ⚠️ **SAFETY:** The GFCI/RCD protects against electrocution in a wet environment.
+> [!CAUTION]
+> The GFCI/RCD protects against electrocution in a wet environment.
 > It must be the first device on the mains feed so that all wiring inside the
 > enclosure is downstream of its protection. Placing it after the fuse would leave
 > the input wiring unprotected.
@@ -43,7 +50,7 @@ fuse, before the PSUs, before anything else.
 
 1. Clip the RCD onto the leftmost position of the DIN rail. Orient it so the input
    (LINE) side faces the mains inlet cable gland.
-2. Label: `GFCI/RCD — 30mA — FIRST DEVICE`
+2. Label: `GFCI/RCD — 30 mA[^1] — FIRST DEVICE`
 
 **✓ Check:** GFCI/RCD is in the leftmost position. Label applied.
 
@@ -133,6 +140,8 @@ labels applied to DIN rail.
 - [ ] All components labelled before wiring begins
 - [ ] DIN rail zones labelled HIGH VOLTAGE / LOW VOLTAGE
 - [ ] No wiring done yet
+
+[^1]: 30 mA is the standard body-contact GFCI trip threshold. Research on cardiac fibrillation shows risk begins around 60–100 mA; 30 mA provides a 2–3× safety margin. At this level the breaker trips in under 40 ms — fast enough to interrupt a hand-contact fault before the heart is affected.
 
 ---
 

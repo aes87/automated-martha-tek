@@ -205,7 +205,7 @@ With WiFi connected:
    If mDNS doesn't resolve, use the IP from the serial log:
    `http://192.168.1.xxx`
 
-2. The dashboard shows CO2, temp/RH per shelf, VPD, substrate temps, water level,
+2. The dashboard shows CO2, temp/RH per shelf, VPD[^1], substrate temps, water level,
    relay status, and light spectrum.
 
 3. Go to **Settings** to:
@@ -215,9 +215,10 @@ With WiFi connected:
    - Adjust humidity setpoint and CO2 thresholds if needed (firmware defaults:
      RH 85%, CO2 ON at 950 ppm)
 
-> ⚠️ **SAFETY:** Do not expose the web dashboard to the internet. This controller
-> has physical relay outputs — remote access from outside your local network is a
-> fire and safety risk. Do not set up port forwarding to this device.
+> [!WARNING]
+> Do not expose the web dashboard to the internet. This controller has physical
+> relay outputs — remote access from outside your local network is a fire and safety
+> risk. Do not set up port forwarding to this device.
 
 ---
 
@@ -267,6 +268,8 @@ a grow:
 3. Do a test run: verify control loops trigger at correct setpoints
 4. Calibrate the water level sensor with the reservoir filled and empty
 5. Set auto-refill thresholds in Settings (if using the optional pump)
+
+[^1]: VPD (vapour pressure deficit) is the difference between the maximum water vapour the air can hold at a given temperature and how much it actually holds. It drives evaporation from mushroom surfaces and correlates with pinning success. Target range: 0.8–1.2 kPa for pinning, 1.2–2.0 kPa for fruiting bodies. The firmware calculates VPD from each SHT45 reading using the Magnus formula.
 
 ---
 

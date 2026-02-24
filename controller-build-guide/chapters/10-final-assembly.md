@@ -5,8 +5,9 @@ mechanical), photograph every zone, inspect the gasket, and close the enclosure.
 
 **Prerequisites:** Chapters 02–09 complete. Label maker, camera, pliers for glands.
 
-> ⚠️ **SAFETY:** Enclosure unplugged. This is your last inspection of the mains zone
-> before sealing — treat it as live even though it is currently unplugged.
+> [!CAUTION]
+> Enclosure unplugged. This is your last inspection of the mains zone before
+> sealing — treat it as live even though it is currently unplugged.
 
 ---
 
@@ -64,7 +65,8 @@ last chance to verify everything. Take your time.
 
 ## Checklist B — Mains Side (15 items)
 
-> ⚠️ **SAFETY:** Visual inspection only. Do not power on until all 15 items pass.
+> [!CAUTION]
+> Visual inspection only. Do not power on until all 15 items pass.
 
 - [ ] GFCI/RCD: mains input → LINE terminals (not LOAD)
 - [ ] GFCI/RCD: confirmed 30 mA trip rating

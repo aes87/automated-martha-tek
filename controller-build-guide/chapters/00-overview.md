@@ -52,15 +52,31 @@ power but explicitly disconnects all load cables first.
 Throughout all chapters you will see:
 
 <details>
-<summary><strong>[?] Term:</strong></summary>
+<summary><strong>[?] Term</strong></summary>
 
-explanation of a concept — inline explainers. If you already know
-the term, skip them. In a future HTML version of this guide they will collapse.
+Inline concept explainers — collapsible. If you already know the term, skip it.
 
 </details>
 
-> ⚠️ **SAFETY:** red-flag items. Read every one before proceeding. Never skip them
-> in the mains wiring chapters.
+Safety and information callouts use GitHub's native alert format:
+
+> [!CAUTION]
+> Mains voltage, electrocution risk, or component destruction. Never skip.
+
+> [!WARNING]
+> Physical or equipment damage risk. Read before proceeding.
+
+> [!IMPORTANT]
+> A configuration detail that must be correct for the build to work safely.
+
+> [!NOTE]
+> Confirms you're in a safe state, or provides useful context.
+
+Superscript numbers like this[^example] link to brief **"learn more"** notes at
+the bottom of the chapter — extra context for the curious. They are never required
+reading for completing the build.
+
+[^example]: Like this. Footnotes appear at the bottom of the page on GitHub.
 
 **✓ Check:** a verification step — something you should confirm before moving on.
 These are tests, not optional suggestions.
@@ -124,7 +140,8 @@ The design addresses this with multiple layers:
 
 **The rule while working in this enclosure:**
 
-> ⚠️ **SAFETY:** Always unplug the enclosure from mains before touching anything
+> [!CAUTION]
+> Always unplug the enclosure from mains before touching anything
 > inside it. "Touching" means **opening the lid**. If the lid is open, the enclosure
 > must be unplugged. No exceptions.
 

@@ -6,8 +6,8 @@ through the failsafe panel topology, label every wire, and verify continuity.
 **Prerequisites:** Chapters 04–07 complete. 22 AWG stranded wire, label maker,
 multimeter.
 
-> ⚠️ **SAFETY:** All wiring here is low-voltage (3.3V logic signals). Enclosure
-> unplugged.
+> [!NOTE]
+> All wiring here is low-voltage (3.3V logic signals). Enclosure unplugged.
 
 ---
 
@@ -91,7 +91,8 @@ to mains wiring. Bundle the 8 wires with cable ties.
 | JD-VCC (relay coil supply) | 5V PSU positive output |
 | GND | Common GND |
 
-> ⚠️ **SAFETY:** VCC and JD-VCC are now separate supplies (jumper removed in Ch 04).
+> [!IMPORTANT]
+> VCC and JD-VCC are now separate supplies (jumper removed in Ch 04).
 > VCC → 3.3V; JD-VCC → 5V. Do not connect JD-VCC to 3.3V — relay coils are rated
 > for 5V; undersupplying them causes unreliable contact closure under load.
 

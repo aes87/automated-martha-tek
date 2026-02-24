@@ -6,9 +6,10 @@ functional before any load cables are connected.
 **Prerequisites:** Chapter 10 complete (enclosure sealed, all checklists passed).
 Computer with serial terminal (115200 baud), USB-C cable.
 
-> ⚠️ **SAFETY:** All load cables must be unplugged from the relay NO terminals
-> before this chapter. The enclosure will be powered but no mains-connected loads
-> will be active. This is the most important single safety step before first power-on.
+> [!CAUTION]
+> All load cables must be unplugged from the relay NO terminals before this chapter.
+> The enclosure will be powered but no mains-connected loads will be active.
+> This is the most important single safety step before first power-on.
 
 ---
 

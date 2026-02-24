@@ -54,8 +54,9 @@ refer to it in every remaining wiring chapter.
 - `5V` / `VIN` — 5V input from PSU
 - `GND` — common ground (multiple GND pins; use any)
 
-> ⚠️ **SAFETY:** The `3V3` pin is an output from the ESP32's on-board regulator,
-> rated ~500–600 mA. Do not connect the 3.3V rail of the PSU to this pin.
+> [!WARNING]
+> The `3V3` pin is an output from the ESP32's on-board regulator, rated ~500–600 mA.
+> Do not connect the 3.3V PSU rail to this pin.
 
 ---
 
