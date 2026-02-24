@@ -64,23 +64,37 @@ refer to it in every remaining wiring chapter.
 
 The board has two rows of 19 pins. Key pins for this build (simplified):
 
-```
-USB-C end
-                ┌──────────────────┐
-   GND  ────────┤ GND              │
-   3V3  ────────┤ 3V3              │
- GPIO4  ────────┤ 4          47 ├──────── GPIO47
- GPIO7  ────────┤ 7          21 ├──────── GPIO21 (SDA)
- GPIO9  ────────┤ 9          19 ├──────── GPIO19
-                │           18 ├──────── GPIO18
-                │        ...42  ├──────── GPIO42
-                │           41  ├──────── GPIO41
-                │           40  ├──────── GPIO40
-                │           39  ├──────── GPIO39
-                │           38  ├──────── GPIO38
-   5V   ────────┤ 5V              │
-   GND  ────────┤ GND             │
-                └──────────────────┘
+```mermaid
+graph LR
+  ESP["ESP32-S3
+DevKitC-1"]
+  subgraph I2C["I2C bus  GPIO 21 SDA / GPIO 9 SCL"]
+    TCA["TCA9548A mux  0x70"]
+    SCD["SCD30 CO2  0x61"]
+    AS["AS7341 light  0x39"]
+  end
+  subgraph OW["1-Wire  GPIO 4"]
+    DS["DS18B20 x5
+substrate temp"]
+  end
+  subgraph ADC_G["ADC  GPIO 7"]
+    KIT["KIT0139
+water level"]
+  end
+  subgraph REL["Relay outputs  active LOW"]
+    R1["GPIO 38  Fogger"]
+    R2["GPIO 39  Tub fan"]
+    R3["GPIO 18  Exhaust"]
+    R4["GPIO 19  Intake"]
+    R5["GPIO 40  UVC  10s guard"]
+    R6["GPIO 41  Grow lights"]
+    R7["GPIO 42  Pump opt"]
+    R8["GPIO 47  Spare"]
+  end
+  ESP --- I2C
+  ESP --- OW
+  ESP --- ADC_G
+  ESP --- REL
 ```
 
 For the authoritative pinout, refer to the Espressif ESP32-S3-DevKitC-1 datasheet.

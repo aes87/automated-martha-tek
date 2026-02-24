@@ -17,10 +17,14 @@ Each relay IN pin receives a signal from the ESP32 and also from the failsafe
 group switch. Both connect to the same IN pin — the 10 kΩ pull-up holds the pin
 HIGH (relay OFF) when neither is actively driving it LOW.
 
-```
-ESP32 GPIO ──────────────────────────── Relay INx
-                            ↑
-DPDT common wire → SPST group switch ──┘  (active in MANUAL only)
+```mermaid
+graph LR
+  GPIO["ESP32 GPIO"] --> INx["Relay INx"]
+  SWITCH["DPDT common
+SPST group switch"] -->|"MANUAL mode only"| INx
+  PU["10 kΩ pull-up
+3.3V"] -->|"default HIGH
+relay OFF"| INx
 ```
 
 In AUTO mode the ESP32 GPIO drives each IN pin directly. In MANUAL mode the group

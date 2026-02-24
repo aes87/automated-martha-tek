@@ -140,10 +140,14 @@ For each load cable (entering through a PG11 gland):
 4. Earth wire → Earth bus (for earthed loads: fans, UVC fixture).
 5. Tighten the cable gland once the cable is in final position.
 
-```
-Load Hot (Black/Brown) ──── Relay Channel NO
-Load Neutral (White/Blue) ── Neutral bus
-Load Earth (Green/Bare) ───── Earth bus (if earthed load)
+```mermaid
+graph LR
+  HOT["Load Hot
+Black / Brown"] --> NO["Relay Channel NO"]
+  NEU["Load Neutral
+White / Blue"] --> NB["Neutral bus"]
+  EARTH["Load Earth
+Green / Bare"] -->|"earthed loads only"| EB["Earth bus"]
 ```
 
 <details>

@@ -89,9 +89,28 @@ When ON, the terminals connect. When OFF, they're open.
 
 Identify the 6 terminals (common layout — verify against your switch datasheet):
 
-```
-[P1-COM]  [P1-T1]  [P1-T2]
-[P2-COM]  [P2-T1]  [P2-T2]
+```mermaid
+graph LR
+  subgraph PA["Pole A  used"]
+    P1C["P1-COM
+to group switch common"]
+    P1T1["P1-T1  AUTO
+connect to 3.3V"]
+    P1T2["P1-T2  MANUAL
+connect to GND"]
+  end
+  subgraph PB["Pole B  optional LED"]
+    P2C["P2-COM
+to 3.3V"]
+    P2T1["P2-T1
+not connected"]
+    P2T2["P2-T2  MANUAL
+to LED anode"]
+  end
+  P1C --- P1T1
+  P1C --- P1T2
+  P2C --- P2T1
+  P2C --- P2T2
 ```
 
 **Wire Pole A (essential):**

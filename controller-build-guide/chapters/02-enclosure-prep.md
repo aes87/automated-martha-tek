@@ -20,27 +20,32 @@ glands, DIN rail + screws, label maker.
 The enclosure interior is divided into two logical zones. No physical barrier is
 needed — the zones are maintained by discipline during assembly.
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                                                                   │
-│  MAINS ZONE (left ~40%)        │  LOW-VOLTAGE ZONE (right ~60%) │
-│                                 │                                 │
-│  Contains:                      │  Contains:                      │
-│  • GFCI/RCD                     │  • ESP32-S3 DevKitC-1           │
-│  • 5V 3A PSU                    │  • 8-channel relay module       │
-│  • 12V 1A PSU                   │  • TCA9548A, SCD30, AS7341      │
-│  • Input fuse holder (5A)       │    sensor breakout boards       │
-│  • Blade fuse block (per-load)  │  • Terminal blocks (LV signals) │
-│  • Mains terminal blocks        │                                 │
-│  • All mains wiring (120/230V)  │  Everything here is ≤ 5V DC     │
-│                                 │                                 │
-│  ← Loads exit via cable glands  │  ← Sensors enter via PG9 glands │
-│    on bottom edge               │    on side or bottom edge        │
-│─────────────────────────────────│                                 │
-│  ⚠️ HIGH VOLTAGE — NEVER OPEN  │  The relay board's coil/signal  │
-│  WHILE PLUGGED IN               │  header is in this zone; its    │
-│                                 │  load contacts bridge left      │
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+graph LR
+  subgraph MAINS["MAINS ZONE  left ~40%  120/230 V AC"]
+    G["GFCI / RCD"]
+    FH["5A Input Fuse"]
+    FB["Blade Fuse Block
+2-3 A per load"]
+    P5["5V 3A PSU
+Logic + relay coils"]
+    P12["12V 1A PSU
+Water level"]
+    LO[/"Loads exit
+bottom cable glands"/]
+  end
+  subgraph LV["LOW-VOLTAGE ZONE  right ~60%  max 5V DC"]
+    RL["Relay module
+coil + signal side"]
+    ESP["ESP32-S3"]
+    SEN["TCA9548A · SCD30 · AS7341
+sensor breakouts"]
+    TB["LV terminal blocks"]
+    SI[/"Sensors enter
+PG9 cable glands"/]
+  end
+  RL -->|"load contacts
+bridge both zones"| G
 ```
 
 The relay board physically spans both zones: its load terminals (COM/NO/NC contacts
@@ -148,8 +153,10 @@ You need 5 holes for the failsafe panel switches (1× DPDT master, 4× SPST grou
 
 **Label positions from left to right:**
 
-```
-[ MASTER AUTO/MAN ]  [ HUMIDITY ]  [ FAE ]  [ UVC ]  [ LIGHTS ]
+```mermaid
+graph LR
+  M["MASTER
+AUTO / MAN"] --- H[HUMIDITY] --- F[FAE] --- U[UVC] --- L[LIGHTS]
 ```
 
 Apply labels below each hole **before** mounting the switches — it's much easier to

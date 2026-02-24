@@ -81,10 +81,9 @@ reading for completing the build.
 **✓ Check:** a verification step — something you should confirm before moving on.
 These are tests, not optional suggestions.
 
-```
-Code blocks
-```
-are used for wiring diagrams and terminal commands.
+`inline code` is used for terminal commands, GPIO names (`GPIO 38`), I2C
+addresses (`0x70`), and signal labels (`VCC`). Wiring and topology diagrams
+use Mermaid (rendered as interactive diagrams in the GitHub web view).
 
 `GPIO 38`, `0x70`, `VCC` — backtick-formatted inline items are pin names, I2C
 addresses, or signal labels.

@@ -43,118 +43,56 @@ protects the ESP32 from voltage spikes when inductive loads (fans) switch off.
 
 A standard 8-channel opto-isolated relay board has:
 
+```mermaid
+graph LR
+  subgraph SIG["Signal side  LV zone"]
+    V["VCC
+3.3V opto supply"]
+    G2["GND"]
+    IN["IN1 - IN8
+active LOW triggers"]
+    J["VCC / JD-VCC jumper
+REMOVE THIS"]
+    JD["JD-VCC
+5V coil supply"]
+  end
+  subgraph BODY["Relay board"]
+    OPT["8x PC817
+optocouplers"]
+    REL["8x relay bodies
+mechanical contacts"]
+    LED["8x LEDs
+status"]
+  end
+  subgraph LD["Load side  mains zone"]
+    COM["COM
+mains Hot in"]
+    NO["NO  normally open
+connect loads here"]
+    NC["NC  not used"]
+  end
+  V --> OPT
+  IN -->|"pull LOW to fire"| OPT
+  OPT --> REL
+  REL --> LED
+  REL --> NO
+  J -. "isolates coil
+when removed" .-> JD
+  COM --- NO
+  COM --- NC
 ```
-┌───────────────────────────────────────────────────────────────┐
-│                                                               │
-│  Signal header:                 Relay indicators:            │
-│  VCC  GND  IN1 IN2 ... IN8      8× LEDs (one per channel)    │
-│  │    │    │   │       │                                      │
-│  3-pin VCC/JD-VCC jumper        8× Relay bodies              │
-│  ↓                                                            │
-│  [VCC]──[JUMP]──[JD-VCC]        Load terminals (×8):         │
-│                                  COM  NO  NC                  │
-│                                  COM  NO  NC                  │
-│                                  ...                          │
-└───────────────────────────────────────────────────────────────┘
-```
 
-**Signal header** (left side) — faces the low-voltage zone:
-- `VCC` — optocoupler power (3.3V from ESP32)
-- `GND` — ground
-- `IN1`–`IN8` — trigger inputs (active LOW)
-
-**VCC/JD-VCC jumper** — you will remove this.
-
-**Load terminals** (right side) — faces the mains zone:
-- `COM` — common (mains Hot connects here)
-- `NO` — normally open (closes when relay fires)
-- `NC` — normally closed (not used in this build)
-
----
-
-## Step 1 — Locate and Remove the VCC/JD-VCC Jumper
-
-1. Find the 3-pin header near the signal connector, usually labelled
-   "VCC–JD-VCC", bridged by a small plastic shorting cap.
-2. Grip the jumper with needle-nose pliers and pull it straight off.
-3. Store or discard it.
-
-<details>
-<summary><strong>[?] Why remove the jumper?</strong></summary>
-
-With the jumper installed, the optocoupler logic
-supply and the relay coil supply share the same rail. If a coil generates a voltage
-spike on de-energise, that spike can couple back into the optocoupler side —
-potentially reaching the ESP32. With the jumper removed:
-- `VCC` (optocoupler side) connects to ESP32 3.3V
-- `JD-VCC` (relay coil side) connects to 5V from the PSU
-
-These two rails are electrically separate — coil spikes stay on the coil side.
-
-</details>
-
-**✓ Check:** Jumper removed. Multimeter continuity between VCC and JD-VCC shows
-open circuit.
-
----
-
-## Step 2 — Verify 3.3V Logic Compatibility
-
-The relay module must respond reliably to 3.3V logic from the ESP32-S3.
-
-**Measure the IN pin series resistors:**
-1. Set multimeter to resistance mode.
-2. Place one probe on IN1, other probe on GND.
-3. Read the resistance. This is the optocoupler LED's series resistor.
-   - **≤ 470 Ω** → ready for 3.3V logic ✓
-   - **~1 kΩ** → the module is spec'd for 5V logic
-
-**If the resistors are ~1 kΩ:**
-Replace each IN pin's 1 kΩ resistor with 470 Ω. These are SMD components on the
-relay board PCB — small but accessible with a fine-tip iron.
-
-<details>
-<summary><strong>[?] Why does the resistor value matter?</strong></summary>
-
-At 3.3V logic with a 1 kΩ IN pin
-resistor, the optocoupler LED sees ~2.1 mA. The PC817 optocoupler needs ~5 mA
-for reliable activation. At 2.1 mA it may work at room temperature but drop out
-as the board warms during a long fruiting cycle. At 470 Ω, drive current is ~4.5 mA
-— within the reliable range regardless of temperature.
-
-</details>
-
-**✓ Check:** IN pin resistors confirmed ≤ 470 Ω on all 8 channels.
-
----
-
-## Step 3 — Install Pull-Up Resistors on All 8 IN Pins
-
-One 10 kΩ resistor per channel — 8 resistors total. Each connects from an IN pin
-to the VCC rail (3.3V).
-
-<details>
-<summary><strong>[?] Why pull-up resistors?</strong></summary>
-
-The relay fires when an IN pin is pulled LOW.
-Before the ESP32 initialises its GPIO outputs at boot, GPIO pins are in an
-undefined state and some can float LOW momentarily — which would fire relays at
-every power-on. The 10 kΩ resistors hold every IN pin HIGH (relay OFF) from the
-moment power is applied, before any firmware runs.
-
-</details>
-
-### Method A — Stripboard Adapter (Recommended)
-
-Cut a small piece of stripboard. Solder resistors to bridge each IN pin row to a
-VCC bus rail:
-
-```
-VCC bus rail ───────────────────────────────────────────
-                    │       │       │       │   (×8)
-                   10k     10k     10k     10k
-                    │       │       │       │
-               IN1 row  IN2 row  IN3 row  IN4 row  ...
+```mermaid
+graph TB
+  VCC["VCC  3.3V"]
+  VCC -->|"10 kΩ"| I1[IN1]
+  VCC -->|"10 kΩ"| I2[IN2]
+  VCC -->|"10 kΩ"| I3[IN3]
+  VCC -->|"10 kΩ"| I4[IN4]
+  VCC -->|"10 kΩ"| I5[IN5]
+  VCC -->|"10 kΩ"| I6[IN6]
+  VCC -->|"10 kΩ"| I7[IN7]
+  VCC -->|"10 kΩ"| I8[IN8]
 ```
 
 Connect the adapter's IN rows to the relay board IN1–IN8 pins with short jumpers,

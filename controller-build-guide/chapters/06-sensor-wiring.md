@@ -182,12 +182,14 @@ so the ESP32 addresses each probe individually on the same wire.
 
 You need one 2.2 kΩ resistor and one 100 nF ceramic capacitor:
 
-```
-ESP32 3V3 ──── 2.2kΩ ──────┬──── DS18B20 data line (GPIO 4)
-                            │
-                          100nF
-                            │
-ESP32 GND ─────────────────┘
+```mermaid
+graph TD
+  V3["3.3V"] -->|"2.2 kΩ pull-up"| JCT(("GPIO 4
+junction"))
+  JCT -->|"data line"| DS["DS18B20 x5
+daisy-chained"]
+  JCT -->|"100 nF
+decoupling cap"| GND["GND"]
 ```
 
 <details>
