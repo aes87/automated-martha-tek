@@ -51,7 +51,7 @@ Replace the off-the-shelf CO2 and humidity controllers with a single ESP32-S3-ba
 
 **→ [Read the DIY Controller Build Guide](diy-controller-build-guide.md)**
 **→ [DIY Controller Shopping List](https://aes87.github.io/automated-martha-tek/diy-controller-shopping-list.html)**
-**→ [Step-by-Step Construction Guide — Start Here](controller-build-guide/chapters/00-overview.md)**
+**→ [Step-by-Step Construction Guide](controller-build-guide/chapters/00-overview.md)**
 
 **What you build:** An ESP32-S3 controller in an IP65 enclosure with:
 - Sensirion SCD30 — CO2, temperature, humidity
