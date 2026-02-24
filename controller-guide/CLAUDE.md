@@ -2,14 +2,12 @@
 
 ## Purpose
 
-A step-by-step hobbyist build guide for the DIY Martha Tent Controller. Transforms
-the technical source documents in `setup/docs/` into a format a first-time ESP32
-builder can follow — with inline concept explainers, a novice-safe parts list, and
-verification steps at every stage.
+A step-by-step construction guide for the DIY Martha Tent Controller, written for
+a hobbyist who has already read the hardware reference and completed parts selection
+and ordering. This guide covers assembly and firmware flash only — not theory,
+sensor rationale, or purchasing decisions.
 
-**Scope:** Hardware assembly + firmware flash only. Tent integration (sensor
-placement, automation tuning) is covered by the broader setup documentation.
-
+**Scope:** Hardware assembly + firmware flash.
 **Primary platform:** ESP32-S3 DevKitC-1.
 **Water level path:** DFRobot KIT0139 only (built-in overvoltage protection).
 
@@ -20,7 +18,7 @@ placement, automation tuning) is covered by the broader setup documentation.
 | File | Title |
 |------|-------|
 | `chapters/00-overview.md` | Overview & How to Use This Guide |
-| `chapters/01-parts-and-tools.md` | Parts & Tools |
+| `chapters/01-parts-and-tools.md` | Parts Inventory & Tools |
 | `chapters/02-enclosure-prep.md` | Enclosure Preparation |
 | `chapters/03-power-supply-install.md` | Power Supply Installation (Mechanical) |
 | `chapters/04-relay-module-setup.md` | Relay Module Setup |
@@ -47,9 +45,6 @@ Every chapter follows these patterns:
 | Checkpoint list | `- [ ] task` | Interactive checkbox |
 | GPIO / part callout | backtick `` `GPIO 38` `` | Code span |
 
-DevKit V1 differences (where they differ from S3) appear in `> **[DevKit V1]**`
-blockquotes at the end of affected sections — secondary, not primary.
-
 ---
 
 ## S3 GPIO Reference (from `hal.h`)
@@ -61,7 +56,7 @@ blockquotes at the end of affected sections — secondary, not primary.
 | 9 | I2C SCL | Default S3 Arduino framework |
 | 18 | Relay Ch3 — Exhaust fan | Safe boot default |
 | 19 | Relay Ch4 — Intake fan | Safe boot default |
-| 21 | I2C SDA | Same as V1 |
+| 21 | I2C SDA | |
 | 38 | Relay Ch1 — Fogger | Clean GPIO; safe boot |
 | 39 | Relay Ch2 — Tub fan | Clean GPIO; safe boot |
 | 40 | Relay Ch5 — UVC lights | 10 s boot guard (firmware) |
@@ -75,18 +70,19 @@ blockquotes at the end of affected sections — secondary, not primary.
 
 | File | Role |
 |------|------|
-| `setup/docs/diy-controller-build-guide.md` | Primary technical source |
-| `setup/docs/diy-controller-hardware-reference.md` | Sensor rationale, BOM, alternatives |
-| `mushroom-firmware/include/hal.h` | S3 GPIO pin mapping |
-| `mushroom-firmware/include/config.h` | Relay pins, boot timing, thresholds |
+| `diy-controller-build-guide.md` | Primary technical reference |
+| `diy-controller-hardware-reference.md` | Sensor rationale and BOM details |
+| `firmware/include/hal.h` | S3 GPIO pin mapping |
+| `firmware/include/config.h` | Relay pins, boot timing, thresholds |
 
 ---
 
 ## When Working Here
 
-1. Read this file and the source material before adding or modifying chapters
-2. Cross-check every GPIO number against `hal.h` — do not use V1 numbers for S3 chapters
-3. Water level wiring must reference KIT0139 path only; do not expand the DIY shunt path
-4. Every mains section must include `> ⚠️ **SAFETY:**` callouts; never skip them
-5. After writing a chapter, verify: steps have checkpoints, explainers use `[?]` format,
-   S3 GPIO numbers are correct, mains sections have safety warnings
+1. Read this file before adding or modifying chapters
+2. Cross-check every GPIO number against `firmware/include/hal.h` — do not use
+   V1 pin numbers
+3. Water level wiring must reference KIT0139 path only
+4. Every mains section must include `> ⚠️ **SAFETY:**` callouts
+5. This guide does not cover: purchasing, sensor selection rationale, or alternative
+   build approaches — those belong in the hardware reference and shopping list docs

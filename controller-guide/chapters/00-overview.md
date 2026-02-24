@@ -4,37 +4,20 @@
 
 ## What You're Building
 
-You're building a custom Martha tent controller: a sealed electronics enclosure
-that monitors conditions inside a fruiting chamber and automatically controls the
-equipment that keeps your mushrooms happy.
+You're assembling a Martha tent controller: a sealed electronics enclosure that
+monitors conditions inside a fruiting chamber and automatically controls the
+equipment that keeps your mushrooms healthy.
 
 The finished controller:
 
-- **Reads** CO2, temperature, relative humidity (on three shelf heights),
-  substrate temperature (five probes), light spectrum, and reservoir water level
+- **Reads** CO2, temperature, relative humidity (at three shelf heights), substrate
+  temperature (five probes), light spectrum, and reservoir water level
 - **Controls** eight loads via relay: fogger, tub fan, exhaust fan, intake fan,
   UVC reservoir lights, grow lights, and an optional top-off pump
-- **Calculates** VPD (vapour pressure deficit) per shelf from the temp/RH data
+- **Calculates** VPD (vapour pressure deficit) per shelf from temp/RH data
 - **Streams** everything to a web dashboard on your local network in real time
 - **Fails safe**: physical panel switches let you run any load group manually,
   independent of the microcontroller
-
----
-
-## What It Replaces
-
-| Off-the-shelf controller | Price |
-|--------------------------|-------|
-| CO2 controller (dccrens) | ~$161 |
-| Inkbird IHC200 humidity controller | ~$42 |
-| Inkbird IBS-TH2 Plus monitor | ~$30 |
-| **Total** | **~$233** |
-
-The DIY controller costs **~$310–340** (base build, including GFCI protection and
-per-load fusing that the off-the-shelf products don't include). You spend slightly
-more — and you get dramatically more: per-shelf gradients, substrate temperature,
-spectral light data, continuous water level, a web dashboard, and a system you
-understand and can repair.
 
 ---
 
@@ -45,7 +28,7 @@ Thirteen chapters take you from an empty workbench to a running, flashed control
 | Chapter | What happens |
 |---------|-------------|
 | 00 — This one | Overview, conventions, safety philosophy |
-| 01 — Parts & Tools | Order everything; verify on arrival |
+| 01 — Parts & Tools | What to have in hand before starting |
 | 02 — Enclosure Prep | Mark zones, drill, mount DIN rail |
 | 03 — Power Supply Install | Mount PSUs, GFCI, fuse holders (mechanical only) |
 | 04 — Relay Module Setup | Remove jumper, add pull-up resistors, mount relay board |
@@ -68,9 +51,8 @@ power but explicitly disconnects all load cables first.
 
 Throughout all chapters you will see:
 
-> **[?] Term:** explanation of a concept — these are inline explainers. If you
-> already know the term, skip them. In the future HTML version of this guide they
-> will collapse.
+> **[?] Term:** explanation of a concept — inline explainers. If you already know
+> the term, skip them. In a future HTML version of this guide they will collapse.
 
 > ⚠️ **SAFETY:** red-flag items. Read every one before proceeding. Never skip them
 > in the mains wiring chapters.
@@ -86,25 +68,19 @@ are used for wiring diagrams and terminal commands.
 `GPIO 38`, `0x70`, `VCC` — backtick-formatted inline items are pin names, I2C
 addresses, or signal labels.
 
-- [ ] Checkbox items are checklists. Complete every item in a checklist before
-  moving to the next chapter.
-
-> **[DevKit V1]** callouts appear at the end of affected sections for anyone
-> adapting this guide to the original ESP32 DevKit V1 board. They are secondary —
-> this guide is written for the S3.
+- [ ] Checkbox items are checklists. Complete every item before moving to the next
+  chapter.
 
 ---
 
 ## Tools You Will Need
-
-You need these before you can start Chapter 02:
 
 | Tool | Why |
 |------|-----|
 | **Multimeter** | The most important tool. Used in nearly every chapter to verify connections before power-on. |
 | **Soldering iron + solder** | Installing pull-up resistors in Ch 04; sensor wiring joints in Ch 06 |
 | **Wire strippers** | Two sizes: 22 AWG (low-voltage), 14 AWG (mains) |
-| **Ferrule crimping tool** | Crimps end-sleeves onto wire ends before inserting into screw terminals. Required for mains wiring; good practice everywhere |
+| **Ferrule crimping tool** | Crimps end-sleeves onto wire ends before inserting into screw terminals |
 | **Drill + step bit** | Cutting round holes in the enclosure for cable glands and panel switches |
 | **Screwdrivers** | Flat + Phillips, for DIN rail and terminal block screws |
 | **Label maker** | Label every wire at both ends; every component before wiring |
@@ -122,7 +98,6 @@ You need these before you can start Chapter 02:
 ## Safety Philosophy
 
 This build switches **mains voltage** — 120 V AC in North America, 230 V in Europe.
-That voltage can kill at currents well below what trips a normal circuit breaker.
 The design addresses this with multiple layers:
 
 1. **GFCI/RCD** — trips at 5–30 mA in < 40 ms. The only protection fast enough
@@ -140,30 +115,7 @@ The design addresses this with multiple layers:
 **The rule while working in this enclosure:**
 
 > ⚠️ **SAFETY:** Always unplug the enclosure from mains before touching anything
-> inside it. Touch does not mean "touch a live wire" — it means **open the lid**. If
-> the lid is open, the enclosure must be unplugged. No exceptions.
+> inside it. "Touching" means **opening the lid**. If the lid is open, the enclosure
+> must be unplugged. No exceptions.
 
-This rule applies in every chapter, including low-voltage chapters — because once
-you reach Chapter 09, the mains zone is live, and muscle memory from Chapters 02–08
-must include "unplug first".
-
----
-
-## A Note on the ESP32-S3
-
-This guide targets the **ESP32-S3 DevKitC-1** (38-pin variant with USB-C). It
-resolves two hardware problems present in the original ESP32 DevKit V1:
-
-- The V1 has a USB-to-UART bridge chip (CH340) that can oxidise in a humid
-  environment. The S3 has native USB built into the chip — no bridge to corrode.
-- The V1 uses GPIO 16 and 17 for its UART2 peripheral. GPIO 17 glitches LOW at
-  boot, which would fire a relay. The S3 uses completely different GPIO numbering
-  with no relay-relevant UART overlap.
-
-> **[DevKit V1]** If you have a DevKit V1 and want to adapt: the GPIO numbers in
-> this guide will not match your board. See the GPIO table in `CLAUDE.md` for the
-> V1→S3 mapping. Every pin marked with a V1 note in Chapter 08 will need to change.
-
----
-
-**Ready? Gather your parts list (Chapter 01) and let's build.**
+Build this habit during low-voltage chapters so it's automatic when mains is live.
