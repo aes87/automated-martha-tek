@@ -14,18 +14,28 @@ IN pins, and mount the board in the enclosure.
 
 ## What Is a Relay?
 
-> **[?] Relay:** A relay is an electrically controlled switch. It has two separate
-> circuits: a low-voltage "coil" circuit and a high-voltage "contact" circuit.
-> When a small signal pulls an IN pin LOW, the coil generates a magnetic field that
-> physically moves a metal arm to close the contact — you'll hear a click. The
-> contact switches the mains load without any electrical connection between the ESP32
-> signal and the mains voltage.
+<details>
+<summary><strong>[?] Relay:</strong></summary>
 
-> **[?] Optocoupler:** An isolation layer inside the relay board. The ESP32's GPIO
-> signal drives a small LED inside the optocoupler. Light from that LED activates a
-> phototransistor on the other side, which drives the relay coil. The ESP32 and the
-> relay coil never share any electrical path — they communicate via light. This
-> protects the ESP32 from voltage spikes when inductive loads (fans) switch off.
+A relay is an electrically controlled switch. It has two separate
+circuits: a low-voltage "coil" circuit and a high-voltage "contact" circuit.
+When a small signal pulls an IN pin LOW, the coil generates a magnetic field that
+physically moves a metal arm to close the contact — you'll hear a click. The
+contact switches the mains load without any electrical connection between the ESP32
+signal and the mains voltage.
+
+</details>
+
+<details>
+<summary><strong>[?] Optocoupler:</strong></summary>
+
+An isolation layer inside the relay board. The ESP32's GPIO
+signal drives a small LED inside the optocoupler. Light from that LED activates a
+phototransistor on the other side, which drives the relay coil. The ESP32 and the
+relay coil never share any electrical path — they communicate via light. This
+protects the ESP32 from voltage spikes when inductive loads (fans) switch off.
+
+</details>
 
 ---
 
@@ -69,14 +79,19 @@ A standard 8-channel opto-isolated relay board has:
 2. Grip the jumper with needle-nose pliers and pull it straight off.
 3. Store or discard it.
 
-> **[?] Why remove the jumper?** With the jumper installed, the optocoupler logic
-> supply and the relay coil supply share the same rail. If a coil generates a voltage
-> spike on de-energise, that spike can couple back into the optocoupler side —
-> potentially reaching the ESP32. With the jumper removed:
-> - `VCC` (optocoupler side) connects to ESP32 3.3V
-> - `JD-VCC` (relay coil side) connects to 5V from the PSU
->
-> These two rails are electrically separate — coil spikes stay on the coil side.
+<details>
+<summary><strong>[?] Why remove the jumper?</strong></summary>
+
+With the jumper installed, the optocoupler logic
+supply and the relay coil supply share the same rail. If a coil generates a voltage
+spike on de-energise, that spike can couple back into the optocoupler side —
+potentially reaching the ESP32. With the jumper removed:
+- `VCC` (optocoupler side) connects to ESP32 3.3V
+- `JD-VCC` (relay coil side) connects to 5V from the PSU
+
+These two rails are electrically separate — coil spikes stay on the coil side.
+
+</details>
 
 **✓ Check:** Jumper removed. Multimeter continuity between VCC and JD-VCC shows
 open circuit.
@@ -98,11 +113,16 @@ The relay module must respond reliably to 3.3V logic from the ESP32-S3.
 Replace each IN pin's 1 kΩ resistor with 470 Ω. These are SMD components on the
 relay board PCB — small but accessible with a fine-tip iron.
 
-> **[?] Why does the resistor value matter?** At 3.3V logic with a 1 kΩ IN pin
-> resistor, the optocoupler LED sees ~2.1 mA. The PC817 optocoupler needs ~5 mA
-> for reliable activation. At 2.1 mA it may work at room temperature but drop out
-> as the board warms during a long fruiting cycle. At 470 Ω, drive current is ~4.5 mA
-> — within the reliable range regardless of temperature.
+<details>
+<summary><strong>[?] Why does the resistor value matter?</strong></summary>
+
+At 3.3V logic with a 1 kΩ IN pin
+resistor, the optocoupler LED sees ~2.1 mA. The PC817 optocoupler needs ~5 mA
+for reliable activation. At 2.1 mA it may work at room temperature but drop out
+as the board warms during a long fruiting cycle. At 470 Ω, drive current is ~4.5 mA
+— within the reliable range regardless of temperature.
+
+</details>
 
 **✓ Check:** IN pin resistors confirmed ≤ 470 Ω on all 8 channels.
 
@@ -113,11 +133,16 @@ relay board PCB — small but accessible with a fine-tip iron.
 One 10 kΩ resistor per channel — 8 resistors total. Each connects from an IN pin
 to the VCC rail (3.3V).
 
-> **[?] Why pull-up resistors?** The relay fires when an IN pin is pulled LOW.
-> Before the ESP32 initialises its GPIO outputs at boot, GPIO pins are in an
-> undefined state and some can float LOW momentarily — which would fire relays at
-> every power-on. The 10 kΩ resistors hold every IN pin HIGH (relay OFF) from the
-> moment power is applied, before any firmware runs.
+<details>
+<summary><strong>[?] Why pull-up resistors?</strong></summary>
+
+The relay fires when an IN pin is pulled LOW.
+Before the ESP32 initialises its GPIO outputs at boot, GPIO pins are in an
+undefined state and some can float LOW momentarily — which would fire relays at
+every power-on. The 10 kΩ resistors hold every IN pin HIGH (relay OFF) from the
+moment power is applied, before any firmware runs.
+
+</details>
 
 ### Method A — Stripboard Adapter (Recommended)
 

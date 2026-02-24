@@ -42,9 +42,14 @@ same IN pin at all times. The pull-up ensures a safe default when both are idle.
 | `GPIO 42` | IN7 | Pump (pre-wired for optional add-on) |
 | `GPIO 47` | IN8 | Spare |
 
-> **[?] Active LOW:** The relay fires when its IN pin is pulled to GND (LOW). It is
-> OFF when the IN pin is HIGH (3.3V). Firmware uses `digitalWrite(pin, LOW)` to fire
-> and `digitalWrite(pin, HIGH)` to release.
+<details>
+<summary><strong>[?] Active LOW:</strong></summary>
+
+The relay fires when its IN pin is pulled to GND (LOW). It is
+OFF when the IN pin is HIGH (3.3V). Firmware uses `digitalWrite(pin, LOW)` to fire
+and `digitalWrite(pin, HIGH)` to release.
+
+</details>
 
 ---
 

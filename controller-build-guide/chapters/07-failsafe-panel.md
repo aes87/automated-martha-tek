@@ -17,19 +17,22 @@ The ESP32 is a computer — it can crash, lose WiFi, or get stuck. The failsafe 
 lets you run any load group manually, independently of the ESP32, by flipping the
 master switch to MANUAL and using the group switches.
 
-> **[?] AUTO vs MANUAL:**
->
-> **AUTO** (normal operation): The DPDT master connects the group switches' common
-> wire to 3.3V (VCC). Closing a group switch can only push an IN pin toward 3.3V,
-> which is already its pulled-up resting state — no effect. The ESP32 controls
-> everything.
->
-> **MANUAL**: The DPDT master connects the common wire to GND. Closing a group
-> switch now pulls the corresponding relay IN pins to GND, firing those relays.
-> The 10 kΩ pull-up resistors limit current while allowing the GND to win.
->
-> The ESP32 GPIOs remain connected to the relay IN pins in both modes. In MANUAL
-> mode, flip the master first, then use group switches for load control.
+<details>
+<summary><strong>[?] AUTO vs MANUAL:</strong></summary>
+
+**AUTO** (normal operation): The DPDT master connects the group switches' common
+wire to 3.3V (VCC). Closing a group switch can only push an IN pin toward 3.3V,
+which is already its pulled-up resting state — no effect. The ESP32 controls
+everything.
+
+**MANUAL**: The DPDT master connects the common wire to GND. Closing a group
+switch now pulls the corresponding relay IN pins to GND, firing those relays.
+The 10 kΩ pull-up resistors limit current while allowing the GND to win.
+
+The ESP32 GPIOs remain connected to the relay IN pins in both modes. In MANUAL
+mode, flip the master first, then use group switches for load control.
+
+</details>
 
 ---
 
@@ -56,12 +59,22 @@ ESP32 GPIOs always connected to IN1–IN8 in both modes.
 2. Thread the mounting nut on from inside and tighten firmly with needle-nose pliers.
    Firm enough that the switch won't rotate; not so tight you crack the plastic.
 
-> **[?] DPDT switch:** Double Pole Double Throw — 6 terminals. Two independent
-> switching poles (A and B), each with a common and two throw positions. When the
-> lever moves, both poles switch simultaneously.
+<details>
+<summary><strong>[?] DPDT switch:</strong></summary>
 
-> **[?] SPST switch:** Single Pole Single Throw — 2 terminals. A simple gate.
-> When ON, the terminals connect. When OFF, they're open.
+Double Pole Double Throw — 6 terminals. Two independent
+switching poles (A and B), each with a common and two throw positions. When the
+lever moves, both poles switch simultaneously.
+
+</details>
+
+<details>
+<summary><strong>[?] SPST switch:</strong></summary>
+
+Single Pole Single Throw — 2 terminals. A simple gate.
+When ON, the terminals connect. When OFF, they're open.
+
+</details>
 
 ---
 

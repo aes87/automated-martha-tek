@@ -55,9 +55,14 @@ fuse, before the PSUs, before anything else.
 2. Insert the 5A fuse.
 3. Label: `MAIN FUSE — 5A`
 
-> **[?] Two fusing levels:** The 5A input fuse protects the mains cable and internal
-> wiring between the GFCI and the fuse block. The per-load fuses (next step) protect
-> individual load channels. Together they provide defence-in-depth.
+<details>
+<summary><strong>[?] Two fusing levels:</strong></summary>
+
+The 5A input fuse protects the mains cable and internal
+wiring between the GFCI and the fuse block. The per-load fuses (next step) protect
+individual load channels. Together they provide defence-in-depth.
+
+</details>
 
 **✓ Check:** Fuse holder mounted and labelled. 5A fuse installed.
 

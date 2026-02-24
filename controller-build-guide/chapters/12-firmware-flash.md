@@ -22,10 +22,15 @@ internet access, USB-C cable.
 pip install platformio
 ```
 
-> **[?] PlatformIO vs Arduino IDE:** PlatformIO uses a `platformio.ini` file that
-> specifies the exact board, framework, and library versions. When you clone the
-> firmware repo, PlatformIO automatically downloads the correct versions of
-> everything — no manual library management.
+<details>
+<summary><strong>[?] PlatformIO vs Arduino IDE:</strong></summary>
+
+PlatformIO uses a `platformio.ini` file that
+specifies the exact board, framework, and library versions. When you clone the
+firmware repo, PlatformIO automatically downloads the correct versions of
+everything — no manual library management.
+
+</details>
 
 ---
 
@@ -64,9 +69,14 @@ framework = arduino
 ...
 ```
 
-> **[?] `-DBOARD_S3` build flag:** This tells the compiler to apply the S3 pin
-> remapping in `hal.h`. Without this flag, the firmware uses DevKit V1 pin numbers,
-> which are wrong for this build. Always use the `esp32s3` environment.
+<details>
+<summary><strong>[?] `-DBOARD_S3` build flag:</strong></summary>
+
+This tells the compiler to apply the S3 pin
+remapping in `hal.h`. Without this flag, the firmware uses DevKit V1 pin numbers,
+which are wrong for this build. Always use the `esp32s3` environment.
+
+</details>
 
 **Always use the `esp32s3` environment.**
 

@@ -44,10 +44,15 @@ The relay board physically spans both zones: its load terminals (COM/NO/NC conta
 that switch mains) point toward the mains zone; its signal header (IN1–IN8, VCC,
 GND) faces the low-voltage zone. Mount it at or near the dividing line.
 
-> **[?] Why two zones?** Mixing low-voltage and mains wiring in the same space
-> creates risk of accidental contact and makes fault-finding confusing. The physical
-> separation means that during maintenance you can look at the right half of the
-> enclosure and know that nothing there is above 12V DC.
+<details>
+<summary><strong>[?] Why two zones?</strong></summary>
+
+Mixing low-voltage and mains wiring in the same space
+creates risk of accidental contact and makes fault-finding confusing. The physical
+separation means that during maintenance you can look at the right half of the
+enclosure and know that nothing there is above 12V DC.
+
+</details>
 
 ---
 
@@ -85,10 +90,15 @@ Sketch the gland layout before drilling. Once you drill, you can't un-drill.
   UVC, grow lights)
 - Bottom or right side, LV zone: **6× PG9** — sensor cables
 
-> **[?] Cable gland:** A threaded fitting that seals around a cable as it passes
-> through a hole in the enclosure wall, maintaining the IP65 weather seal. The gland
-> body threads into the hole; the clamping nut is tightened to grip the cable jacket
-> and compress the rubber seal.
+<details>
+<summary><strong>[?] Cable gland:</strong></summary>
+
+A threaded fitting that seals around a cable as it passes
+through a hole in the enclosure wall, maintaining the IP65 weather seal. The gland
+body threads into the hole; the clamping nut is tightened to grip the cable jacket
+and compress the rubber seal.
+
+</details>
 
 ---
 
@@ -161,8 +171,13 @@ seated. Label each gland with a tape flag indicating which cable goes through it
 
 ## Step 6 — Cut and Mount DIN Rail
 
-> **[?] DIN rail:** A standardised 35mm-wide metal channel used to mount industrial
-> components. PSUs, relay modules, fuse blocks, and terminal blocks all clip onto it.
+<details>
+<summary><strong>[?] DIN rail:</strong></summary>
+
+A standardised 35mm-wide metal channel used to mount industrial
+components. PSUs, relay modules, fuse blocks, and terminal blocks all clip onto it.
+
+</details>
 
 1. Measure the interior width of the enclosure.
 2. Cut the DIN rail 10–15 mm shorter than the interior width. Use a hacksaw; file

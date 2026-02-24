@@ -76,9 +76,14 @@ Earth→PE. Cable gland tightened. No bare wire visible.
 
 The fuse is in-line on the Hot wire only. Neutral passes straight through.
 
-> **[?] Why fuse only the Hot wire?** Only the Live wire is interrupted by fuses and
-> breakers. Interrupting Neutral would leave equipment energised; interrupting Earth
-> removes fault protection.
+<details>
+<summary><strong>[?] Why fuse only the Hot wire?</strong></summary>
+
+Only the Live wire is interrupted by fuses and
+breakers. Interrupting Neutral would leave equipment energised; interrupting Earth
+removes fault protection.
+
+</details>
 
 **✓ Check:** GFCI LOAD-L through fuse holder. GFCI LOAD-N on neutral bus.
 
@@ -138,9 +143,14 @@ Load Neutral (White/Blue) ── Neutral bus
 Load Earth (Green/Bare) ───── Earth bus (if earthed load)
 ```
 
-> **[?] Normally Open (NO):** The contact is open (circuit off) when the relay is
-> not energised. When the relay fires, it closes the contact, completing the circuit
-> to the load. Always use NO for loads you want to switch on.
+<details>
+<summary><strong>[?] Normally Open (NO):</strong></summary>
+
+The contact is open (circuit off) when the relay is
+not energised. When the relay fires, it closes the contact, completing the circuit
+to the load. Always use NO for loads you want to switch on.
+
+</details>
 
 **✓ Check:** All load cable Hot wires on relay NO terminals. All Neutrals on neutral
 bus. All earthed loads on Earth bus. Cable glands tightened.

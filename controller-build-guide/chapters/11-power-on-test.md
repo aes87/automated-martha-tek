@@ -29,9 +29,14 @@ Computer with serial terminal (115200 baud), USB-C cable.
 2. Open Arduino IDE Serial Monitor or PlatformIO terminal at **115200 baud**.
 3. Nothing should appear yet — the board is not yet powered from the enclosure supply.
 
-> **[?] 115200 baud:** The communication rate between the ESP32 and your serial
-> monitor. If set to a different rate (e.g. 9600), you will see garbled characters
-> instead of readable text.
+<details>
+<summary><strong>[?] 115200 baud:</strong></summary>
+
+The communication rate between the ESP32 and your serial
+monitor. If set to a different rate (e.g. 9600), you will see garbled characters
+instead of readable text.
+
+</details>
 
 ---
 

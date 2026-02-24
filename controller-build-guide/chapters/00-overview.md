@@ -51,8 +51,13 @@ power but explicitly disconnects all load cables first.
 
 Throughout all chapters you will see:
 
-> **[?] Term:** explanation of a concept — inline explainers. If you already know
-> the term, skip them. In a future HTML version of this guide they will collapse.
+<details>
+<summary><strong>[?] Term:</strong></summary>
+
+explanation of a concept — inline explainers. If you already know
+the term, skip them. In a future HTML version of this guide they will collapse.
+
+</details>
 
 > ⚠️ **SAFETY:** red-flag items. Read every one before proceeding. Never skip them
 > in the mains wiring chapters.
@@ -87,11 +92,16 @@ addresses, or signal labels.
 | **Wire cutters / snips** | Trimming component leads and cable gland excess |
 | **Needle-nose pliers** | Seating connectors, tightening cable gland nuts |
 
-> **[?] Ferrule crimping tool:** A hand-press tool that squeezes a small metal
-> sleeve (a "ferrule") onto the stripped end of a wire. The sleeve prevents
-> individual wire strands from splaying and causing short circuits when inserted
-> into a screw terminal. Required for mains connections; strongly recommended
-> everywhere in this build.
+<details>
+<summary><strong>[?] Ferrule crimping tool:</strong></summary>
+
+A hand-press tool that squeezes a small metal
+sleeve (a "ferrule") onto the stripped end of a wire. The sleeve prevents
+individual wire strands from splaying and causing short circuits when inserted
+into a screw terminal. Required for mains connections; strongly recommended
+everywhere in this build.
+
+</details>
 
 ---
 

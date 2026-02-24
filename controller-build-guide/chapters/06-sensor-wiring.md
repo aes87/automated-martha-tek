@@ -15,15 +15,20 @@ capacitors ×2, 22 AWG stranded wire, soldering iron.
 
 ## 6a — I2C Bus Fundamentals
 
-> **[?] I2C:** A two-wire communication protocol. All devices share two wires:
-> - **SDA** (Serial Data) — carries the data
-> - **SCL** (Serial Clock) — the timing signal
->
-> Each device has a unique address (e.g. `0x44`, `0x61`). The ESP32 addresses a
-> specific device; only that device responds.
->
-> All I2C devices in this build run at **3.3V**. Power all breakout boards from the
-> ESP32's `3V3` pin, not from the 5V PSU rail.
+<details>
+<summary><strong>[?] I2C:</strong></summary>
+
+A two-wire communication protocol. All devices share two wires:
+- **SDA** (Serial Data) — carries the data
+- **SCL** (Serial Clock) — the timing signal
+
+Each device has a unique address (e.g. `0x44`, `0x61`). The ESP32 addresses a
+specific device; only that device responds.
+
+All I2C devices in this build run at **3.3V**. Power all breakout boards from the
+ESP32's `3V3` pin, not from the 5V PSU rail.
+
+</details>
 
 **I2C device addresses:**
 
@@ -91,9 +96,14 @@ The SCD30 sits directly on the main I2C bus (address `0x61`).
 | SCL | ESP32 `GPIO 9` |
 | SEL | GND (selects I2C mode) |
 
-> **[?] SEL pin:** Ties LOW for I2C mode. On the Adafruit SCD30 breakout this is
-> handled by a default solder jumper — no action needed. On a bare SCD30 module,
-> wire SEL explicitly to GND.
+<details>
+<summary><strong>[?] SEL pin:</strong></summary>
+
+Ties LOW for I2C mode. On the Adafruit SCD30 breakout this is
+handled by a default solder jumper — no action needed. On a bare SCD30 module,
+wire SEL explicitly to GND.
+
+</details>
 
 Route the SCD30 cable through a PG9 gland with enough length to reach its mounting
 position inside the tent (mid-height, back wall).
@@ -160,9 +170,14 @@ facing downward.
 
 Five probes connect to a single GPIO using the 1-Wire daisy-chain protocol.
 
-> **[?] 1-Wire bus:** A single-wire protocol where multiple sensors share one data
-> wire plus power and ground. Each DS18B20 has a factory-burned unique 64-bit ID,
-> so the ESP32 addresses each probe individually on the same wire.
+<details>
+<summary><strong>[?] 1-Wire bus:</strong></summary>
+
+A single-wire protocol where multiple sensors share one data
+wire plus power and ground. Each DS18B20 has a factory-burned unique 64-bit ID,
+so the ESP32 addresses each probe individually on the same wire.
+
+</details>
 
 ### Assemble the Pull-Up Circuit
 
@@ -176,13 +191,23 @@ ESP32 3V3 ──── 2.2kΩ ──────┬──── DS18B20 data lin
 ESP32 GND ─────────────────┘
 ```
 
-> **[?] Why 2.2 kΩ?** With 5 sensors on several metres of cable, the cable
-> capacitance slows the rise time of the data line. 2.2 kΩ drives the bus reliably
-> across the full chain.
+<details>
+<summary><strong>[?] Why 2.2 kΩ?</strong></summary>
 
-> **[?] Why a 100 nF cap?** The data cable acts as an antenna for noise from nearby
-> relay coils. The capacitor at the pull-up junction filters voltage spikes that
-> could corrupt 1-Wire data. Place it close to `GPIO 4`.
+With 5 sensors on several metres of cable, the cable
+capacitance slows the rise time of the data line. 2.2 kΩ drives the bus reliably
+across the full chain.
+
+</details>
+
+<details>
+<summary><strong>[?] Why a 100 nF cap?</strong></summary>
+
+The data cable acts as an antenna for noise from nearby
+relay coils. The capacitor at the pull-up junction filters voltage spikes that
+could corrupt 1-Wire data. Place it close to `GPIO 4`.
+
+</details>
 
 Solder the pull-up resistor and cap on a small piece of stripboard or at the GPIO 4
 header. Resistor: 3V3 to data line junction. Cap: data line junction to GND.
@@ -233,8 +258,13 @@ ADC pin.
 Connect the sensor signal and return wires to the converter board's sensor input
 terminals per the KIT0139 wiring diagram included with the kit.
 
-> **[?] 4–20 mA current loop:** The sensor outputs 4 mA at minimum depth and 20 mA
-> at maximum. The converter board converts this current to 0–3.3V for the ESP32 ADC.
+<details>
+<summary><strong>[?] 4–20 mA current loop:</strong></summary>
+
+The sensor outputs 4 mA at minimum depth and 20 mA
+at maximum. The converter board converts this current to 0–3.3V for the ESP32 ADC.
+
+</details>
 
 The converter board mounts in the LV zone. The sensor probe drops to the floor of
 the reservoir. Route cable through a PG9 gland.

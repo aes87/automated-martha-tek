@@ -16,9 +16,14 @@ The ESP32-S3 DevKitC-1 is a 38-pin development board with:
 - BOOT and EN (reset) buttons near the USB port
 - Module on top labelled "ESP32-S3-WROOM-1"
 
-> **[?] DevKitC-1:** The reference development board Espressif produces for the
-> ESP32-S3 chip. The "C" revision introduced USB-C. All GPIO numbers and wiring in
-> this guide assume the 38-pin DevKitC-1.
+<details>
+<summary><strong>[?] DevKitC-1:</strong></summary>
+
+The reference development board Espressif produces for the
+ESP32-S3 chip. The "C" revision introduced USB-C. All GPIO numbers and wiring in
+this guide assume the 38-pin DevKitC-1.
+
+</details>
 
 ---
 
