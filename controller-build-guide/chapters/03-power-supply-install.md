@@ -128,3 +128,7 @@ labels applied to DIN rail.
 - [ ] All components labelled before wiring begins
 - [ ] DIN rail zones labelled HIGH VOLTAGE / LOW VOLTAGE
 - [ ] No wiring done yet
+
+---
+
+[← Ch 02 — Enclosure Preparation](02-enclosure-prep.md)  ·  [Ch 04 — Relay Module Setup →](04-relay-module-setup.md)

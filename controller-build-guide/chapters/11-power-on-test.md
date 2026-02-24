@@ -245,3 +245,7 @@ Do not connect load cables until all 5 tests pass.
 - [ ] Test 4 passed: each failsafe group switch activates correct channels only
 - [ ] Test 5 passed: GFCI TEST cuts power; RESET restores
 - [ ] Load cables connected and each load tested
+
+---
+
+[← Ch 10 — Final Assembly Checklist](10-final-assembly.md)  ·  [Ch 12 — Firmware Flash →](12-firmware-flash.md)

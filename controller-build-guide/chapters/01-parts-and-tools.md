@@ -110,3 +110,7 @@ covered in the companion shopping list.
 - [ ] Relay module: 8-channel, opto-isolated, 3.3V compatible confirmed
 - [ ] Enclosure: IP65 rated, gasket intact, min 250×200×100mm
 - [ ] GFCI/RCD: confirmed 30 mA trip rating
+
+---
+
+[← Ch 00 — Overview & How to Use This Guide](00-overview.md)  ·  [Ch 02 — Enclosure Preparation →](02-enclosure-prep.md)

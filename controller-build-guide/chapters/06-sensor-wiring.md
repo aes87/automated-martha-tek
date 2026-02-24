@@ -259,3 +259,7 @@ board VCC at 3.3V, GND at common ground. Cable through PG9 gland.
 - [ ] All sensor cables through PG9 glands
 - [ ] All I2C devices powered from 3V3, not 5V PSU rail
 - [ ] Common GND: 5V PSU −, 12V PSU −, and ESP32 GND all tied together
+
+---
+
+[← Ch 05 — ESP32-S3 Setup](05-esp32-s3-setup.md)  ·  [Ch 07 — Failsafe Panel Switches →](07-failsafe-panel.md)

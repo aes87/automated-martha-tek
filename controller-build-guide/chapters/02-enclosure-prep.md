@@ -201,3 +201,7 @@ The ESP32-S3 and relay module mount on M3 standoffs off the enclosure floor.
 - [ ] DIN rail cut, filed, and mounted securely
 - [ ] Standoff holes drilled for ESP32 and relay module
 - [ ] Standoffs installed and stable
+
+---
+
+[← Ch 01 — Parts & Tools](01-parts-and-tools.md)  ·  [Ch 03 — Power Supply Installation →](03-power-supply-install.md)

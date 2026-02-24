@@ -171,3 +171,7 @@ header faces LV zone. Board does not touch the enclosure floor.
 - [ ] Pull-up resistors verified: VCC→INx reads ~10 kΩ per channel
 - [ ] No solder bridges between IN pins
 - [ ] Relay board mounted on standoffs; load terminals face mains zone
+
+---
+
+[← Ch 03 — Power Supply Installation](03-power-supply-install.md)  ·  [Ch 05 — ESP32-S3 Setup →](05-esp32-s3-setup.md)

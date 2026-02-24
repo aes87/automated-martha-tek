@@ -150,3 +150,7 @@ exactly its assigned IN pins. AUTO mode makes all group switches inoperative.
 - [ ] Sufficient wire slack for lid to open fully
 - [ ] Test 1 passed: AUTO mode — group switches have no effect on IN pins
 - [ ] Test 2 passed: MANUAL mode — each group switch activates correct IN pins only
+
+---
+
+[← Ch 06 — Sensor Wiring](06-sensor-wiring.md)  ·  [Ch 08 — Low-Voltage Signal Wiring →](08-signal-wiring.md)

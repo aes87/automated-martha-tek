@@ -202,3 +202,7 @@ both PSU PE terminals confirmed.
 
 > ⚠️ **SAFETY:** Complete every item before closing the lid. If any item cannot be
 > ticked, resolve it before powering on.
+
+---
+
+[← Ch 08 — Low-Voltage Signal Wiring](08-signal-wiring.md)  ·  [Ch 10 — Final Assembly Checklist →](10-final-assembly.md)

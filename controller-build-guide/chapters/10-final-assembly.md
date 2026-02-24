@@ -133,3 +133,7 @@ Store photos with the project files.
 - [ ] Checklist C — all 10 items complete
 - [ ] 7 photos taken and stored
 - [ ] Lid closed and sealed
+
+---
+
+[← Ch 09 — Mains Wiring](09-mains-wiring.md)  ·  [Ch 11 — Initial Power-On Test →](11-power-on-test.md)

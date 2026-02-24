@@ -27,19 +27,19 @@ Thirteen chapters take you from an empty workbench to a running, flashed control
 
 | Chapter | What happens |
 |---------|-------------|
-| 00 — This one | Overview, conventions, safety philosophy |
-| 01 — Parts & Tools | What to have in hand before starting |
-| 02 — Enclosure Prep | Mark zones, drill, mount DIN rail |
-| 03 — Power Supply Install | Mount PSUs, GFCI, fuse holders (mechanical only) |
-| 04 — Relay Module Setup | Remove jumper, add pull-up resistors, mount relay board |
-| 05 — ESP32-S3 Setup | Identify pinout, bench-test, mount |
-| 06 — Sensor Wiring | Wire every sensor to the ESP32 |
-| 07 — Failsafe Panel | Drill switch holes, wire the manual override panel |
-| 08 — Signal Wiring | Connect ESP32 GPIOs to relay inputs |
-| 09 — Mains Wiring | Connect line voltage (GFCI, fuses, PSUs, loads) |
-| 10 — Final Assembly | Checklists, photography, seal the enclosure |
-| 11 — Power-On Test | Five structured tests before any loads are connected |
-| 12 — Firmware Flash | Install tools, flash firmware, verify sensor readings |
+| [00 — This one](00-overview.md) | Overview, conventions, safety philosophy |
+| [01 — Parts & Tools](01-parts-and-tools.md) | What to have in hand before starting |
+| [02 — Enclosure Prep](02-enclosure-prep.md) | Mark zones, drill, mount DIN rail |
+| [03 — Power Supply Install](03-power-supply-install.md) | Mount PSUs, GFCI, fuse holders (mechanical only) |
+| [04 — Relay Module Setup](04-relay-module-setup.md) | Remove jumper, add pull-up resistors, mount relay board |
+| [05 — ESP32-S3 Setup](05-esp32-s3-setup.md) | Identify pinout, bench-test, mount |
+| [06 — Sensor Wiring](06-sensor-wiring.md) | Wire every sensor to the ESP32 |
+| [07 — Failsafe Panel](07-failsafe-panel.md) | Drill switch holes, wire the manual override panel |
+| [08 — Signal Wiring](08-signal-wiring.md) | Connect ESP32 GPIOs to relay inputs |
+| [09 — Mains Wiring](09-mains-wiring.md) | Connect line voltage (GFCI, fuses, PSUs, loads) |
+| [10 — Final Assembly](10-final-assembly.md) | Checklists, photography, seal the enclosure |
+| [11 — Power-On Test](11-power-on-test.md) | Five structured tests before any loads are connected |
+| [12 — Firmware Flash](12-firmware-flash.md) | Install tools, flash firmware, verify sensor readings |
 
 Work in order. Chapters 02–08 are all **low-voltage bench work** — safe to do with
 the enclosure unplugged. Chapter 09 is the only mains chapter. Chapter 11 requires
@@ -119,3 +119,7 @@ The design addresses this with multiple layers:
 > must be unplugged. No exceptions.
 
 Build this habit during low-voltage chapters so it's automatic when mains is live.
+
+---
+
+[Ch 01 — Parts & Tools →](01-parts-and-tools.md)

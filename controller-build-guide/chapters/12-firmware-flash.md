@@ -257,3 +257,7 @@ a grow:
 3. Do a test run: verify control loops trigger at correct setpoints
 4. Calibrate the water level sensor with the reservoir filled and empty
 5. Set auto-refill thresholds in Settings (if using the optional pump)
+
+---
+
+[← Ch 11 — Initial Power-On Test](11-power-on-test.md)

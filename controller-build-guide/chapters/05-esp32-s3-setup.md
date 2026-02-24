@@ -145,3 +145,7 @@ enclosure lid.
 - [ ] GPIO reference card printed and attached to lid interior
 - [ ] Board mounted on standoffs in LV zone
 - [ ] USB-C port accessible inside enclosure
+
+---
+
+[← Ch 04 — Relay Module Setup](04-relay-module-setup.md)  ·  [Ch 06 — Sensor Wiring →](06-sensor-wiring.md)

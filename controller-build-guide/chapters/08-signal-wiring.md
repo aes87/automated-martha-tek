@@ -135,3 +135,7 @@ With ESP32 GPIO wires now added to the IN pins:
 - [ ] Relay GND → common GND
 - [ ] Continuity: all 8 GPIO-to-IN paths pass; no cross-channel shorts
 - [ ] Failsafe re-verification passed
+
+---
+
+[← Ch 07 — Failsafe Panel Switches](07-failsafe-panel.md)  ·  [Ch 09 — Mains Wiring →](09-mains-wiring.md)
