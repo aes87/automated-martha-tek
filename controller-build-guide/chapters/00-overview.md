@@ -19,9 +19,7 @@ The finished controller:
 - **Fails safe**: physical panel switches let you run any load group manually,
   independent of the microcontroller
 
-**Full wiring schematic** _(auto-generation is a work in progress)_:
-
-![Controller wiring schematic](../assets/schematic.svg)
+**[→ Full wiring schematic](../assets/schematic.svg)** _(auto-generation is a work in progress — click to open)_
 
 ---
 
