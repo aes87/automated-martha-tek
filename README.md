@@ -14,7 +14,6 @@ A writeup of u/dccrens' proven Martha tent build, plus an optional DIY ESP32-S3 
 - [Part 4 — Inoculating](#part-4--inoculating)
   - [Part 4A — Select / Buy Strains](#part-4a--select--buy-strains)
   - [Part 4B — Setup *(coming soon)*](#part-4b--setup-coming-soon)
-  - [Part 4C — Tracking / Learning *(coming soon)*](#part-4c--tracking--learning-coming-soon)
 - [Part 5 — Growing *(coming soon)*](#part-5--growing-coming-soon)
 - [How the Parts Fit Together](#how-the-parts-fit-together)
 - [Credits](#credits)
@@ -173,19 +172,13 @@ The guide is filterable by difficulty level and searchable by keyword.
 
 ### Part 4B — Setup *(coming soon)*
 
-Substrate preparation, sterilization, inoculation, and fruiting workflows for each strain. Coming once the first grows are underway.
-
----
-
-### Part 4C — Tracking / Learning *(coming soon)*
-
-Per-batch grow logs, yield tracking, environmental correlation, and lessons learned over time.
+Substrate preparation, sterilization, and inoculation workflows for each strain. Coming once the first grows are underway.
 
 ---
 
 ## Part 5 — Growing *(coming soon)*
 
-Active grow documentation — environmental logs, fruiting block photos, harvest notes, and what worked and what didn't.
+Everything once the colony is started: fruiting, environmental logs, per-batch yield tracking, harvest notes, and lessons learned.
 
 ---
 
