@@ -8,7 +8,7 @@ A highly-featured ESP32-S3-based controller for a Martha tent fruiting chamber. 
 
 **Hardware cost: ~$290–310** (base build) — roughly the same price as the off-the-shelf controllers it replaces, with dramatically more capability.
 
-> This guide covers hardware assembly. Firmware is in [`firmware/`](firmware/) — see [`firmware/README.md`](firmware/README.md) for build, flash, and configuration instructions.
+> This guide covers hardware assembly. Firmware is in [`firmware/`](../firmware/) — see [`firmware/README.md`](../firmware/README.md) for build, flash, and configuration instructions.
 >
 > Reference build credit: u/mettalmag (r/MushroomGrowers, Jan 2025) — adapted from a 200sqm commercial greenhouse to a home Martha tent.
 > Original post: https://www.reddit.com/r/MushroomGrowers/comments/1rao1ms/
@@ -724,7 +724,7 @@ The base build pre-wires relay Ch 7 and the 12V rail for this. To add the pump:
 
 ## Firmware
 
-Firmware is in [`firmware/`](firmware/). See [`firmware/README.md`](firmware/README.md) for:
+Firmware is in [`firmware/`](../firmware/). See [`firmware/README.md`](../firmware/README.md) for:
 - Build and flash instructions (PlatformIO)
 - OTA update procedure
 - Config reference (RH setpoint, CO2 thresholds, light schedules)
