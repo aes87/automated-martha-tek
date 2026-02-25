@@ -11,6 +11,9 @@ __pycache__/
 firmware/.pio/
 firmware/.pioenvs/
 
+# Claude Code instructions
+CLAUDE.md
+
 # Editor
 .DS_Store
 Thumbs.db
