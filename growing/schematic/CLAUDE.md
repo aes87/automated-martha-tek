@@ -55,5 +55,5 @@ elm.Line().at(ref_pos).down(ref_pos[1] - target_pos[1])
 
 ## Hardware Reference
 
-See `/tmp/automated-martha-tek/diy-controller-build-guide.md` for full circuit spec
-and `/tmp/automated-martha-tek/diy-controller-hardware-reference.md` for component rationale.
+See `growing/diy-controller-build-guide.md` for full circuit spec
+and `growing/diy-controller-hardware-reference.md` for component rationale.

@@ -1,8 +1,8 @@
-# mushroom-firmware
+# firmware
 
 ESP32 PlatformIO firmware for the Martha Tent Controller.
-Lives at `/workspace/projects/mushroom-firmware/` in the workspace,
-synced to `aes87/automated-martha-tek/firmware/` on GitHub.
+Lives at `/workspace/projects/automated-martha-tek/firmware/` in the workspace,
+tracked in the `aes87/automated-martha-tek` GitHub repo under `firmware/`.
 
 ## Build Commands
 
@@ -81,17 +81,13 @@ test/embedded/   Hardware bring-up checklist
 5. Write native unit tests in `test/native/test_my_sensor.cpp`
 6. Add library to `platformio.ini` lib_deps
 
-## Syncing to GitHub
+## Git Workflow
 
 ```bash
-# Sync workspace project to automated-martha-tek repo
-rsync -av --delete /workspace/projects/mushroom-firmware/ \
-    /tmp/automated-martha-tek/firmware/
-
-# Push to GitHub
-cd /tmp/automated-martha-tek
+# Commit and push firmware changes
+cd /workspace/projects/automated-martha-tek
 git add firmware/
-git commit -m "Update firmware"
+git commit -m "firmware: describe your change"
 git push
 ```
 

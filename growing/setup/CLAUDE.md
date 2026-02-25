@@ -23,7 +23,7 @@ setup/
 - Equipment choices should include model, purpose, cost, and supplier
 
 ## When Working Here
-1. Read `/workspace/projects/mushroom-growing/CLAUDE.md` for domain conventions
+1. Read `/workspace/projects/automated-martha-tek/growing/CLAUDE.md` for domain conventions
 2. Check memory at `/home/node/.claude/projects/-workspace/memory/mushroom-growing/` for prior context
 3. When ingesting new context (user-provided specs, research, etc.), update memory files immediately
 4. All decisions and rationale should be documented in `docs/` so they persist across sessions

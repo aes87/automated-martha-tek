@@ -16,4 +16,4 @@ A collection of sub-projects related to building and managing a home mushroom cu
 ## When Working Here
 1. Check this file and the relevant sub-project's CLAUDE.md before starting
 2. All domain knowledge (species profiles, substrate recipes, etc.) should be captured in memory files under `/home/node/.claude/projects/-workspace/memory/mushroom-growing/`
-3. Context shared across sub-projects (e.g. species library, environmental targets) lives in this folder or `shared/mushroom-growing/`
+3. Context shared across sub-projects (e.g. species library, environmental targets) lives in this folder (`growing/`) or the repo root
