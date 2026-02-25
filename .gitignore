@@ -8,8 +8,8 @@ __pycache__/
 *.log
 
 # PlatformIO
-firmware/.pio/
-firmware/.pioenvs/
+controller-build/firmware/.pio/
+controller-build/firmware/.pioenvs/
 
 # Claude Code instructions
 CLAUDE.md

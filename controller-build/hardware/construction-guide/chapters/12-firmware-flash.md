@@ -38,10 +38,10 @@ everything — no manual library management.
 
 ```bash
 git clone https://github.com/aes87/automated-martha-tek.git
-cd automated-martha-tek/firmware
+cd automated-martha-tek/controller-build/firmware
 ```
 
-Open the `firmware/` folder in VS Code. PlatformIO will detect `platformio.ini`
+Open the `controller-build/firmware/` folder in VS Code. PlatformIO will detect `platformio.ini`
 and prompt to install dependencies. Accept, or run:
 
 ```bash

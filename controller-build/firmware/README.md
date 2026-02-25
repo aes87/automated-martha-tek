@@ -4,7 +4,7 @@ ESP32-based firmware for the automated Martha tent fruiting chamber.
 Replaces ~$233 of off-the-shelf CO₂ and humidity controllers with a single board
 providing real-time sensor data, closed-loop control, and a WiFi dashboard.
 
-**Hardware prerequisite:** [DIY Controller Build Guide](../growing/diy-controller-build-guide.md)
+**Hardware prerequisite:** [DIY Controller Build Guide](../hardware/diy-controller-build-guide.md)
 — read the hardware guide and complete all C1–C4 safety corrections before flashing.
 
 ---
@@ -29,7 +29,7 @@ providing real-time sensor data, closed-loop control, and a WiFi dashboard.
 
 ## Hardware
 
-See the [build guide](../growing/diy-controller-build-guide.md) for full BOM,
+See the [build guide](../hardware/diy-controller-build-guide.md) for full BOM,
 wiring diagrams, and safety corrections.
 
 ### GPIO Summary
