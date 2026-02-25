@@ -26,32 +26,56 @@ This is version 2 of dccrens' build. Version 1 rusted out. The single biggest le
 
 Air and humidity enter from the **top-right** of the tent. CO2-rich air exhausts from the **bottom-left**. This cross-flow pattern means fresh humid air sweeps down through all the shelves before exiting — efficient and uniform.
 
+```mermaid
+flowchart TB
+    RoomAir(["Room Air"])
+
+    subgraph FogSys["Fogger Reservoir — 19-gal tub"]
+        Fogger["5-disc ultrasonic fogger"]
+        UVC["UVC lights — 1hr ON / 4hr OFF"]
+        TubFan["Computer fan on lid\n(blows down — fog forced up)"]
+    end
+
+    IntakeFan["4-inch waterproof fan\n(top-right of tent)"]
+
+    subgraph MarthaTent["Martha Tent"]
+        Inlet(["top-right inlet ↓"])
+        S4["Shelf 4 — blocks"]
+        S3["Shelf 3 — blocks"]
+        S2["Shelf 2 — blocks"]
+        S1["Shelf 1 — blocks"]
+        Floor["Drip tray + 6-mil liner"]
+        Outlet(["bottom-left outlet"])
+        Inlet --> S4 --> S3 --> S2 --> S1 --> Floor --> Outlet
+    end
+
+    ExhaustFan["AC Infinity S4\n(exhaust fan ×2)"]
+    Outside(["Outside — ceiling ductwork"])
+
+    RoomAir --> IntakeFan --> Inlet
+    TubFan -- "4-inch flex duct\n(slight upward angle)" --> Inlet
+    Outlet --> ExhaustFan --> Outside
 ```
-   [Room Air]                                     ┌─────────────────────────┐
-        |                                          │   19-GALLON RESERVOIR   │
-        |  ← FAE intake                           │   [HoH 5-disc fogger]   │
-        ↓                                          │   [UVC: 1hr ON/4hr OFF] │
-   [4" Waterproof     fog enters top-right ──────→ │                         │
-    Computer Fan] ──→ ┌──────────────────────┐ ←──│  [Computer fan on lid]  │
-   (top-right of      │     MARTHA TENT       │    │   blows air DOWN ↓      │
-    tent)             │                       │    │   fog is forced UP ↑    │
-        |             │  Shelf 4  [blocks]    │    │   into 4" flex duct     │
-        ↓             │  Shelf 3  [blocks]    │    │   → slight upward angle │
-                      │  Shelf 2  [blocks]    │    │     into tent top-right │
-                      │  Shelf 1  [blocks]    │    │                         │
-                      │  [Drip Tray +         │    │  Controlled by:         │
-                      │   6-mil liner]        │    │  Inkbird IHC200         │
-                      └──────────┬────────────┘    │  (fogger + fan together)│
-                                 │ CO2-rich         └─────────────────────────┘
-                                 │ air exits
-                                 ↓ bottom-left
-                     [AC Infinity S4 Inline Fan]
-                                 |
-                     [4" flex duct → ceiling
-                      ductwork → outside]
-                     Controlled by: CO2 controller
-                     On: 950 ppm / Off: 650 ppm
-                     Cycle: ~1–2 min
+
+```mermaid
+flowchart LR
+    subgraph CO2Loop["CO₂ Loop — CO₂ Controller"]
+        direction TB
+        C1["CO₂ rises\n(blocks respire)"] --> C2["hits 950 ppm\nFAE fans ON"]
+        C2 --> C3["CO₂ flushes out\n~1–2 min"]
+        C3 --> C4["drops to 650 ppm\nfans OFF"]
+        C4 --> C1
+    end
+
+    subgraph HumLoop["Humidity Loop — Inkbird IHC200"]
+        direction TB
+        H1["RH drops\n(FAE exits humid air)"] --> H2["below 85%\nfogger + tub fan ON"]
+        H2 --> H3["tent refills\nwith fog"]
+        H3 --> H4["hits 87%\nfogger + fan OFF"]
+        H4 --> H1
+    end
+
+    C2 -. "FAE also removes\nhumid air" .-> H1
 ```
 
 **What happens in a cycle:**
