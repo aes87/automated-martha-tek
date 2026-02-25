@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# KiCad / SKiDL artifacts
+*.erc
+*.log
+
+# PlatformIO
+firmware/.pio/
+firmware/.pioenvs/
+
+# Editor
+.DS_Store
+Thumbs.db
+*.bak
+*.tmp

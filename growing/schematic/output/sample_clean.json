@@ -1,0 +1,255 @@
+{
+  "modules": {
+    "": {
+      "cells": {
+        "F1": {
+          "attributes": {
+            "value": "FUSE_5A",
+            "ref": "F1"
+          },
+          "connections": {
+            "IN": [
+              11
+            ],
+            "OUT": [
+              9
+            ]
+          },
+          "port_directions": {
+            "IN": "input",
+            "OUT": "output"
+          },
+          "type": "FUSE_5A"
+        },
+        "J1": {
+          "attributes": {
+            "value": "FOGGER",
+            "ref": "J1"
+          },
+          "connections": {
+            "L_IN": [
+              3
+            ],
+            "N_IN": [
+              16
+            ]
+          },
+          "port_directions": {
+            "L_IN": "input",
+            "N_IN": "input"
+          },
+          "type": "FOGGER"
+        },
+        "U1": {
+          "attributes": {
+            "value": "GFCI_RCD",
+            "ref": "U1"
+          },
+          "connections": {
+            "L_IN": [
+              1
+            ],
+            "N_IN": [
+              5
+            ],
+            "PE_IN": [
+              8
+            ],
+            "L_OUT": [
+              11
+            ],
+            "N_OUT": [
+              16
+            ],
+            "PE_OUT": [
+              14
+            ]
+          },
+          "port_directions": {
+            "L_IN": "input",
+            "N_IN": "input",
+            "PE_IN": "input",
+            "L_OUT": "output",
+            "N_OUT": "output",
+            "PE_OUT": "output"
+          },
+          "type": "GFCI_RCD"
+        },
+        "U2": {
+          "attributes": {
+            "value": "PSU_5V3A",
+            "ref": "U2"
+          },
+          "connections": {
+            "L": [
+              9
+            ],
+            "N": [
+              16
+            ],
+            "PE": [
+              14
+            ],
+            "+5V_OUT": [
+              15
+            ],
+            "GND_OUT": [
+              12
+            ]
+          },
+          "port_directions": {
+            "L": "input",
+            "N": "input",
+            "PE": "input",
+            "+5V_OUT": "output",
+            "GND_OUT": "output"
+          },
+          "type": "PSU_5V3A"
+        },
+        "U3": {
+          "attributes": {
+            "value": "PSU_12V1A",
+            "ref": "U3"
+          },
+          "connections": {
+            "L": [
+              9
+            ],
+            "N": [
+              16
+            ],
+            "PE": [
+              14
+            ],
+            "+12V_OUT": [
+              2
+            ],
+            "GND_OUT": [
+              12
+            ]
+          },
+          "port_directions": {
+            "L": "input",
+            "N": "input",
+            "PE": "input",
+            "+12V_OUT": "output",
+            "GND_OUT": "output"
+          },
+          "type": "PSU_12V1A"
+        },
+        "U4": {
+          "attributes": {
+            "value": "ESP32S3",
+            "ref": "U4"
+          },
+          "connections": {
+            "3V3_IN": [
+              15
+            ],
+            "GND": [
+              12
+            ],
+            "GPIO21_SDA": [
+              6
+            ],
+            "GPIO9_SCL": [
+              7
+            ],
+            "GPIO38_REL1": [
+              13
+            ],
+            "GPIO39_REL2": [
+              10
+            ]
+          },
+          "port_directions": {
+            "3V3_IN": "input",
+            "GND": "input",
+            "GPIO21_SDA": "input",
+            "GPIO9_SCL": "input",
+            "GPIO38_REL1": "input",
+            "GPIO39_REL2": "input"
+          },
+          "type": "ESP32S3"
+        },
+        "U5": {
+          "attributes": {
+            "value": "RELAY_8CH",
+            "ref": "U5"
+          },
+          "connections": {
+            "VCC": [
+              15
+            ],
+            "GND": [
+              12
+            ],
+            "JD_VCC": [
+              15
+            ],
+            "IN1": [
+              13
+            ],
+            "IN2": [
+              10
+            ],
+            "COM1": [
+              9
+            ],
+            "NO1": [
+              3
+            ]
+          },
+          "port_directions": {
+            "VCC": "input",
+            "NO2": "output",
+            "NC2": "output",
+            "GND": "input",
+            "JD_VCC": "input",
+            "IN1": "input",
+            "IN2": "input",
+            "COM1": "output",
+            "NO1": "output",
+            "NC1": "output",
+            "COM2": "output"
+          },
+          "type": "RELAY_8CH"
+        },
+        "U6": {
+          "attributes": {
+            "value": "SCD30",
+            "ref": "U6"
+          },
+          "connections": {
+            "VDD": [
+              15
+            ],
+            "GND": [
+              12
+            ],
+            "SCL": [
+              7
+            ],
+            "SDA": [
+              6
+            ],
+            "SEL": [
+              12
+            ]
+          },
+          "port_directions": {
+            "VDD": "input",
+            "GND": "input",
+            "SCL": "input",
+            "SDA": "input",
+            "SEL": "input",
+            "TX": "output",
+            "RX": "output"
+          },
+          "type": "SCD30"
+        }
+      },
+      "ports": {}
+    }
+  }
+}

@@ -1,0 +1,1347 @@
+{
+  "modules": {
+    "": {
+      "cells": {
+        "#PWR1": {
+          "attributes": {
+            "value": "+5V",
+            "ref": "#PWR1"
+          },
+          "connections": {
+            "~": [
+              53
+            ]
+          },
+          "port_directions": {
+            "~": "input"
+          },
+          "type": "+5V"
+        },
+        "#PWR2": {
+          "attributes": {
+            "value": "+12V",
+            "ref": "#PWR2"
+          },
+          "connections": {
+            "~": [
+              54
+            ]
+          },
+          "port_directions": {
+            "~": "input"
+          },
+          "type": "+12V"
+        },
+        "#PWR3": {
+          "attributes": {
+            "value": "GND",
+            "ref": "#PWR3"
+          },
+          "connections": {
+            "~": [
+              38
+            ]
+          },
+          "port_directions": {
+            "~": "input"
+          },
+          "type": "GND"
+        },
+        "#PWR4": {
+          "attributes": {
+            "value": "+5V",
+            "ref": "#PWR4"
+          },
+          "connections": {
+            "~": [
+              53
+            ]
+          },
+          "port_directions": {
+            "~": "input"
+          },
+          "type": "+5V"
+        },
+        "#PWR5": {
+          "attributes": {
+            "value": "+12V",
+            "ref": "#PWR5"
+          },
+          "connections": {
+            "~": [
+              54
+            ]
+          },
+          "port_directions": {
+            "~": "input"
+          },
+          "type": "+12V"
+        },
+        "#PWR6": {
+          "attributes": {
+            "value": "GND",
+            "ref": "#PWR6"
+          },
+          "connections": {
+            "~": [
+              38
+            ]
+          },
+          "port_directions": {
+            "~": "input"
+          },
+          "type": "GND"
+        },
+        "C_MUX": {
+          "attributes": {
+            "value": "100nF",
+            "ref": "C_MUX"
+          },
+          "connections": {
+            "1": [
+              53
+            ],
+            "2": [
+              38
+            ]
+          },
+          "port_directions": {
+            "1": "input",
+            "2": "input"
+          },
+          "type": "C"
+        },
+        "F_EXHAUST": {
+          "attributes": {
+            "value": "1A",
+            "ref": "F_EXHAUST"
+          },
+          "connections": {
+            "1": [
+              15
+            ],
+            "2": [
+              8
+            ]
+          },
+          "port_directions": {
+            "1": "input",
+            "2": "input"
+          },
+          "type": "Fuse"
+        },
+        "F_FOGGER": {
+          "attributes": {
+            "value": "2A",
+            "ref": "F_FOGGER"
+          },
+          "connections": {
+            "1": [
+              57
+            ],
+            "2": [
+              47
+            ]
+          },
+          "port_directions": {
+            "1": "input",
+            "2": "input"
+          },
+          "type": "Fuse"
+        },
+        "F_INTAKE": {
+          "attributes": {
+            "value": "1A",
+            "ref": "F_INTAKE"
+          },
+          "connections": {
+            "1": [
+              51
+            ],
+            "2": [
+              48
+            ]
+          },
+          "port_directions": {
+            "1": "input",
+            "2": "input"
+          },
+          "type": "Fuse"
+        },
+        "F_LIGHTS": {
+          "attributes": {
+            "value": "3A",
+            "ref": "F_LIGHTS"
+          },
+          "connections": {
+            "1": [
+              27
+            ],
+            "2": [
+              23
+            ]
+          },
+          "port_directions": {
+            "1": "input",
+            "2": "input"
+          },
+          "type": "Fuse"
+        },
+        "F_MAIN": {
+          "attributes": {
+            "value": "5A",
+            "ref": "F_MAIN"
+          },
+          "connections": {
+            "1": [
+              29
+            ],
+            "2": [
+              14
+            ]
+          },
+          "port_directions": {
+            "1": "input",
+            "2": "input"
+          },
+          "type": "Fuse"
+        },
+        "F_PUMP": {
+          "attributes": {
+            "value": "1A",
+            "ref": "F_PUMP"
+          },
+          "connections": {
+            "1": [
+              52
+            ],
+            "2": [
+              11
+            ]
+          },
+          "port_directions": {
+            "1": "input",
+            "2": "input"
+          },
+          "type": "Fuse"
+        },
+        "F_TUB_FAN": {
+          "attributes": {
+            "value": "2A",
+            "ref": "F_TUB_FAN"
+          },
+          "connections": {
+            "1": [
+              17
+            ],
+            "2": [
+              44
+            ]
+          },
+          "port_directions": {
+            "1": "input",
+            "2": "input"
+          },
+          "type": "Fuse"
+        },
+        "F_UVC": {
+          "attributes": {
+            "value": "1A",
+            "ref": "F_UVC"
+          },
+          "connections": {
+            "1": [
+              13
+            ],
+            "2": [
+              58
+            ]
+          },
+          "port_directions": {
+            "1": "input",
+            "2": "input"
+          },
+          "type": "Fuse"
+        },
+        "R_DR1": {
+          "attributes": {
+            "value": "470R",
+            "ref": "R_DR1"
+          },
+          "connections": {
+            "1": [
+              22
+            ],
+            "2": [
+              49
+            ]
+          },
+          "port_directions": {
+            "1": "input",
+            "2": "input"
+          },
+          "type": "R"
+        },
+        "R_DR2": {
+          "attributes": {
+            "value": "470R",
+            "ref": "R_DR2"
+          },
+          "connections": {
+            "1": [
+              56
+            ],
+            "2": [
+              7
+            ]
+          },
+          "port_directions": {
+            "1": "input",
+            "2": "input"
+          },
+          "type": "R"
+        },
+        "R_DR3": {
+          "attributes": {
+            "value": "470R",
+            "ref": "R_DR3"
+          },
+          "connections": {
+            "1": [
+              21
+            ],
+            "2": [
+              45
+            ]
+          },
+          "port_directions": {
+            "1": "input",
+            "2": "input"
+          },
+          "type": "R"
+        },
+        "R_DR4": {
+          "attributes": {
+            "value": "470R",
+            "ref": "R_DR4"
+          },
+          "connections": {
+            "1": [
+              32
+            ],
+            "2": [
+              26
+            ]
+          },
+          "port_directions": {
+            "1": "input",
+            "2": "input"
+          },
+          "type": "R"
+        },
+        "R_DR5": {
+          "attributes": {
+            "value": "470R",
+            "ref": "R_DR5"
+          },
+          "connections": {
+            "1": [
+              39
+            ],
+            "2": [
+              12
+            ]
+          },
+          "port_directions": {
+            "1": "input",
+            "2": "input"
+          },
+          "type": "R"
+        },
+        "R_DR6": {
+          "attributes": {
+            "value": "470R",
+            "ref": "R_DR6"
+          },
+          "connections": {
+            "1": [
+              43
+            ],
+            "2": [
+              31
+            ]
+          },
+          "port_directions": {
+            "1": "input",
+            "2": "input"
+          },
+          "type": "R"
+        },
+        "R_DR7": {
+          "attributes": {
+            "value": "470R",
+            "ref": "R_DR7"
+          },
+          "connections": {
+            "1": [
+              1
+            ],
+            "2": [
+              16
+            ]
+          },
+          "port_directions": {
+            "1": "input",
+            "2": "input"
+          },
+          "type": "R"
+        },
+        "R_DR8": {
+          "attributes": {
+            "value": "470R",
+            "ref": "R_DR8"
+          },
+          "connections": {
+            "1": [
+              25
+            ],
+            "2": [
+              50
+            ]
+          },
+          "port_directions": {
+            "1": "input",
+            "2": "input"
+          },
+          "type": "R"
+        },
+        "R_OW": {
+          "attributes": {
+            "value": "4.7k",
+            "ref": "R_OW"
+          },
+          "connections": {
+            "1": [
+              53
+            ],
+            "2": [
+              6
+            ]
+          },
+          "port_directions": {
+            "1": "input",
+            "2": "input"
+          },
+          "type": "R"
+        },
+        "R_SCL": {
+          "attributes": {
+            "value": "4.7k",
+            "ref": "R_SCL"
+          },
+          "connections": {
+            "1": [
+              53
+            ],
+            "2": [
+              46
+            ]
+          },
+          "port_directions": {
+            "1": "input",
+            "2": "input"
+          },
+          "type": "R"
+        },
+        "R_SDA": {
+          "attributes": {
+            "value": "4.7k",
+            "ref": "R_SDA"
+          },
+          "connections": {
+            "1": [
+              53
+            ],
+            "2": [
+              33
+            ]
+          },
+          "port_directions": {
+            "1": "input",
+            "2": "input"
+          },
+          "type": "R"
+        },
+        "SW1": {
+          "attributes": {
+            "value": "FailsafePanel",
+            "ref": "SW1"
+          },
+          "connections": {
+            "ESP_CH1": [
+              4
+            ],
+            "OUT_CH2": [
+              56
+            ],
+            "OUT_CH3": [
+              21
+            ],
+            "OUT_CH4": [
+              32
+            ],
+            "OUT_CH5": [
+              39
+            ],
+            "OUT_CH6": [
+              43
+            ],
+            "OUT_CH7": [
+              1
+            ],
+            "OUT_CH8": [
+              25
+            ],
+            "VCC": [
+              53
+            ],
+            "GND": [
+              38
+            ],
+            "ESP_CH2": [
+              37
+            ],
+            "ESP_CH3": [
+              24
+            ],
+            "ESP_CH4": [
+              40
+            ],
+            "ESP_CH5": [
+              30
+            ],
+            "ESP_CH6": [
+              9
+            ],
+            "ESP_CH7": [
+              19
+            ],
+            "ESP_CH8": [
+              55
+            ],
+            "OUT_CH1": [
+              22
+            ]
+          },
+          "port_directions": {
+            "ESP_CH1": "input",
+            "OUT_CH2": "output",
+            "OUT_CH3": "output",
+            "OUT_CH4": "output",
+            "OUT_CH5": "output",
+            "OUT_CH6": "output",
+            "OUT_CH7": "output",
+            "OUT_CH8": "output",
+            "VCC": "input",
+            "GND": "input",
+            "ESP_CH2": "input",
+            "ESP_CH3": "input",
+            "ESP_CH4": "input",
+            "ESP_CH5": "input",
+            "ESP_CH6": "input",
+            "ESP_CH7": "input",
+            "ESP_CH8": "input",
+            "OUT_CH1": "output"
+          },
+          "type": "FailsafePanel"
+        },
+        "U1": {
+          "attributes": {
+            "value": "GFCI_RCD",
+            "ref": "U1"
+          },
+          "connections": {
+            "L_IN": [
+              35
+            ],
+            "N_IN": [
+              42
+            ],
+            "PE_IN": [
+              36
+            ],
+            "L_OUT": [
+              29
+            ],
+            "N_OUT": [
+              10
+            ],
+            "PE_OUT": [
+              3
+            ]
+          },
+          "port_directions": {
+            "L_IN": "input",
+            "N_IN": "input",
+            "PE_IN": "input",
+            "L_OUT": "output",
+            "N_OUT": "output",
+            "PE_OUT": "output"
+          },
+          "type": "GFCI_RCD"
+        },
+        "U10": {
+          "attributes": {
+            "value": "SHT4x",
+            "ref": "U10"
+          },
+          "connections": {
+            "SDA": [
+              18
+            ],
+            "SCL": [
+              5
+            ],
+            "VDD": [
+              53
+            ],
+            "VSS": [
+              38
+            ]
+          },
+          "port_directions": {
+            "SDA": "output",
+            "SCL": "input",
+            "VDD": "input",
+            "VSS": "input"
+          },
+          "type": "SHT4x"
+        },
+        "U11": {
+          "attributes": {
+            "value": "SHT4x",
+            "ref": "U11"
+          },
+          "connections": {
+            "SDA": [
+              2
+            ],
+            "SCL": [
+              41
+            ],
+            "VDD": [
+              53
+            ],
+            "VSS": [
+              38
+            ]
+          },
+          "port_directions": {
+            "SDA": "output",
+            "SCL": "input",
+            "VDD": "input",
+            "VSS": "input"
+          },
+          "type": "SHT4x"
+        },
+        "U12": {
+          "attributes": {
+            "value": "DS18B20U",
+            "ref": "U12"
+          },
+          "connections": {
+            "DQ": [
+              6
+            ],
+            "GND": [
+              38
+            ],
+            "V_{DD}": [
+              53
+            ]
+          },
+          "port_directions": {
+            "DQ": "output",
+            "GND": "input",
+            "V_{DD}": "input"
+          },
+          "type": "DS18B20U"
+        },
+        "U13": {
+          "attributes": {
+            "value": "DS18B20U",
+            "ref": "U13"
+          },
+          "connections": {
+            "DQ": [
+              6
+            ],
+            "GND": [
+              38
+            ],
+            "V_{DD}": [
+              53
+            ]
+          },
+          "port_directions": {
+            "DQ": "output",
+            "GND": "input",
+            "V_{DD}": "input"
+          },
+          "type": "DS18B20U"
+        },
+        "U14": {
+          "attributes": {
+            "value": "DS18B20U",
+            "ref": "U14"
+          },
+          "connections": {
+            "DQ": [
+              6
+            ],
+            "GND": [
+              38
+            ],
+            "V_{DD}": [
+              53
+            ]
+          },
+          "port_directions": {
+            "DQ": "output",
+            "GND": "input",
+            "V_{DD}": "input"
+          },
+          "type": "DS18B20U"
+        },
+        "U15": {
+          "attributes": {
+            "value": "DS18B20U",
+            "ref": "U15"
+          },
+          "connections": {
+            "DQ": [
+              6
+            ],
+            "GND": [
+              38
+            ],
+            "V_{DD}": [
+              53
+            ]
+          },
+          "port_directions": {
+            "DQ": "output",
+            "GND": "input",
+            "V_{DD}": "input"
+          },
+          "type": "DS18B20U"
+        },
+        "U16": {
+          "attributes": {
+            "value": "DS18B20U",
+            "ref": "U16"
+          },
+          "connections": {
+            "DQ": [
+              6
+            ],
+            "GND": [
+              38
+            ],
+            "V_{DD}": [
+              53
+            ]
+          },
+          "port_directions": {
+            "DQ": "output",
+            "GND": "input",
+            "V_{DD}": "input"
+          },
+          "type": "DS18B20U"
+        },
+        "U2": {
+          "attributes": {
+            "value": "PSU_5V3A",
+            "ref": "U2"
+          },
+          "connections": {
+            "L": [
+              14
+            ],
+            "N": [
+              10
+            ],
+            "PE": [
+              3
+            ],
+            "+5V_OUT": [
+              53
+            ],
+            "GND_OUT": [
+              38
+            ]
+          },
+          "port_directions": {
+            "L": "input",
+            "N": "input",
+            "PE": "input",
+            "+5V_OUT": "output",
+            "GND_OUT": "input"
+          },
+          "type": "PSU_5V3A"
+        },
+        "U3": {
+          "attributes": {
+            "value": "PSU_12V1A",
+            "ref": "U3"
+          },
+          "connections": {
+            "L": [
+              14
+            ],
+            "N": [
+              10
+            ],
+            "PE": [
+              3
+            ],
+            "+12V_OUT": [
+              54
+            ],
+            "GND_OUT": [
+              38
+            ]
+          },
+          "port_directions": {
+            "L": "input",
+            "N": "input",
+            "PE": "input",
+            "+12V_OUT": "output",
+            "GND_OUT": "input"
+          },
+          "type": "PSU_12V1A"
+        },
+        "U4": {
+          "attributes": {
+            "value": "ESP32-S3",
+            "ref": "U4"
+          },
+          "connections": {
+            "12": [
+              20
+            ],
+            "14": [
+              46
+            ],
+            "2": [
+              53
+            ],
+            "20": [
+              53
+            ],
+            "24": [
+              24
+            ],
+            "25": [
+              40
+            ],
+            "27": [
+              33
+            ],
+            "29": [
+              53
+            ],
+            "3": [
+              53
+            ],
+            "43": [
+              4
+            ],
+            "44": [
+              37
+            ],
+            "45": [
+              30
+            ],
+            "46": [
+              53
+            ],
+            "47": [
+              9
+            ],
+            "48": [
+              19
+            ],
+            "52": [
+              55
+            ],
+            "55": [
+              53
+            ],
+            "56": [
+              53
+            ],
+            "57": [
+              38
+            ],
+            "9": [
+              6
+            ]
+          },
+          "port_directions": {
+            "1": "output",
+            "10": "output",
+            "11": "output",
+            "12": "output",
+            "13": "output",
+            "14": "output",
+            "15": "output",
+            "16": "output",
+            "17": "output",
+            "18": "output",
+            "19": "output",
+            "2": "input",
+            "20": "input",
+            "21": "input",
+            "22": "input",
+            "23": "output",
+            "24": "output",
+            "25": "output",
+            "26": "output",
+            "27": "output",
+            "28": "output",
+            "29": "input",
+            "3": "input",
+            "30": "output",
+            "31": "output",
+            "32": "output",
+            "33": "output",
+            "34": "output",
+            "35": "output",
+            "36": "output",
+            "37": "output",
+            "38": "output",
+            "39": "output",
+            "4": "input",
+            "40": "output",
+            "41": "output",
+            "42": "output",
+            "43": "output",
+            "44": "output",
+            "45": "output",
+            "46": "input",
+            "47": "output",
+            "48": "output",
+            "49": "output",
+            "5": "output",
+            "50": "output",
+            "51": "output",
+            "52": "output",
+            "53": "output",
+            "54": "input",
+            "55": "input",
+            "56": "input",
+            "57": "input",
+            "6": "output",
+            "7": "output",
+            "8": "output",
+            "9": "output"
+          },
+          "type": "ESP32-S3"
+        },
+        "U5": {
+          "attributes": {
+            "value": "Relay_8ch",
+            "ref": "U5"
+          },
+          "connections": {
+            "VCC": [
+              53
+            ],
+            "IN7": [
+              16
+            ],
+            "IN8": [
+              50
+            ],
+            "COM1": [
+              14
+            ],
+            "NO1": [
+              57
+            ],
+            "COM2": [
+              14
+            ],
+            "NO2": [
+              17
+            ],
+            "COM3": [
+              14
+            ],
+            "NO3": [
+              15
+            ],
+            "GND": [
+              38
+            ],
+            "COM4": [
+              14
+            ],
+            "NO4": [
+              51
+            ],
+            "COM5": [
+              14
+            ],
+            "NO5": [
+              13
+            ],
+            "COM6": [
+              14
+            ],
+            "NO6": [
+              27
+            ],
+            "JD_VCC": [
+              53
+            ],
+            "COM7": [
+              54
+            ],
+            "NO7": [
+              52
+            ],
+            "COM8": [
+              14
+            ],
+            "NO8": [
+              59
+            ],
+            "IN1": [
+              49
+            ],
+            "IN2": [
+              7
+            ],
+            "IN3": [
+              45
+            ],
+            "IN4": [
+              26
+            ],
+            "IN5": [
+              12
+            ],
+            "IN6": [
+              31
+            ]
+          },
+          "port_directions": {
+            "VCC": "input",
+            "IN7": "input",
+            "IN8": "input",
+            "COM1": "input",
+            "NO1": "input",
+            "NC1": "input",
+            "COM2": "input",
+            "NO2": "input",
+            "NC2": "input",
+            "COM3": "input",
+            "NO3": "input",
+            "GND": "input",
+            "NC3": "input",
+            "COM4": "input",
+            "NO4": "input",
+            "NC4": "input",
+            "COM5": "input",
+            "NO5": "input",
+            "NC5": "input",
+            "COM6": "input",
+            "NO6": "input",
+            "NC6": "input",
+            "JD_VCC": "input",
+            "COM7": "input",
+            "NO7": "input",
+            "NC7": "input",
+            "COM8": "input",
+            "NO8": "input",
+            "NC8": "input",
+            "IN1": "input",
+            "IN2": "input",
+            "IN3": "input",
+            "IN4": "input",
+            "IN5": "input",
+            "IN6": "input"
+          },
+          "type": "Relay_8ch_U5"
+        },
+        "U6": {
+          "attributes": {
+            "value": "TCA9548APWR",
+            "ref": "U6"
+          },
+          "connections": {
+            "A0": [
+              38
+            ],
+            "GND": [
+              38
+            ],
+            "A1": [
+              38
+            ],
+            "A2": [
+              38
+            ],
+            "SCL": [
+              46
+            ],
+            "SDA": [
+              33
+            ],
+            "VCC": [
+              53
+            ],
+            "~{RESET}": [
+              53
+            ],
+            "SD0": [
+              34
+            ],
+            "SC0": [
+              28
+            ],
+            "SD1": [
+              18
+            ],
+            "SC1": [
+              5
+            ],
+            "SD2": [
+              2
+            ],
+            "SC2": [
+              41
+            ]
+          },
+          "port_directions": {
+            "A0": "input",
+            "SD3": "output",
+            "SC3": "output",
+            "GND": "input",
+            "SD4": "output",
+            "SC4": "output",
+            "SD5": "output",
+            "SC5": "output",
+            "SD6": "output",
+            "SC6": "output",
+            "SD7": "output",
+            "A1": "input",
+            "SC7": "output",
+            "A2": "input",
+            "SCL": "input",
+            "SDA": "output",
+            "VCC": "input",
+            "~{RESET}": "input",
+            "SD0": "output",
+            "SC0": "output",
+            "SD1": "output",
+            "SC1": "output",
+            "SD2": "output",
+            "SC2": "output"
+          },
+          "type": "TCA9548APWR_U6"
+        },
+        "U7": {
+          "attributes": {
+            "value": "SCD30_Breakout",
+            "ref": "U7"
+          },
+          "connections": {
+            "VIN": [
+              53
+            ],
+            "GND": [
+              38
+            ],
+            "SCL": [
+              46
+            ],
+            "SDA": [
+              33
+            ],
+            "SEL": [
+              38
+            ]
+          },
+          "port_directions": {
+            "VIN": "input",
+            "3Vo": "output",
+            "GND": "input",
+            "SCL": "input",
+            "SDA": "output",
+            "SEL": "input"
+          },
+          "type": "SCD30_Breakout_U7"
+        },
+        "U8": {
+          "attributes": {
+            "value": "AS7341DLG",
+            "ref": "U8"
+          },
+          "connections": {
+            "VDD": [
+              53
+            ],
+            "SCL": [
+              46
+            ],
+            "GND": [
+              38
+            ],
+            "PGND": [
+              38
+            ],
+            "SDA": [
+              33
+            ]
+          },
+          "port_directions": {
+            "VDD": "input",
+            "SCL": "input",
+            "GND": "input",
+            "LDR": "input",
+            "PGND": "input",
+            "GPIO": "input",
+            "INT": "output",
+            "SDA": "output"
+          },
+          "type": "AS7341DLG_U8"
+        },
+        "U9": {
+          "attributes": {
+            "value": "SHT4x",
+            "ref": "U9"
+          },
+          "connections": {
+            "SDA": [
+              34
+            ],
+            "SCL": [
+              28
+            ],
+            "VDD": [
+              53
+            ],
+            "VSS": [
+              38
+            ]
+          },
+          "port_directions": {
+            "SDA": "output",
+            "SCL": "input",
+            "VDD": "input",
+            "VSS": "input"
+          },
+          "type": "SHT4x"
+        },
+        "WLS": {
+          "attributes": {
+            "value": "KIT0139",
+            "ref": "WLS"
+          },
+          "connections": {
+            "VCC": [
+              53
+            ],
+            "GND": [
+              38
+            ],
+            "AOUT": [
+              20
+            ],
+            "SENSOR_PWR": [
+              54
+            ]
+          },
+          "port_directions": {
+            "VCC": "input",
+            "GND": "input",
+            "AOUT": "output",
+            "SENSOR_PWR": "input"
+          },
+          "type": "KIT0139"
+        }
+      },
+      "ports": {
+        "AC_L": {
+          "direction": "input",
+          "bits": [
+            35
+          ]
+        },
+        "AC_N": {
+          "direction": "input",
+          "bits": [
+            42
+          ]
+        },
+        "AC_PE": {
+          "direction": "input",
+          "bits": [
+            36
+          ]
+        },
+        "FOGGER_HOT": {
+          "direction": "output",
+          "bits": [
+            47
+          ]
+        },
+        "TUB_FAN_HOT": {
+          "direction": "output",
+          "bits": [
+            44
+          ]
+        },
+        "EXHAUST_HOT": {
+          "direction": "output",
+          "bits": [
+            8
+          ]
+        },
+        "INTAKE_HOT": {
+          "direction": "output",
+          "bits": [
+            48
+          ]
+        },
+        "UVC_HOT": {
+          "direction": "output",
+          "bits": [
+            58
+          ]
+        },
+        "LIGHTS_HOT": {
+          "direction": "output",
+          "bits": [
+            23
+          ]
+        },
+        "PUMP_HOT": {
+          "direction": "output",
+          "bits": [
+            11
+          ]
+        },
+        "SPARE_HOT": {
+          "direction": "output",
+          "bits": [
+            59
+          ]
+        }
+      }
+    }
+  }
+}

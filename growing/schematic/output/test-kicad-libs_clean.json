@@ -1,0 +1,205 @@
+{
+  "modules": {
+    "": {
+      "cells": {
+        "#PWR1": {
+          "attributes": {
+            "value": "+5V",
+            "ref": "#PWR1"
+          },
+          "connections": {
+            "~": [
+              5
+            ]
+          },
+          "port_directions": {
+            "~": "input"
+          },
+          "type": "+5V"
+        },
+        "#PWR2": {
+          "attributes": {
+            "value": "+3.3V",
+            "ref": "#PWR2"
+          },
+          "connections": {
+            "~": [
+              4
+            ]
+          },
+          "port_directions": {
+            "~": "input"
+          },
+          "type": "+3.3V"
+        },
+        "#PWR3": {
+          "attributes": {
+            "value": "GND",
+            "ref": "#PWR3"
+          },
+          "connections": {
+            "~": [
+              1
+            ]
+          },
+          "port_directions": {
+            "~": "input"
+          },
+          "type": "GND"
+        },
+        "#PWR4": {
+          "attributes": {
+            "value": "GND",
+            "ref": "#PWR4"
+          },
+          "connections": {
+            "~": [
+              1
+            ]
+          },
+          "port_directions": {
+            "~": "input"
+          },
+          "type": "GND"
+        },
+        "#PWR5": {
+          "attributes": {
+            "value": "GND",
+            "ref": "#PWR5"
+          },
+          "connections": {
+            "~": [
+              1
+            ]
+          },
+          "port_directions": {
+            "~": "input"
+          },
+          "type": "GND"
+        },
+        "C1": {
+          "attributes": {
+            "value": "10uF/10V",
+            "ref": "C1"
+          },
+          "connections": {
+            "~": [
+              1
+            ]
+          },
+          "port_directions": {
+            "~": "input"
+          },
+          "type": "C_Polarized"
+        },
+        "C2": {
+          "attributes": {
+            "value": "100nF",
+            "ref": "C2"
+          },
+          "connections": {
+            "~": [
+              1
+            ]
+          },
+          "port_directions": {
+            "~": "input"
+          },
+          "type": "C"
+        },
+        "D1": {
+          "attributes": {
+            "value": "5.1V BZX84",
+            "ref": "D1"
+          },
+          "connections": {
+            "K": [
+              4
+            ],
+            "A": [
+              1
+            ]
+          },
+          "port_directions": {
+            "K": "input",
+            "A": "input"
+          },
+          "type": "D_Zener"
+        },
+        "R1": {
+          "attributes": {
+            "value": "1k",
+            "ref": "R1"
+          },
+          "connections": {
+            "~": [
+              4
+            ]
+          },
+          "port_directions": {
+            "~": "input"
+          },
+          "type": "R"
+        },
+        "R2": {
+          "attributes": {
+            "value": "4.7k",
+            "ref": "R2"
+          },
+          "connections": {
+            "~": [
+              3
+            ]
+          },
+          "port_directions": {
+            "~": "input"
+          },
+          "type": "R"
+        },
+        "R3": {
+          "attributes": {
+            "value": "4.7k",
+            "ref": "R3"
+          },
+          "connections": {
+            "~": [
+              2
+            ]
+          },
+          "port_directions": {
+            "~": "input"
+          },
+          "type": "R"
+        },
+        "U1": {
+          "attributes": {
+            "value": "SHT4x",
+            "ref": "U1"
+          },
+          "connections": {
+            "SDA": [
+              3
+            ],
+            "SCL": [
+              2
+            ],
+            "VDD": [
+              4
+            ],
+            "VSS": [
+              1
+            ]
+          },
+          "port_directions": {
+            "SDA": "output",
+            "SCL": "input",
+            "VDD": "input",
+            "VSS": "input"
+          },
+          "type": "SHT4x"
+        }
+      },
+      "ports": {}
+    }
+  }
+}
