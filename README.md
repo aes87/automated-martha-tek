@@ -1,6 +1,22 @@
 # Automated Martha Tent — Build Guides
 
-A writeup of u/dccrens' proven Martha tent build, plus an optional DIY ESP32-S3 controller and firmware that replaces the off-the-shelf controllers with something more data-rich.
+Everything needed to build and run an automated Martha tent mushroom fruiting chamber — from the initial hardware build through strain selection and growing. Based on u/dccrens' proven Martha 2.0 build; optional parts add a DIY ESP32-S3 controller, HA monitoring, and full grow tracking.
+
+## How the Parts Fit Together
+
+The tent build is self-contained and standalone — you can stop at Part 1 and have a working, automated fruiting chamber. Each part after that is an optional extension:
+
+```
+Martha tent (Part 1) ──────────────────────── complete standalone build (~$250)
+  └── DIY ESP32-S3 controller + firmware (Parts 2A–2B) ── optional upgrade
+      └── HA monitoring + Grafana (Part 3) ─────────────── optional, adds history
+
+Once the tent is running:
+  Inoculating (Part 4) ── strain selection, substrate prep, inoculation
+    └── Growing (Part 5) ── fruiting, yield tracking, harvest
+```
+
+Parts 2A, 2B, and 3 replace or extend the off-the-shelf controllers — the physical tent, fogger, fans, and ducting stay the same.
 
 ## Contents
 
@@ -15,7 +31,6 @@ A writeup of u/dccrens' proven Martha tent build, plus an optional DIY ESP32-S3 
   - [Part 4A — Select / Buy Strains](#part-4a--select--buy-strains)
   - [Part 4B — Setup *(coming soon)*](#part-4b--setup-coming-soon)
 - [Part 5 — Growing *(coming soon)*](#part-5--growing-coming-soon)
-- [How the Parts Fit Together](#how-the-parts-fit-together)
 - [Credits](#credits)
 
 ---
@@ -85,14 +100,6 @@ Open-source ESP32-S3 firmware for the DIY controller. PlatformIO + Arduino frame
 - Hardware watchdog: 30s reset guard
 - Config persistence: all settings survive power cycles via NVS
 
-**Build and flash:**
-```bash
-cd controller-build/firmware
-pio run -e esp32s3 --target upload       # flash firmware
-pio run -e esp32s3 --target uploadfs     # flash web UI (LittleFS)
-pio test -e native                       # run unit tests on PC (no hardware needed)
-```
-
 ---
 
 ## Part 3 — Monitoring & Dashboard *(optional)*
@@ -108,43 +115,7 @@ Connect the ESP32 controller to Home Assistant for persistent time-series loggin
 - 9 binary sensors: relay states (fogger, fans, UVC, lights, pump), controller armed, manual mode
 - 4 automations: low water alert, high CO2 alert, low humidity alert, controller offline alert
 
-**Prerequisites:**
-- Home Assistant with the [ha-tools](../ha-tools/) CLI configured (HA_URL + HA_TOKEN in `.env`)
-- SSH add-on enabled in HA (only needed for `--apply`)
-
-**Setup (one time):**
-
-```bash
-# Preview the generated HA package YAML
-node commands/martha-setup.js
-
-# Apply it directly to HA via SSH and reload
-node commands/martha-setup.js --apply --yes
-```
-
-Add to `configuration.yaml` if not already present:
-```yaml
-homeassistant:
-  packages: !include_dir_named packages
-
-recorder:
-  purge_keep_days: 60
-```
-
-**Optional: continuous push bridge**
-
-By default HA polls the ESP32 every 60 seconds via the `rest:` integration.
-If you prefer a push model (or have polling issues with mDNS), run the bridge instead:
-
-```bash
-# Run continuously, pushing every 60s
-node commands/martha-bridge.js
-
-# Test with a single poll
-node commands/martha-bridge.js --once
-```
-
-After applying, Martha sensors appear in HA at `sensor.martha_co2`, `sensor.martha_rh`, etc. and can be added to any HA dashboard.
+Setup lives in the [ha-tools](../ha-tools/) project — run `node commands/martha-setup.js --help` to get started.
 
 ---
 
@@ -179,22 +150,6 @@ Substrate preparation, sterilization, and inoculation workflows for each strain.
 ## Part 5 — Growing *(coming soon)*
 
 Everything once the colony is started: fruiting, environmental logs, per-batch yield tracking, harvest notes, and lessons learned.
-
----
-
-## How the Parts Fit Together
-
-The tent guide is self-contained — you can build it exactly as dccrens designed it, using the Inkbird humidity controller and CO2 controller. The DIY controller guide is a drop-in upgrade that replaces those two controllers (and the Inkbird IBS-TH2 Plus monitor) with the ESP32-S3 board. The firmware is the software for that board. The HA integration adds persistent logging and alerts on top.
-
-The physical tent, fogger system, fans, ducting, and everything else stays the same.
-
-```
-dccrens Martha 2.0 tent
-  └── replace: CO2 controller + Inkbird IHC200 + Inkbird IBS-TH2 Plus
-      └── with: DIY ESP32-S3 controller (Part 2A) + firmware (Part 2B)
-          └── optional: HA integration (Part 3A) → persistent history + alerts
-              └── what to grow: strain guide (Part 4A) → species selection + sourcing
-```
 
 ---
 

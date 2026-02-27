@@ -79,14 +79,14 @@ pio run -e esp32s3           # ESP32-S3 variant
 ### Flash
 
 ```bash
-pio run -e esp32dev --target upload
-pio run -e esp32dev --target uploadfs   # Flash LittleFS web UI
+pio run -e esp32s3 --target upload
+pio run -e esp32s3 --target uploadfs   # Flash LittleFS web UI
 ```
 
 ### OTA Update
 
 Navigate to `http://martha.local/update` and upload the compiled `.bin` from
-`.pio/build/esp32dev/firmware.bin`.
+`.pio/build/esp32s3/firmware.bin`.
 
 ---
 

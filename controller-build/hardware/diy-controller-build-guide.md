@@ -1,5 +1,9 @@
 # DIY Martha Tent Controller — Full Build Guide
 
+> **⚠️ Work in progress — not yet built or tested**
+>
+> This guide was written collaboratively with an AI assistant and has not been physically built or validated. The design is reasonable but unverified. Review every circuit carefully before building — especially anything near mains voltage. Wait for the human author to report back if you want a tested reference before committing.
+
 A highly-featured ESP32-S3-based controller for a Martha tent fruiting chamber. Replaces ~$233 worth of off-the-shelf CO2 and humidity controllers with a single board that gives you more accurate sensors, full data logging, and a web dashboard.
 
 **What you replace:** dccrens' CO2 controller ($161) + Inkbird IHC200 humidity controller ($42) + Inkbird IBS-TH2 Plus monitor ($30).
@@ -14,6 +18,23 @@ A highly-featured ESP32-S3-based controller for a Martha tent fruiting chamber. 
 > Original post: https://www.reddit.com/r/MushroomGrowers/comments/1rao1ms/
 
 **→ [Shopping List](https://aes87.github.io/automated-martha-tek/controller-build/hardware/diy-controller-shopping-list.html)** — interactive checklist with persistent notes, syncs to your GitHub account.
+
+## Contents
+
+- [Safety Warning — Mains Voltage](#safety-warning--mains-voltage)
+- [How It Works](#how-it-works)
+- [Why ESP32-S3](#why-esp32-s3)
+- [Parts List](#parts-list)
+- [Tools Required](#tools-required)
+- [Enclosure Layout](#enclosure-layout)
+- [Wiring Guide](#wiring-guide)
+- [GPIO Full IO Reference](#gpio-full-io-reference)
+- [Initial Power-On Test](#initial-power-on-test)
+- [Sensor Placement in the Tent](#sensor-placement-in-the-tent)
+- [Security Note](#security-note)
+- [Alternatives Considered](#alternatives-considered)
+- [Optional Add-on: Reservoir Top-Off Pump](#optional-add-on-reservoir-top-off-pump)
+- [Firmware](#firmware)
 
 ---
 

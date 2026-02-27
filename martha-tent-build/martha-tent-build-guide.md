@@ -6,6 +6,25 @@
 
 **→ [Shopping List](https://aes87.github.io/automated-martha-tek/martha-tent-build/martha-tent-shopping-list.html)** — interactive checklist with persistent notes, syncs to your GitHub account.
 
+## Contents
+
+- [What You're Building](#what-youre-building)
+- [How the System Works](#how-the-system-works)
+- [Parts List](#parts-list)
+  - [Tent](#tent)
+  - [CO2 Controller](#co2-controller-fae-automation)
+  - [Humidity Controller](#humidity-controller)
+  - [Fogger / Humidity System](#fogger--humidity-system)
+  - [FAE Fans](#fae-fans)
+  - [Ducting](#ducting)
+  - [Drip Tray / Floor](#drip-tray--floor)
+  - [Lighting & Misc](#lighting--misc)
+- [Assembly](#assembly)
+- [Cost Summary](#cost-summary)
+- [Environmental Targets](#environmental-targets)
+- [Ongoing Maintenance](#ongoing-maintenance)
+- [Key Lessons](#key-lessons-hard-won-by-dccrens)
+
 ---
 
 ## What You're Building
@@ -87,6 +106,8 @@ flowchart LR
 
 ---
 
+> **⚠️ Before you start:** Every metal pole and shelf must be painted before assembly — 3 coats of Rustoleum, fully dry. There is no fixing this after the tent is assembled. Skipping this step is what destroyed v1 and necessitated v2.
+
 ## Parts List
 
 ### Tent
@@ -122,15 +143,14 @@ The controller powers both the exhaust fan and the intake fan simultaneously on 
 
 | Item | Where | ASIN / Notes |
 |------|-------|--------------|
-| Inkbird IHC200 Humidistat (primary) | Amazon | [B07XGQ7Q53](https://www.amazon.com/dp/B07XGQ7Q53) — $41.99 |
-| Secondary humidity controller (optional cross-check) | Amazon | [B07HF9W41Y](https://www.amazon.com/dp/B07HF9W41Y) |
+| Inkbird IHC200 Humidistat | Amazon | [B07XGQ7Q53](https://www.amazon.com/dp/B07XGQ7Q53) — $41.99 |
 | Inkbird IBS-TH2 Plus (data logger) | Amazon | [B095W39L4M](https://www.amazon.com/dp/B095W39L4M) — ~$30 |
 
 **IHC200 settings:** 85% RH, 2% offset (so it kicks on below 85%, kicks off at 87%).
 
 The IHC200 controls **both the fogger and the tub fan on the same outlet**. They always run together.
 
-The secondary controller and IBS-TH2 Plus are for verification — not for control. dccrens found that top, middle, and bottom of the tent all read within 1% RH of each other, confirming the fogger fills the tent uniformly. The IBS-TH2 Plus logs data to your phone via the free Inkbird app.
+The IBS-TH2 Plus is for verification — not for control. dccrens found that top, middle, and bottom of the tent all read within 1% RH of each other, confirming the fogger fills the tent uniformly. It logs data to your phone via the free Inkbird app.
 
 ---
 
@@ -184,8 +204,6 @@ The **intake computer fan** mounts at the top-right, next to the fogger inlet. I
 
 **Critical detail on the fogger inlet angle:** The elbow at the top of the fog pipe should enter the tent at a **slight upward angle** — not quite level. Any condensation that forms in the pipe will flow *back down* into the tank rather than pooling. dccrens reports zero water pooling with this setup.
 
-Photo of the inlet adapter: https://imgur.com/a/vnFbMfp
-
 ---
 
 ### Drip Tray / Floor
@@ -208,25 +226,61 @@ Lay the tray on the bottom wire shelf. Cut 6-mil plastic to fit inside it with a
 | LED strips | Mounted inside the tent (upgraded from v1) |
 | Rustoleum spray paint | Hunter green; 3 coats on all metal before assembly |
 | Velcro | Use everywhere instead of zip ties or glue — modularity is the whole point |
-| Grow bags / substrate | [mushroommediaonline.com](https://mushroommediaonline.com/) or Amazon |
 
 ---
 
-## Cost Summary (circa 2022 prices)
+## Assembly
 
-| Component | ASIN | USD |
-|-----------|------|-----|
-| Martha tent | B07TSC1MB3 | $63.99 |
-| CO2 controller | B08HQMBQ79 | $161.01 |
-| Inkbird IHC200 (primary humidity controller) | B07XGQ7Q53 | $41.99 |
-| Inkbird IBS-TH2 Plus (data logger) | B095W39L4M | ~$30.00 |
-| AC Infinity CLOUDLINE S4 ×2 | — | ~$198.00 |
-| House of Hydro 5-disc fogger | — | — |
-| Commercial drip tray | B0002NNWDW | — |
-| Misc (fans, ducting, tub, velcro, paint, H₂O₂) | — | — |
-| **Rough total** | | **~$250 USD** (~$300 CAD) |
+With all parts in hand, assemble in this order.
 
-The controllers and fans are the expensive part. Everything else is relatively cheap. If you want to cut costs further, run a timer + cheap CO2 meter for the first year (as dccrens did) and buy the CO2 controller later.
+### 1. Paint first
+
+Spray every metal pole and shelf with 3 coats of Rustoleum before you assemble anything. Let it dry fully between coats. There is no fixing this after assembly.
+
+### 2. Assemble the tent
+
+Follow the manufacturer instructions. Set it up in its final location — adding ducting afterward makes moving it awkward.
+
+### 3. Install the drip tray
+
+Place the commercial drip tray on the bottom wire shelf. Cut 6-mil plastic sheeting to fit inside it with 1" folded corners to create a waterproof liner. Velcro it in place.
+
+### 4. Set up the fogger reservoir
+
+Fill the tub with tap water. Place the fogger inside. Mount the UVC lights inside the tub. Mount the 4" computer fan on the lid so it blows *down* — this forces fog up and out through the duct. Connect the UVC lights to the outlet timer (1hr ON / 4hr OFF). Connect the fogger and tub fan to the IHC200 outlet — they always run together.
+
+### 5. Run the fogger duct
+
+Screw a flat piece of hard plastic to the tent frame at the top-right and cut a 4" hole in it — this is the inlet adapter. Press-fit the galvanized elbow into the adapter. Run 4" flex duct from the fogger tub up to the elbow. **The duct must enter at a slight upward angle** — condensation drains back down to the tank. Any downward slope pools water at the inlet.
+
+[Inlet adapter reference](https://imgur.com/a/vnFbMfp) *(external photo, may not persist)*
+
+### 6. Mount the fans
+
+- **Exhaust (bottom-left of tent):** Mount the AC Infinity S4 pulling air *out*. Run 4" flex duct from the fan to ceiling ductwork and out of the house. Connect to the CO2 controller outlet.
+- **Intake (top-right of tent):** Mount the 4" waterproof computer fan pulling room air *in*, next to the fogger inlet. Connect to the same CO2 controller outlet — both fans run together.
+
+### 7. Position the sensor probes
+
+Mount both controllers outside the tent and route their probes inside:
+
+- **CO2 controller probe:** mid-height inside the tent, away from the direct fogger airstream
+- **IHC200 probe:** mid-height inside the tent; RH is uniform within ~1% top-to-bottom, so height matters less than keeping it out of the direct fog blast
+- **IBS-TH2 Plus:** place anywhere inside the tent for independent data logging
+
+### 8. Configure and test
+
+Configure the controllers per the [CO2 Controller](#co2-controller-fae-automation) and [Humidity Controller](#humidity-controller) settings in the Parts List above. Run the system empty for a few hours to verify both control loops cycle correctly and confirm no water pools at the fogger inlet.
+
+---
+
+## Cost Summary
+
+**Rough total: ~$250 USD** (circa 2022 prices — current pricing will differ). See the [Shopping List](https://aes87.github.io/automated-martha-tek/martha-tent-build/martha-tent-shopping-list.html) for up-to-date links and prices.
+
+The CO2 controller ($161 in 2022) and two AC Infinity S4 fans (~$99 each) are the main costs. The tub, fogger, ducting, velcro, and paint are comparatively cheap.
+
+If you want to reduce upfront cost, run a timer and a cheap CO2 meter for the first year — as dccrens did — and buy the CO2 controller once you know the build works for you.
 
 ---
 
