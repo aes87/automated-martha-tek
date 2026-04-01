@@ -1,5 +1,6 @@
 #pragma once
 #include "../relay/relay_manager.h"
+#include "../../include/config.h"
 #include <cstdint>
 
 /**

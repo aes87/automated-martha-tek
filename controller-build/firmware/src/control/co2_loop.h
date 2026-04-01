@@ -1,6 +1,7 @@
 #pragma once
 #include "../sensors/sensor_hub.h"
 #include "../relay/relay_manager.h"
+#include "../../include/config.h"
 #include <cstdint>
 
 /**

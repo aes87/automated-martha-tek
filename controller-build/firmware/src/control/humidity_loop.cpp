@@ -29,10 +29,11 @@ void HumidityLoop::tick(const SensorSnapshot& snapshot,
 
     // Apply cooldown — don't change state more often than HUMIDITY_COOLDOWN_MS
     if (want_fog != _fogging) {
-        if ((now_ms - _last_change_ms) < HUMIDITY_COOLDOWN_MS) {
+        if (!_first_change && (now_ms - _last_change_ms) < HUMIDITY_COOLDOWN_MS) {
             // Cooldown not elapsed; hold current state
             return;
         }
+        _first_change = false;
         _fogging        = want_fog;
         _last_change_ms = now_ms;
 

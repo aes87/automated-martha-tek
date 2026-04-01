@@ -166,10 +166,16 @@ bool ConfigStore::importJson(const JsonDocument& doc) {
 
     // Validation
     if (c.rh_on_pct < 50.0f || c.rh_on_pct > 99.0f)            return false;
+    if (c.rh_hysteresis < 0.5f || c.rh_hysteresis > 15.0f)      return false;
     if (c.co2_on_ppm <= c.co2_off_ppm)                           return false;
+    if (c.co2_on_ppm < 400.0f || c.co2_on_ppm > 5000.0f)        return false;
+    if (c.co2_off_ppm < 300.0f || c.co2_off_ppm > 5000.0f)      return false;
     if (c.water_low_pct >= c.water_high_pct)                     return false;
     if (c.timer.lights_on_minute > 1439)                         return false;
     if (c.timer.lights_off_minute > 1439)                        return false;
+    if (c.timer.uvc_on_min < 1 || c.timer.uvc_on_min > 1440)    return false;
+    if (c.timer.uvc_off_min < 1 || c.timer.uvc_off_min > 1440)  return false;
+    if (c.adc_water_max_mv <= c.adc_water_min_mv)                return false;
 
     set(c);
     return true;

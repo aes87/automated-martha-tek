@@ -18,8 +18,7 @@
 // In native test builds we stub Arduino/FreeRTOS types
 #ifdef NATIVE_TEST
 #include <cstdio>
-using uint32_t = unsigned int;
-// Minimal millis() stub resolved at link time in test harness
+// millis()/set_millis() provided by test_clock.cpp
 extern uint32_t millis();
 #else
 #include <Arduino.h>
@@ -97,7 +96,6 @@ private:
     RelayManagerState _state      = RelayManagerState::BOOT_LOCKED;
     bool              _relay[RELAY_CHANNEL_COUNT] = {};  // All OFF
     uint32_t          _boot_ms    = 0;
-    bool              _prev_manual = false;
 
     RelayStateEntry   _log[LOG_SIZE] = {};
     size_t            _log_head  = 0;
@@ -112,7 +110,16 @@ private:
     void _releaseAllPins();
     void _logChange(RelayChannel ch, bool from, bool to, RelaySource src, uint32_t ts);
     bool _isUvcLocked(uint32_t now_ms) const;
-
-    /** Returns the GPIO number for a channel using RELAY_PIN_TABLE. */
     static uint8_t _pinForChannel(RelayChannel ch);
+
+    void _lock() {
+#ifndef NATIVE_TEST
+        if (_mutex) xSemaphoreTake(_mutex, portMAX_DELAY);
+#endif
+    }
+    void _unlock() {
+#ifndef NATIVE_TEST
+        if (_mutex) xSemaphoreGive(_mutex);
+#endif
+    }
 };

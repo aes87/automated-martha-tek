@@ -5,8 +5,7 @@
 
 #ifdef NATIVE_TEST
 // ADC not available in native test builds; injectVoltage() is used instead.
-static void adc_init() {}
-static uint32_t adc_read_mv() { return 0; }
+// adc_init/adc_read_mv are unused in native builds (tick() is a no-op)
 #else
 #include <Arduino.h>
 #include <esp_adc_cal.h>

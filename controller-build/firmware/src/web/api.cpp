@@ -1,6 +1,10 @@
 #include "api.h"
 #include "../sensors/sensor_hub.h"
+#include "../sensors/water_level.h"
 #include "../relay/relay_manager.h"
+#include "../control/humidity_loop.h"
+#include "../control/co2_loop.h"
+#include "../control/timer_scheduler.h"
 #include "../config/config_store.h"
 #include "../util/logger.h"
 
@@ -8,9 +12,13 @@
 #include <ESPAsyncWebServer.h>
 #include <ArduinoJson.h>
 
-// Forward declarations of module instances defined in main.cpp
-extern RelayManager  Relay;
-extern SensorHub     Sensors;
+// Module instances (defined in main.cpp or their respective .cpp files)
+extern RelayManager   Relay;
+extern SensorHub      Sensors;
+extern HumidityLoop   HumLoop;
+extern Co2Loop        CO2Loop;
+extern TimerScheduler Scheduler;
+extern WaterLevel     WaterLevelSensor;
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 static void sendJson(AsyncWebServerRequest* req, JsonDocument& doc, int code = 200) {
@@ -19,9 +27,13 @@ static void sendJson(AsyncWebServerRequest* req, JsonDocument& doc, int code = 2
     req->send(code, "application/json", body);
 }
 
-static bool parseBody(AsyncWebServerRequest* /*req*/,
+static bool parseBody(AsyncWebServerRequest* req,
                       uint8_t* data, size_t len,
                       JsonDocument& out) {
+    if (len > API_MAX_BODY_SIZE) {
+        req->send(413, "application/json", "{\"error\":\"body too large\"}");
+        return false;
+    }
     DeserializationError err = deserializeJson(out, data, len);
     return (err == DeserializationError::Ok);
 }
@@ -96,6 +108,16 @@ static void handlePostConfigBody(AsyncWebServerRequest* req,
         req->send(422, "application/json", "{\"error\":\"validation failed\"}");
         return;
     }
+
+    // Push updated config to running control loops (W2 fix)
+    const MarthaConfig& cfg = Config.get();
+    HumLoop.setThresholds(cfg.rh_on_pct, cfg.rh_hysteresis);
+    CO2Loop.setThresholds(cfg.co2_on_ppm, cfg.co2_off_ppm);
+    WaterLevelSensor.setCalibration(cfg.adc_water_min_mv, cfg.adc_water_max_mv);
+    Scheduler.setConfig(cfg.timer);
+    Sensors.setRhAggregation(static_cast<RhAggregation>(cfg.rh_aggregation));
+    Log.setLevel(static_cast<LogLevel>(cfg.log_level));
+
     req->send(200, "application/json", "{\"ok\":true}");
 }
 
@@ -113,10 +135,16 @@ static void handleRelaySetBody(AsyncWebServerRequest* req,
             break;
         }
     }
-    // Also accept numeric index
-    if (ch == RelayChannel::COUNT) {
-        uint8_t idx = static_cast<uint8_t>(ch_str.toInt());
-        if (idx < RELAY_CHANNEL_COUNT) ch = static_cast<RelayChannel>(idx);
+    // Also accept numeric index (but only if the string is actually a number)
+    if (ch == RelayChannel::COUNT && ch_str.length() > 0) {
+        bool is_numeric = true;
+        for (unsigned int ci = 0; ci < ch_str.length(); ++ci) {
+            if (ch_str[ci] < '0' || ch_str[ci] > '9') { is_numeric = false; break; }
+        }
+        if (is_numeric) {
+            uint8_t idx = static_cast<uint8_t>(ch_str.toInt());
+            if (idx < RELAY_CHANNEL_COUNT) ch = static_cast<RelayChannel>(idx);
+        }
     }
 
     if (ch == RelayChannel::COUNT) {

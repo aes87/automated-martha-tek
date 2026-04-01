@@ -10,13 +10,18 @@ WsBroadcaster WsBroadcast;
 void WsBroadcaster::begin(AsyncWebServer& server) {
     _ws = new AsyncWebSocket(WS_PATH);
 
-    _ws->onEvent([](AsyncWebSocket* /*server*/,
+    _ws->onEvent([](AsyncWebSocket* ws,
                     AsyncWebSocketClient* client,
                     AwsEventType type,
                     void* /*arg*/,
                     uint8_t* /*data*/,
                     size_t /*len*/) {
         if (type == WS_EVT_CONNECT) {
+            if (ws->count() > WS_MAX_CLIENTS) {
+                Log.warn("ws", "Client #%u rejected (max %d)", client->id(), WS_MAX_CLIENTS);
+                client->close();
+                return;
+            }
             Log.info("ws", "Client #%u connected", client->id());
         } else if (type == WS_EVT_DISCONNECT) {
             Log.info("ws", "Client #%u disconnected", client->id());
@@ -47,7 +52,8 @@ void WsBroadcaster::tick(const SensorSnapshot& snapshot,
 void WsBroadcaster::_buildJson(const SensorSnapshot& snap,
                                 const RelayManager& relay,
                                 char* buf, size_t len) {
-    JsonDocument doc;
+    static JsonDocument doc;
+    doc.clear();
 
     doc["t"] = millis();
 

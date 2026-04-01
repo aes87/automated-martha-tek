@@ -8,16 +8,14 @@
 
 static void pinMode(int, int)    {}
 static void digitalWrite(int, int) {}
-static void pinMode_input(int)   {}
 
 #define INPUT       0
 #define OUTPUT      1
 #define HIGH        1
 #define LOW         0
 
-static uint32_t _millis_stub = 0;
-uint32_t millis() { return _millis_stub; }
-void set_millis(uint32_t v) { _millis_stub = v; }
+// millis()/set_millis() provided by test_clock.cpp — single definition
+extern uint32_t millis();
 
 #define portMUX_TYPE       int
 #define portMUX_INITIALIZER_UNLOCKED 0
@@ -30,7 +28,7 @@ void set_millis(uint32_t v) { _millis_stub = v; }
 #include <freertos/semphr.h>
 #endif
 
-#include "../../include/config.h"
+#include "../../include/hal.h"  // includes config.h + RELAY_PIN_TABLE
 
 // ── Static GPIO pin table ────────────────────────────────────────────────────
 static const uint8_t RELAY_PINS[RELAY_CHANNEL_COUNT] = RELAY_PIN_TABLE;
@@ -76,32 +74,36 @@ void RelayManager::tick() {
 }
 
 bool RelayManager::set(RelayChannel channel, bool on, RelaySource source) {
+    _lock();
     uint32_t now = millis();
     uint8_t  idx = static_cast<uint8_t>(channel);
 
     if (_state == RelayManagerState::BOOT_LOCKED) {
-        // Log the rejection but don't crash
         _logChange(channel, _relay[idx], _relay[idx], RelaySource::BOOT_INIT, now);
+        _unlock();
         return false;
     }
 
     if (_state == RelayManagerState::MANUAL_MODE) {
-        return false;  // GPIOs released; physical switches have control
+        _unlock();
+        return false;
     }
 
-    // UVC extra boot guard
     if (channel == RelayChannel::UVC && _isUvcLocked(now)) {
+        _unlock();
         return false;
     }
 
     if (_relay[idx] == on) {
-        return true;  // No change needed
+        _unlock();
+        return true;
     }
 
     bool prev = _relay[idx];
     _relay[idx] = on;
     _logChange(channel, prev, on, source, now);
     _applyPin(channel, on);
+    _unlock();
     return true;
 }
 
@@ -110,16 +112,20 @@ bool RelayManager::get(RelayChannel channel) const {
 }
 
 void RelayManager::setManualMode(bool enable) {
-    if (enable == (_state == RelayManagerState::MANUAL_MODE)) return;
+    _lock();
+    if (enable == (_state == RelayManagerState::MANUAL_MODE)) {
+        _unlock();
+        return;
+    }
 
     if (enable) {
         _state = RelayManagerState::MANUAL_MODE;
         _releaseAllPins();
     } else {
-        // Return to normal — re-apply stored states
         _state = RelayManagerState::ARMED;
         _applyPins();
     }
+    _unlock();
 }
 
 // ── Private helpers ───────────────────────────────────────────────────────────
@@ -134,7 +140,7 @@ void RelayManager::_applyPin(RelayChannel ch, bool on) {
 #ifndef NATIVE_TEST
     uint8_t pin   = _pinForChannel(ch);
     int     level = RELAY_ACTIVE_LOW ? (on ? LOW : HIGH) : (on ? HIGH : LOW);
-    pinMode(pin, OUTPUT);
+    // pinMode already set in begin(); only drive the level
     digitalWrite(pin, level);
 #else
     (void)ch; (void)on;
@@ -176,7 +182,5 @@ void RelayManager::_logChange(RelayChannel ch, bool from, bool to,
 }
 
 bool RelayManager::_isUvcLocked(uint32_t now_ms) const {
-    uint32_t uvc_unlock_ms = _boot_ms + BOOT_LOCK_MS + UVC_EXTRA_GUARD_MS;
     return (now_ms - _boot_ms) < (BOOT_LOCK_MS + UVC_EXTRA_GUARD_MS);
-    (void)uvc_unlock_ms;
 }

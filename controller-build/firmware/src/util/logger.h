@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <cstdarg>
 
 /**
  * logger.h — Structured serial logger.
@@ -30,7 +31,6 @@ public:
 private:
     LogLevel _level = LogLevel::INFO;
     void _log(LogLevel level, const char* module, const char* fmt, va_list args);
-    static const char* _levelStr(LogLevel l);
 };
 
 extern Logger Log;

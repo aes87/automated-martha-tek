@@ -20,10 +20,10 @@ enum class RelayChannel : uint8_t {
     COUNT    = 8   // Sentinel — keep last
 };
 
-static constexpr uint8_t RELAY_CHANNEL_COUNT = static_cast<uint8_t>(RelayChannel::COUNT);
+inline constexpr uint8_t RELAY_CHANNEL_COUNT = static_cast<uint8_t>(RelayChannel::COUNT);
 
 /** Human-readable channel names (index matches RelayChannel enum value). */
-static const char* const RELAY_CHANNEL_NAMES[RELAY_CHANNEL_COUNT] = {
+inline constexpr const char* RELAY_CHANNEL_NAMES[RELAY_CHANNEL_COUNT] = {
     "Fogger",
     "TubFan",
     "Exhaust",

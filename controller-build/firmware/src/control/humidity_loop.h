@@ -1,6 +1,7 @@
 #pragma once
 #include "../sensors/sensor_hub.h"
 #include "../relay/relay_manager.h"
+#include "../../include/config.h"
 #include <cstdint>
 
 /**
@@ -30,6 +31,7 @@ public:
 private:
     float    _on_rh       = RH_SETPOINT_PCT;
     float    _hysteresis  = RH_HYSTERESIS_PCT;
-    bool     _fogging     = false;
+    bool     _fogging        = false;
     uint32_t _last_change_ms = 0;
+    bool     _first_change   = true;  // Allow immediate first state change
 };

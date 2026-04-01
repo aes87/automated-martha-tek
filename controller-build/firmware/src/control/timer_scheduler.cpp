@@ -3,9 +3,9 @@
 
 #ifdef NATIVE_TEST
 #include <cstring>
-static uint32_t _millis_val = 0;
-uint32_t millis() { return _millis_val; }
-void set_millis(uint32_t v) { _millis_val = v; }
+
+// millis()/set_millis() provided by test_clock.cpp — single definition
+extern uint32_t millis();
 
 static int _override_minute = -1;
 void set_minute_of_day(int m) { _override_minute = m; }
@@ -104,8 +104,8 @@ int TimerScheduler::_minuteOfDay() const {
 
 void TimerScheduler::setConfig(const TimerConfig& cfg) {
     _cfg = cfg;
-    // Reset UVC cycle on config change to avoid unexpected behavior
-    _uvc_last_flip_ms = 0;
+    // Reset UVC cycle from now to avoid immediate activation
+    _uvc_last_flip_ms = millis();
     Log.info("timer", "Config updated lights=%d-%d uvc=%dmin/%dmin",
              cfg.lights_on_minute, cfg.lights_off_minute,
              cfg.uvc_on_min, cfg.uvc_off_min);

@@ -4,9 +4,8 @@
 #include <cstdint>
 
 #ifdef NATIVE_TEST
-static uint32_t millis() {
-    return 0;  // In native tests millis() may be overridden by test harness
-}
+// millis() provided by test_clock.cpp — shares virtual time with all modules
+extern uint32_t millis();
 #else
 #include <Arduino.h>
 #endif

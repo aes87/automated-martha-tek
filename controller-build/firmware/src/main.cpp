@@ -38,8 +38,8 @@
 
 // ── Module-level instances ────────────────────────────────────────────────────
 RelayManager  Relay;
-SensorHub     Sensors;
-WaterLevel    WaterLevelSensor;
+// SensorHub Sensors is defined in sensor_hub.cpp (extern in sensor_hub.h)
+// WaterLevelSensor is defined in water_level.cpp (extern in water_level.h)
 
 HumidityLoop  HumLoop;
 Co2Loop       CO2Loop;
@@ -78,11 +78,8 @@ static void controlTask(void* /*arg*/) {
         // Timer-based channels (UVC, Lights)
         Scheduler.tick(Relay, now);
 
-        // WebSocket broadcast
-        SensorSnapshot snap_ws;
-        if (Sensors.read(snap_ws)) {
-            WsBroadcast.tick(snap_ws, Relay, now);
-        }
+        // WebSocket broadcast — reuse the same snapshot for consistency
+        WsBroadcast.tick(snap, Relay, now);
 
         vTaskDelay(pdMS_TO_TICKS(CONTROL_TASK_PERIOD_MS));
     }

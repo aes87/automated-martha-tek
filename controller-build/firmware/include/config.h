@@ -111,7 +111,15 @@
 #define NTP_TIMEZONE          "UTC0"
 #define WIFI_CONNECT_TIMEOUT_MS 30000
 #define WIFI_AP_SSID          "Martha-Setup"
-#define WIFI_AP_PASSWORD      ""    // Open AP for initial config
+#define WIFI_AP_PASSWORD      "martha1234"  // Change this before deployment
+
+// ── OTA authentication ───────────────────────────────────────────────────────
+#define OTA_USERNAME          "admin"
+#define OTA_PASSWORD          "martha1234"  // Change this before deployment
+
+// ── API request limits ───────────────────────────────────────────────────────
+#define API_MAX_BODY_SIZE     2048   // Maximum JSON body size in bytes
+#define WS_MAX_CLIENTS        4      // Maximum concurrent WebSocket clients
 
 // ── mDNS hostname ─────────────────────────────────────────────────────────────
 #define MDNS_HOSTNAME         "martha"

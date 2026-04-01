@@ -24,9 +24,9 @@ void webServerBegin() {
     // Register REST API routes
     apiRegisterRoutes(WebServer);
 
-    // ElegantOTA
-    ElegantOTA.begin(&WebServer);
-    Log.info("web", "ElegantOTA registered at /update");
+    // ElegantOTA (with authentication)
+    ElegantOTA.begin(&WebServer, OTA_USERNAME, OTA_PASSWORD);
+    Log.info("web", "ElegantOTA registered at /update (auth required)");
 
     // WebSocket
     WsBroadcast.begin(WebServer);
