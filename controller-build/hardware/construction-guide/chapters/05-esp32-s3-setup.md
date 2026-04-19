@@ -64,38 +64,7 @@ refer to it in every remaining wiring chapter.
 
 The board has two rows of 19 pins. Key pins for this build (simplified):
 
-```mermaid
-graph LR
-  ESP["ESP32-S3
-DevKitC-1"]
-  subgraph I2C["I2C bus  GPIO 21 SDA / GPIO 9 SCL"]
-    TCA["TCA9548A mux  0x70"]
-    SCD["SCD30 CO2  0x61"]
-    AS["AS7341 light  0x39"]
-  end
-  subgraph OW["1-Wire  GPIO 4"]
-    DS["DS18B20 x5
-substrate temp"]
-  end
-  subgraph ADC_G["ADC  GPIO 7"]
-    KIT["KIT0139
-water level"]
-  end
-  subgraph REL["Relay outputs  active LOW"]
-    R1["GPIO 38  Fogger"]
-    R2["GPIO 39  Tub fan"]
-    R3["GPIO 18  Exhaust"]
-    R4["GPIO 19  Intake"]
-    R5["GPIO 40  UVC  10s guard"]
-    R6["GPIO 41  Grow lights"]
-    R7["GPIO 42  Pump opt"]
-    R8["GPIO 47  Spare"]
-  end
-  ESP --- I2C
-  ESP --- OW
-  ESP --- ADC_G
-  ESP --- REL
-```
+![ESP32-S3 pinout — one bus per interface. I2C (GPIO 21 SDA / GPIO 9 SCL) drives the TCA9548A mux (0x70), SCD30 CO2 (0x61), and AS7341 light (0x39). 1-Wire (GPIO 4) drives 5× DS18B20 substrate temps. ADC (GPIO 7) reads the KIT0139 water level sensor. Eight active-LOW relay outputs: Fogger (GPIO 38), Tub fan (GPIO 39), Exhaust (GPIO 18), Intake (GPIO 19), UVC with 10 s guard (GPIO 40), Grow lights (GPIO 41), optional Pump (GPIO 42), and Spare (GPIO 47).](../images/chap05-esp32-pinout.png)
 
 For the authoritative pinout, refer to the Espressif ESP32-S3-DevKitC-1 datasheet.
 

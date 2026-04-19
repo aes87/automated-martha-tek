@@ -4,7 +4,7 @@
 >
 > Original post: https://www.reddit.com/r/MushroomGrowers/comments/sbnlib/gourmet_marth_2_dot_o_is_up_and_running_much/
 
-**→ [Shopping List](https://aes87.github.io/automated-martha-tek/martha-tent-build/martha-tent-shopping-list.html)** — interactive checklist with persistent notes, syncs to your GitHub account.
+**→ [Shopping List](https://aes87.github.io/mushroom-growing-automation/martha-tent-build/martha-tent-shopping-list.html)** — interactive checklist with persistent notes, syncs to your GitHub account.
 
 ## Contents
 
@@ -45,57 +45,9 @@ This is version 2 of dccrens' build. Version 1 rusted out. The single biggest le
 
 Air and humidity enter from the **top-right** of the tent. CO2-rich air exhausts from the **bottom-left**. This cross-flow pattern means fresh humid air sweeps down through all the shelves before exiting — efficient and uniform.
 
-```mermaid
-flowchart TB
-    RoomAir(["Room Air"])
+![Physical airflow — room air pulls into the tent via an intake fan at the top-right inlet, cascades down through four shelves of blocks onto a drip tray with 6-mil liner, and exhausts through the bottom-left outlet into twin AC Infinity S4 fans that vent to outside ceiling ductwork. A separate fogger reservoir (5-disc ultrasonic fogger, UVC on a 1h/4h cycle, and a tub fan blowing down) pushes humid fog via a 4-inch flex duct into the same inlet.](../docs/images/tent-airflow.png)
 
-    subgraph FogSys["Fogger Reservoir — 19-gal tub"]
-        Fogger["5-disc ultrasonic fogger"]
-        UVC["UVC lights — 1hr ON / 4hr OFF"]
-        TubFan["Computer fan on lid\n(blows down — fog forced up)"]
-    end
-
-    IntakeFan["4-inch waterproof fan\n(top-right of tent)"]
-
-    subgraph MarthaTent["Martha Tent"]
-        Inlet(["top-right inlet ↓"])
-        S4["Shelf 4 — blocks"]
-        S3["Shelf 3 — blocks"]
-        S2["Shelf 2 — blocks"]
-        S1["Shelf 1 — blocks"]
-        Floor["Drip tray + 6-mil liner"]
-        Outlet(["bottom-left outlet"])
-        Inlet --> S4 --> S3 --> S2 --> S1 --> Floor --> Outlet
-    end
-
-    ExhaustFan["AC Infinity S4\n(exhaust fan ×2)"]
-    Outside(["Outside — ceiling ductwork"])
-
-    RoomAir --> IntakeFan --> Inlet
-    TubFan -- "4-inch flex duct\n(slight upward angle)" --> Inlet
-    Outlet --> ExhaustFan --> Outside
-```
-
-```mermaid
-flowchart LR
-    subgraph CO2Loop["CO₂ Loop — CO₂ Controller"]
-        direction TB
-        C1["CO₂ rises\n(blocks respire)"] --> C2["hits 950 ppm\nFAE fans ON"]
-        C2 --> C3["CO₂ flushes out\n~1–2 min"]
-        C3 --> C4["drops to 650 ppm\nfans OFF"]
-        C4 --> C1
-    end
-
-    subgraph HumLoop["Humidity Loop — Inkbird IHC200"]
-        direction TB
-        H1["RH drops\n(FAE exits humid air)"] --> H2["below 85%\nfogger + tub fan ON"]
-        H2 --> H3["tent refills\nwith fog"]
-        H3 --> H4["hits 87%\nfogger + fan OFF"]
-        H4 --> H1
-    end
-
-    C2 -. "FAE also removes\nhumid air" .-> H1
-```
+![Control loops — the CO2 loop cycles between rising CO2, hitting the 950 ppm trigger that turns FAE fans on, CO2 flushing out, and fans turning off at 650 ppm. The humidity loop cycles between RH dropping as FAE exits humid air, hitting below 85% that turns the fogger and tub fan on, the tent refilling with fog, and the fogger shutting off at 87%. The two loops cross-couple — FAE removes humid air as a side effect of venting CO2.](../docs/images/tent-control-loops.png)
 
 **What happens in a cycle:**
 1. CO2 climbs as blocks respire → hits 950 ppm → both FAE fans kick on
@@ -276,7 +228,7 @@ Configure the controllers per the [CO2 Controller](#co2-controller-fae-automatio
 
 ## Cost Summary
 
-**Rough total: ~$250 USD** (circa 2022 prices — current pricing will differ). See the [Shopping List](https://aes87.github.io/automated-martha-tek/martha-tent-build/martha-tent-shopping-list.html) for up-to-date links and prices.
+**Rough total: ~$250 USD** (circa 2022 prices — current pricing will differ). See the [Shopping List](https://aes87.github.io/mushroom-growing-automation/martha-tent-build/martha-tent-shopping-list.html) for up-to-date links and prices.
 
 The CO2 controller ($161 in 2022) and two AC Infinity S4 fans (~$99 each) are the main costs. The tub, fogger, ducting, velcro, and paint are comparatively cheap.
 

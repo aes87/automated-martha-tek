@@ -39,21 +39,7 @@ mode, flip the master first, then use group switches for load control.
 
 ## The Wiring Topology
 
-```mermaid
-graph LR
-  DM["DPDT MASTER"] -->|"AUTO: common → 3.3V"| OFF["Group switches\ninactive"]
-  DM -->|"MANUAL: common → GND"| CMN{Common wire}
-  CMN --> H[HUMIDITY]
-  CMN --> F[FAE]
-  CMN --> U[UVC]
-  CMN --> L[LIGHTS]
-  H -->|IN1| FG[Fogger]
-  H -->|IN2| TF[Tub fan]
-  F -->|IN3| EX[Exhaust]
-  F -->|IN4| IN[Intake]
-  U -->|IN5| UV[UVC lights]
-  L -->|IN6| GL[Grow lights]
-```
+![Master switch routing — DPDT MASTER selects AUTO (common → 3.3 V, group switches inactive, ESP32 controls the relays) or MANUAL (common → GND, a common wire feeds all four group switches). In MANUAL, each group switch pulls its assigned relay INs LOW: HUMIDITY drives IN1 (Fogger) and IN2 (Tub fan); FAE drives IN3 (Exhaust) and IN4 (Intake); UVC drives IN5 (UVC lights); LIGHTS drives IN6 (Grow lights).](../images/chap07-master-routing.png)
 
 ESP32 GPIOs remain connected to IN1–IN8 in both modes — the pull-up resistors
 ensure a safe default when neither source is actively driving an IN pin.
@@ -89,29 +75,7 @@ When ON, the terminals connect. When OFF, they're open.
 
 Identify the 6 terminals (common layout — verify against your switch datasheet):
 
-```mermaid
-graph LR
-  subgraph PA["Pole A  used"]
-    P1C["P1-COM
-to group switch common"]
-    P1T1["P1-T1  AUTO
-connect to 3.3V"]
-    P1T2["P1-T2  MANUAL
-connect to GND"]
-  end
-  subgraph PB["Pole B  optional LED"]
-    P2C["P2-COM
-to 3.3V"]
-    P2T1["P2-T1
-not connected"]
-    P2T2["P2-T2  MANUAL
-to LED anode"]
-  end
-  P1C --- P1T1
-  P1C --- P1T2
-  P2C --- P2T1
-  P2C --- P2T2
-```
+![DPDT switch poles — Pole A carries the source: P1-COM goes to the group switch common, P1-T1 to 3.3 V (AUTO side), P1-T2 to GND (MANUAL side). Pole B is optional: P2-COM to 3.3 V, P2-T1 not connected, P2-T2 to a status LED anode so the panel lights up when switched to MANUAL.](../images/chap07-dpdt-poles.png)
 
 **Wire Pole A (essential):**
 

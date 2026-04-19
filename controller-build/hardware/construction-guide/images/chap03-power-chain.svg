@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 520" width="1280" height="520">
+  <defs>
+    <marker id="arrowA" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#c9c5b6"/>
+    </marker>
+    <marker id="arrowB" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6fd1b4"/>
+    </marker>
+    <marker id="arrowC" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#c9c5b6"/>
+    </marker>
+    <marker id="arrowE" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#c9c5b6"/>
+    </marker>
+    <marker id="arrowF" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8b8899"/>
+    </marker>
+    <marker id="arrowG" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e6a562"/>
+    </marker>
+    <marker id="arrowH" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8b8899"/>
+    </marker>
+    <filter id="editorialGrain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.08 0"/>
+    </filter>
+    <radialGradient id="editorialTopGlow" cx="50%" cy="0%" r="80%">
+      <stop offset="0%" stop-color="#e6a562" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#e6a562" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+    text { font-family: 'Inter', 'Noto Sans', 'Helvetica Neue', 'DejaVu Sans', sans-serif; }
+    .title { font-size: 46px; font-weight: 700; fill: #f5efe0; font-family: 'Playfair Display', 'Noto Serif Display', 'DejaVu Serif', Georgia, serif; }
+    .subtitle { font-size: 12px; font-weight: 500; fill: #e6a562; letter-spacing: 0.3em; text-transform: uppercase; }
+    .section { font-size: 13px; font-weight: 700; fill: #f5efe0; letter-spacing: 1.4px; }
+    .section-sub { font-size: 12px; font-weight: 500; fill: #b5b3a8; }
+    .node-title { font-size: 18px; font-weight: 700; fill: #f5efe0; }
+    .node-sub { font-size: 12px; font-weight: 500; fill: #d4cfbf; }
+    .node-type { font-size: 10px; font-weight: 700; fill: #b5b3a8; letter-spacing: 0.08em; }
+    .arrow-label { font-size: 12px; font-weight: 600; fill: #c9c5b6; }
+    .legend { font-size: 12px; font-weight: 500; fill: #d4cfbf; }
+    .footnote { font-size: 12px; font-weight: 500; fill: #b5b3a8; }
+    </style>
+  </defs>
+  <rect width="1280.0" height="520.0" fill="#15151e"/>
+  <rect width="1280.0" height="286.0" fill="url(#editorialTopGlow)"/>
+  <rect width="1280.0" height="520.0" filter="url(#editorialGrain)" opacity="0.6"/>
+  <text x="640.0" y="56" text-anchor="middle" class="title">Power Supply Chain</text>
+  <text x="640.0" y="82" text-anchor="middle" class="subtitle">Mains input → GFCI → fuse → blade block → two isolated DC rails</text>
+  <path d="M 220.0,255.0 L 260.0,255.0" fill="none" stroke="#c9c5b6" stroke-width="1.6" marker-end="url(#arrowA)"/>
+  <path d="M 460.0,255.0 L 500.0,255.0" fill="none" stroke="#c9c5b6" stroke-width="1.6" marker-end="url(#arrowA)"/>
+  <path d="M 680.0,255.0 L 720.0,255.0" fill="none" stroke="#c9c5b6" stroke-width="1.6" marker-end="url(#arrowA)"/>
+  <path d="M 920.0,255.0 L 939.6,255.0 L 939.6,170.0 L 960.0,170.0" fill="none" stroke="#c9c5b6" stroke-width="1.6" marker-end="url(#arrowA)"/>
+  <path d="M 920.0,255.0 L 939.6,255.0 L 939.6,360.0 L 960.0,360.0" fill="none" stroke="#c9c5b6" stroke-width="1.6" marker-end="url(#arrowA)"/>
+  <rect x="40.0" y="220.0" width="180.0" height="70.0" rx="8.0" fill="#24222f" stroke="rgba(245,239,224,0.18)" stroke-width="1.8"/>
+  <text x="130.0" y="255.0" text-anchor="middle" class="node-title">Mains Input</text>
+  <text x="130.0" y="277.0" text-anchor="middle" class="node-sub">120/230 V AC</text>
+  <rect x="260.0" y="220.0" width="200.0" height="70.0" rx="8.0" fill="#24222f" stroke="#e6a562" stroke-width="2.0"/>
+  <rect x="266.0" y="226.0" width="188.0" height="58.0" rx="5.0" fill="none" stroke="#e6a562" stroke-width="1.2" opacity="0.65"/>
+  <text x="360.0" y="238.0" text-anchor="middle" class="node-type">SAFETY</text>
+  <text x="360.0" y="261.0" text-anchor="middle" class="node-title">GFCI / RCD</text>
+  <text x="360.0" y="283.0" text-anchor="middle" class="node-sub">30 mA trip</text>
+  <rect x="500.0" y="220.0" width="180.0" height="70.0" rx="8.0" fill="#24222f" stroke="rgba(245,239,224,0.18)" stroke-width="1.8"/>
+  <text x="590.0" y="255.0" text-anchor="middle" class="node-title">5 A Input Fuse</text>
+  <rect x="720.0" y="220.0" width="200.0" height="70.0" rx="8.0" fill="#24222f" stroke="rgba(245,239,224,0.18)" stroke-width="1.8"/>
+  <text x="820.0" y="255.0" text-anchor="middle" class="node-title">Blade Fuse Block</text>
+  <text x="820.0" y="277.0" text-anchor="middle" class="node-sub">6 positions</text>
+  <rect x="960.0" y="130.0" width="240.0" height="80.0" rx="8.0" fill="#24222f" stroke="rgba(245,239,224,0.18)" stroke-width="1.8"/>
+  <text x="1080.0" y="170.0" text-anchor="middle" class="node-title">5 V 3 A PSU</text>
+  <text x="1080.0" y="192.0" text-anchor="middle" class="node-sub">logic + relay coils</text>
+  <rect x="960.0" y="320.0" width="240.0" height="80.0" rx="8.0" fill="#24222f" stroke="rgba(245,239,224,0.18)" stroke-width="1.8"/>
+  <text x="1080.0" y="360.0" text-anchor="middle" class="node-title">12 V 1 A PSU</text>
+  <text x="1080.0" y="382.0" text-anchor="middle" class="node-sub">water level sensor</text>
+</svg>

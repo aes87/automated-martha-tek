@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 500" width="1280" height="500">
+  <defs>
+    <marker id="arrowA" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#c9c5b6"/>
+    </marker>
+    <marker id="arrowB" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6fd1b4"/>
+    </marker>
+    <marker id="arrowC" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#c9c5b6"/>
+    </marker>
+    <marker id="arrowE" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#c9c5b6"/>
+    </marker>
+    <marker id="arrowF" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8b8899"/>
+    </marker>
+    <marker id="arrowG" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e6a562"/>
+    </marker>
+    <marker id="arrowH" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8b8899"/>
+    </marker>
+    <filter id="editorialGrain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.08 0"/>
+    </filter>
+    <radialGradient id="editorialTopGlow" cx="50%" cy="0%" r="80%">
+      <stop offset="0%" stop-color="#e6a562" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#e6a562" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+    text { font-family: 'Inter', 'Noto Sans', 'Helvetica Neue', 'DejaVu Sans', sans-serif; }
+    .title { font-size: 46px; font-weight: 700; fill: #f5efe0; font-family: 'Playfair Display', 'Noto Serif Display', 'DejaVu Serif', Georgia, serif; }
+    .subtitle { font-size: 12px; font-weight: 500; fill: #e6a562; letter-spacing: 0.3em; text-transform: uppercase; }
+    .section { font-size: 13px; font-weight: 700; fill: #f5efe0; letter-spacing: 1.4px; }
+    .section-sub { font-size: 12px; font-weight: 500; fill: #b5b3a8; }
+    .node-title { font-size: 18px; font-weight: 700; fill: #f5efe0; }
+    .node-sub { font-size: 12px; font-weight: 500; fill: #d4cfbf; }
+    .node-type { font-size: 10px; font-weight: 700; fill: #b5b3a8; letter-spacing: 0.08em; }
+    .arrow-label { font-size: 12px; font-weight: 600; fill: #c9c5b6; }
+    .legend { font-size: 12px; font-weight: 500; fill: #d4cfbf; }
+    .footnote { font-size: 12px; font-weight: 500; fill: #b5b3a8; }
+    </style>
+  </defs>
+  <rect width="1280.0" height="500.0" fill="#15151e"/>
+  <rect width="1280.0" height="275.0" fill="url(#editorialTopGlow)"/>
+  <rect width="1280.0" height="500.0" filter="url(#editorialGrain)" opacity="0.6"/>
+  <text x="640.0" y="56" text-anchor="middle" class="title">Relay IN Pull-ups</text>
+  <text x="640.0" y="82" text-anchor="middle" class="subtitle">10 kΩ from 3.3 V to each IN — default HIGH holds the relay OFF while the GPIO is tri-stated</text>
+  <path d="M 640.0,240.0 L 640.0,260.4 L 125.0,309.6 L 125.0,330.0" fill="none" stroke="#c9c5b6" stroke-width="1.6" marker-end="url(#arrowA)"/>
+  <path d="M 640.0,240.0 L 640.0,260.4 L 275.0,309.6 L 275.0,330.0" fill="none" stroke="#c9c5b6" stroke-width="1.6" marker-end="url(#arrowA)"/>
+  <path d="M 640.0,240.0 L 640.0,260.4 L 425.0,309.6 L 425.0,330.0" fill="none" stroke="#c9c5b6" stroke-width="1.6" marker-end="url(#arrowA)"/>
+  <path d="M 640.0,240.0 L 640.0,260.4 L 575.0,309.6 L 575.0,330.0" fill="none" stroke="#c9c5b6" stroke-width="1.6" marker-end="url(#arrowA)"/>
+  <path d="M 640.0,240.0 L 640.0,260.4 L 725.0,309.6 L 725.0,330.0" fill="none" stroke="#c9c5b6" stroke-width="1.6" marker-end="url(#arrowA)"/>
+  <path d="M 640.0,240.0 L 640.0,260.4 L 875.0,309.6 L 875.0,330.0" fill="none" stroke="#c9c5b6" stroke-width="1.6" marker-end="url(#arrowA)"/>
+  <path d="M 640.0,240.0 L 640.0,260.4 L 1025.0,309.6 L 1025.0,330.0" fill="none" stroke="#c9c5b6" stroke-width="1.6" marker-end="url(#arrowA)"/>
+  <path d="M 640.0,240.0 L 640.0,260.4 L 1175.0,309.6 L 1175.0,330.0" fill="none" stroke="#c9c5b6" stroke-width="1.6" marker-end="url(#arrowA)"/>
+  <rect x="540.0" y="170.0" width="200.0" height="70.0" rx="8.0" fill="#24222f" stroke="#e6a562" stroke-width="2.0"/>
+  <rect x="546.0" y="176.0" width="188.0" height="58.0" rx="5.0" fill="none" stroke="#e6a562" stroke-width="1.2" opacity="0.65"/>
+  <text x="640.0" y="188.0" text-anchor="middle" class="node-type">RAIL</text>
+  <text x="640.0" y="211.0" text-anchor="middle" class="node-title">VCC</text>
+  <text x="640.0" y="233.0" text-anchor="middle" class="node-sub">3.3 V</text>
+  <rect x="60.0" y="330.0" width="130.0" height="60.0" rx="8.0" fill="#24222f" stroke="rgba(245,239,224,0.18)" stroke-width="1.8"/>
+  <text x="125.0" y="360.0" text-anchor="middle" class="node-title">IN1</text>
+  <rect x="210.0" y="330.0" width="130.0" height="60.0" rx="8.0" fill="#24222f" stroke="rgba(245,239,224,0.18)" stroke-width="1.8"/>
+  <text x="275.0" y="360.0" text-anchor="middle" class="node-title">IN2</text>
+  <rect x="360.0" y="330.0" width="130.0" height="60.0" rx="8.0" fill="#24222f" stroke="rgba(245,239,224,0.18)" stroke-width="1.8"/>
+  <text x="425.0" y="360.0" text-anchor="middle" class="node-title">IN3</text>
+  <rect x="510.0" y="330.0" width="130.0" height="60.0" rx="8.0" fill="#24222f" stroke="rgba(245,239,224,0.18)" stroke-width="1.8"/>
+  <text x="575.0" y="360.0" text-anchor="middle" class="node-title">IN4</text>
+  <rect x="660.0" y="330.0" width="130.0" height="60.0" rx="8.0" fill="#24222f" stroke="rgba(245,239,224,0.18)" stroke-width="1.8"/>
+  <text x="725.0" y="360.0" text-anchor="middle" class="node-title">IN5</text>
+  <rect x="810.0" y="330.0" width="130.0" height="60.0" rx="8.0" fill="#24222f" stroke="rgba(245,239,224,0.18)" stroke-width="1.8"/>
+  <text x="875.0" y="360.0" text-anchor="middle" class="node-title">IN6</text>
+  <rect x="960.0" y="330.0" width="130.0" height="60.0" rx="8.0" fill="#24222f" stroke="rgba(245,239,224,0.18)" stroke-width="1.8"/>
+  <text x="1025.0" y="360.0" text-anchor="middle" class="node-title">IN7</text>
+  <rect x="1110.0" y="330.0" width="130.0" height="60.0" rx="8.0" fill="#24222f" stroke="rgba(245,239,224,0.18)" stroke-width="1.8"/>
+  <text x="1175.0" y="360.0" text-anchor="middle" class="node-title">IN8</text>
+  <rect x="358.0" y="255.0" width="49" height="20" rx="6" fill="#15151e" opacity="1"/>
+  <text x="382.5" y="269.0" text-anchor="middle" class="arrow-label">10 kΩ</text>
+  <rect x="433.0" y="255.0" width="49" height="20" rx="6" fill="#15151e" opacity="1"/>
+  <text x="457.5" y="269.0" text-anchor="middle" class="arrow-label">10 kΩ</text>
+  <rect x="508.0" y="255.0" width="49" height="20" rx="6" fill="#15151e" opacity="1"/>
+  <text x="532.5" y="269.0" text-anchor="middle" class="arrow-label">10 kΩ</text>
+  <rect x="583.0" y="255.0" width="49" height="20" rx="6" fill="#15151e" opacity="1"/>
+  <text x="607.5" y="269.0" text-anchor="middle" class="arrow-label">10 kΩ</text>
+  <rect x="658.0" y="255.0" width="49" height="20" rx="6" fill="#15151e" opacity="1"/>
+  <text x="682.5" y="269.0" text-anchor="middle" class="arrow-label">10 kΩ</text>
+  <rect x="733.0" y="255.0" width="49" height="20" rx="6" fill="#15151e" opacity="1"/>
+  <text x="757.5" y="269.0" text-anchor="middle" class="arrow-label">10 kΩ</text>
+  <rect x="808.0" y="255.0" width="49" height="20" rx="6" fill="#15151e" opacity="1"/>
+  <text x="832.5" y="269.0" text-anchor="middle" class="arrow-label">10 kΩ</text>
+  <rect x="883.0" y="255.0" width="49" height="20" rx="6" fill="#15151e" opacity="1"/>
+  <text x="907.5" y="269.0" text-anchor="middle" class="arrow-label">10 kΩ</text>
+</svg>

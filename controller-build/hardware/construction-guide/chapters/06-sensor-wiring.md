@@ -42,15 +42,7 @@ ESP32's `3V3` pin, not from the 5V PSU rail.
 
 **Main bus wiring:**
 
-```mermaid
-graph LR
-  ESP[ESP32-S3] -->|"SDA GPIO 21 / SCL GPIO 9"| TCA["TCA9548A\n0x70"]
-  TCA -->|ch 0| SHT0["SHT45 Top shelf\n0x44"]
-  TCA -->|ch 1| SHT1["SHT45 Mid shelf\n0x44"]
-  TCA -->|ch 2| SHT2["SHT45 Bot shelf\n0x44"]
-  ESP -->|"SDA / SCL"| SCD["SCD30 CO₂\n0x61"]
-  ESP -->|"SDA / SCL"| AS["AS7341 Light\n0x39"]
-```
+![I2C sensor tree — ESP32-S3 drives the main I2C bus (SDA GPIO 21, SCL GPIO 9) into the TCA9548A mux (0x70), which splits three SHT45 humidity+temp sensors that share address 0x44 across channels 0, 1, and 2 (top, mid, bottom shelves). SCD30 (0x61) and AS7341 (0x39) sit on the main bus directly since their addresses don't conflict.](../images/chap06-i2c-tree.png)
 
 Use 22 AWG wire. Colour-code consistently (suggestion: white = SDA, yellow = SCL).
 Label each wire at both ends.
@@ -182,15 +174,7 @@ so the ESP32 addresses each probe individually on the same wire.
 
 You need one 2.2 kΩ resistor and one 100 nF ceramic capacitor:
 
-```mermaid
-graph TD
-  V3["3.3V"] -->|"2.2 kΩ pull-up"| JCT(("GPIO 4
-junction"))
-  JCT -->|"data line"| DS["DS18B20 x5
-daisy-chained"]
-  JCT -->|"100 nF
-decoupling cap"| GND["GND"]
-```
+![1-Wire bus — 3.3 V rail → 2.2 kΩ pull-up → GPIO 4 junction → five daisy-chained DS18B20 substrate probes. A 100 nF decoupling capacitor from the junction to GND provides noise immunity on the long cable runs.](../images/chap06-onewire.png)
 
 <details>
 <summary><strong>[?] Why 2.2 kΩ?</strong></summary>

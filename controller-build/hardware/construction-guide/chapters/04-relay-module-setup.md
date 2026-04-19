@@ -43,57 +43,9 @@ protects the ESP32 from voltage spikes when inductive loads (fans) switch off.
 
 A standard 8-channel opto-isolated relay board has:
 
-```mermaid
-graph LR
-  subgraph SIG["Signal side  LV zone"]
-    V["VCC
-3.3V opto supply"]
-    G2["GND"]
-    IN["IN1 - IN8
-active LOW triggers"]
-    J["VCC / JD-VCC jumper
-REMOVE THIS"]
-    JD["JD-VCC
-5V coil supply"]
-  end
-  subgraph BODY["Relay board"]
-    OPT["8x PC817
-optocouplers"]
-    REL["8x relay bodies
-mechanical contacts"]
-    LED["8x LEDs
-status"]
-  end
-  subgraph LD["Load side  mains zone"]
-    COM["COM
-mains Hot in"]
-    NO["NO  normally open
-connect loads here"]
-    NC["NC  not used"]
-  end
-  V --> OPT
-  IN -->|"pull LOW to fire"| OPT
-  OPT --> REL
-  REL --> LED
-  REL --> NO
-  J -. "isolates coil
-when removed" .-> JD
-  COM --- NO
-  COM --- NC
-```
+![Relay module — three zones. Signal side (LV) holds VCC, GND, IN1–IN8, and the critical VCC/JD-VCC jumper that must be removed to keep the coil supply isolated from logic. Body holds 8× PC817 optocouplers, 8× relay bodies, and 8× status LEDs. Load side (mains) holds COM (Hot in), NO (normally open — loads connect here), and NC (unused).](../images/chap04-relay-module.png)
 
-```mermaid
-graph TB
-  VCC["VCC  3.3V"]
-  VCC -->|"10 kΩ"| I1[IN1]
-  VCC -->|"10 kΩ"| I2[IN2]
-  VCC -->|"10 kΩ"| I3[IN3]
-  VCC -->|"10 kΩ"| I4[IN4]
-  VCC -->|"10 kΩ"| I5[IN5]
-  VCC -->|"10 kΩ"| I6[IN6]
-  VCC -->|"10 kΩ"| I7[IN7]
-  VCC -->|"10 kΩ"| I8[IN8]
-```
+![Relay IN pull-ups — 10 kΩ from 3.3 V VCC to each of IN1 through IN8. Default HIGH holds the relay OFF while the GPIO is tri-stated.](../images/chap04-pullups.png)
 
 Connect the adapter's IN rows to the relay board IN1–IN8 pins with short jumpers,
 and its VCC row to the relay board VCC pin.

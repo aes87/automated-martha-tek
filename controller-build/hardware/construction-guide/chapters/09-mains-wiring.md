@@ -140,15 +140,7 @@ For each load cable (entering through a PG11 gland):
 4. Earth wire → Earth bus (for earthed loads: fans, UVC fixture).
 5. Tighten the cable gland once the cable is in final position.
 
-```mermaid
-graph LR
-  HOT["Load Hot
-Black / Brown"] --> NO["Relay Channel NO"]
-  NEU["Load Neutral
-White / Blue"] --> NB["Neutral bus"]
-  EARTH["Load Earth
-Green / Bare"] -->|"earthed loads only"| EB["Earth bus"]
-```
+![Mains load wiring — only Hot is switched. Load Hot (black/brown) goes to the relay channel's NO (normally open) contact. Load Neutral (white/blue) goes to a shared neutral bus, daisy-chained across all loads, never switched. Load Earth (green/bare) goes to a shared earth bus, but only for earthed loads.](../images/chap09-mains-wiring.png)
 
 <details>
 <summary><strong>[?] Normally Open (NO):</strong></summary>

@@ -26,14 +26,7 @@ Use a label maker (Dymo or Brother P-Touch). Permanent marker on tape also works
 
 Mount components left to right in this order:
 
-```mermaid
-graph LR
-  M[Mains Input] --> G["GFCI / RCD\n30 mA trip"]
-  G --> F["5A Input Fuse"]
-  F --> FB["Blade Fuse Block\n6 positions"]
-  FB --> P5["5V 3A PSU\nLogic + relay coils"]
-  FB --> P12["12V 1A PSU\nWater level sensor"]
-```
+![Power supply chain — mains input → GFCI/RCD (30 mA trip) → 5 A input fuse → 6-position blade fuse block → two DC rails: 5 V 3 A PSU (logic + relay coils) and 12 V 1 A PSU (water level sensor).](../images/chap03-power-chain.png)
 
 The GFCI/RCD **must** be the first device the mains feed reaches — before the
 fuse, before the PSUs, before anything else.

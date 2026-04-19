@@ -20,25 +20,7 @@ glands, DIN rail + screws, label maker.
 The enclosure interior is divided into two logical zones. No physical barrier is
 needed — the zones are maintained by discipline during assembly.
 
-```mermaid
-graph LR
-  subgraph MAINS["MAINS ZONE — 120/230 V AC"]
-    G["GFCI / RCD"]
-    FH["5A Input Fuse"]
-    FB["Blade Fuse Block — 2–3 A/ch"]
-    P5["5V 3A PSU — logic & relay coils"]
-    P12["12V 1A PSU — water level"]
-    LO[/"Loads exit · bottom cable glands"/]
-  end
-  subgraph LV["LOW-VOLTAGE ZONE — max 5V DC"]
-    RL["Relay Module — spans both zones"]
-    ESP["ESP32-S3"]
-    SEN["TCA9548A · SCD30 · AS7341"]
-    TB["LV Terminal Blocks"]
-    SI[/"Sensors enter · PG9 cable glands"/]
-  end
-  G -.->|"load contacts"| RL
-```
+![Enclosure zone separation — mains zone (GFCI, fuses, PSUs, load exit) on the left; low-voltage zone (ESP32, sensors, terminal blocks, sensor entry) on the right. The relay module is the only component bridging the two — its load contacts cross the zone boundary.](../images/chap02-zone-separation.png)
 
 The relay board physically spans both zones: its load terminals (COM/NO/NC contacts
 that switch mains) point toward the mains zone; its signal header (IN1–IN8, VCC,
@@ -145,11 +127,7 @@ You need 5 holes for the failsafe panel switches (1× DPDT master, 4× SPST grou
 
 **Label positions from left to right:**
 
-```mermaid
-graph LR
-  M["MASTER
-AUTO / MAN"] --- H[HUMIDITY] --- F[FAE] --- U[UVC] --- L[LIGHTS]
-```
+![Front panel switch layout — DPDT MASTER (AUTO / MAN) on the far left selects the source, followed by four SPST group switches: HUMIDITY, FAE, UVC, LIGHTS.](../images/chap02-failsafe-panel.png)
 
 Apply labels below each hole **before** mounting the switches — it's much easier to
 label a flat surface than to label around a mounted toggle.
